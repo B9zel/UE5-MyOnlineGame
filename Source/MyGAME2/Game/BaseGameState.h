@@ -35,7 +35,7 @@ public:
 	UPROPERTY(ReplicatedUsing = OnRep_OnRoundInProgress,BlueprintReadWrite)
 		bool RoundInProgress;
 	UPROPERTY()
-	FTimerHandle Timer;
+		FTimerHandle Timer;
 
 public:
 

@@ -50,8 +50,8 @@ public:
 	TSubclassOf<class APawn> Spawn_Pawn;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UGame_Interface* Game_Interface;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	class UStatisticsMenu* TabMenu;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
+//	class UStatisticsMenu* TabMenu;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<UUserWidget> UserWidget;
 };

@@ -13,6 +13,7 @@
 #include <MyGAME2/Game/BaseGameState.h>
 #include <MyGAME2/Widgets/StatisticsMenu.h>
 #include <Blueprint/WidgetBlueprintLibrary.h>
+#include <MyGAME2/Game/BaseHUD.h>
 
 
 APawnController::APawnController()
@@ -70,23 +71,22 @@ UStatisticsMenu* APawnController::CreateTabMenu()
 }
 
 void APawnController::EnableTabMenu()
+{
+	ABaseHUD* HUD = Cast<ABaseHUD>(GetHUD());
+	if (HUD != nullptr)
 	{
-	if (!HasAuthority())
-	{
-		TabMenu = CreateTabMenu();
-		if (TabMenu != nullptr)
-		{
-			TabMenu->AddToViewport();
-		}
+		HUD->ToggleTab(true);
+		HUD->ToggleHUD(false);
 	}
 }
 
 void APawnController::DisableTabMenu()
 {
-	if (TabMenu != nullptr)
+	ABaseHUD* HUD = Cast<ABaseHUD>(GetHUD());
+	if (HUD != nullptr)
 	{
-		TabMenu->RemoveFromParent();
-		TabMenu = nullptr;
+		HUD->ToggleTab(false);
+		HUD->ToggleHUD(true);
 	}
 }
 
@@ -131,11 +131,7 @@ void APawnController::RoundEnded()
 		Game_Interface->RemoveFromParent();
 		DisableInput(this);
 	}
-	if (TabMenu == nullptr)
-	{
-		EnableTabMenu();
-	}
-	UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(this, TabMenu);
+	//UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(this, TabMenu);
 }
 
 
