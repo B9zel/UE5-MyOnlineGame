@@ -9,6 +9,19 @@
 
 
 
+ABaseHUD::~ABaseHUD()
+{
+	HUDWidget = nullptr;
+	TabWidget = nullptr;
+}
+
+void ABaseHUD::BeginPlay()
+{
+	Super::BeginPlay();
+
+	//Cast<ABaseGameState>(UGameplayStatics::GetGameState(this))->RoundStarted.AddDynamic(this, &ABaseHUD::CreateHUD);
+}
+
 void ABaseHUD::ToggleHUD(bool isShow)
 {
 	if (Cast<ABaseGameState>(UGameplayStatics::GetGameState(this))->RoundInProgress)
@@ -45,4 +58,14 @@ void ABaseHUD::ToggleTab(bool isShow)
 			TabWidget->RemoveFromParent();
 		}
 	}
+}
+
+void ABaseHUD::CreateHUD()
+{
+	ToggleHUD(true);
+}
+
+UGame_Interface* ABaseHUD::GetHUDWidget()
+{
+	return HUDWidget;
 }

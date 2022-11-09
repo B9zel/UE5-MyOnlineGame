@@ -47,6 +47,21 @@ FText UStatisticsMenu::UpdateTimerTick()
 	{
 		Game_State = GetBaseGameState();
 	}
-	return FText::AsTimespan(Game_State->RoundTime);
+	if (Game_State->RoundTime.GetMinutes() < 10)
+	{
+		if (Game_State->RoundTime.GetSeconds() < 10)
+		{
+			return FText::FromString("0" + FString::FromInt(Game_State->RoundTime.GetMinutes()) + ":" + "0" + FString::FromInt(Game_State->RoundTime.GetSeconds()));
+		}
+		else
+		{
+			return FText::FromString("0" + FString::FromInt(Game_State->RoundTime.GetMinutes()) + ":" + FString::FromInt(Game_State->RoundTime.GetSeconds()));
+		}
+	}
+	else
+	{
+		return FText::AsTimespan(Game_State->RoundTime);
+	}
+	
 }
 												

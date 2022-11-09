@@ -32,6 +32,7 @@ void APawnController::BeginPlay()
 	if (Game_State != nullptr)
 	{
 		Game_State->RoundEnded.AddDynamic(this, &APawnController::RoundEnded);
+		Game_State->RoundStarted.AddDynamic(this, &APawnController::RoundStarted);
 	}
 	
 }
@@ -63,12 +64,6 @@ void APawnController::TimerRespawn(float Time)
 	GetWorldTimerManager().SetTimer(Handle, this, &APawnController::Respawn, Time);
 }
 
-
-
-UStatisticsMenu* APawnController::CreateTabMenu()
-{
-	return Cast<UStatisticsMenu>(CreateWidget<UUserWidget>(this,UserWidget));
-}
 
 void APawnController::EnableTabMenu()
 {
@@ -126,33 +121,41 @@ void APawnController::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutL
 
 void APawnController::RoundEnded()
 {
-	if (Game_Interface != nullptr)
+	ABaseHUD* HUD = Cast<ABaseHUD>(GetHUD());
+	if (HUD != nullptr)
 	{
-		Game_Interface->RemoveFromParent();
+		HUD->ToggleHUD(false);
 		DisableInput(this);
 	}
-	//UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(this, TabMenu);
+}
+
+void APawnController::RoundStarted()
+{
+	ABaseHUD* HUD = Cast<ABaseHUD>(GetHUD());
+	if (HUD != nullptr)
+	{
+		HUD->ToggleHUD(true);
+	}
 }
 
 
 void APawnController::Set_RefForWidget_OnClient()
 {
-	if (!HasAuthority() && isActivateWidget && Game_Interface != nullptr)
+	ABaseHUD* HUD = Cast<ABaseHUD>(GetHUD());
+	if (!HasAuthority() && isActivateWidget)
 	{
-		if (!Game_Interface->IsInViewport())
+		if (HUD != nullptr)
 		{
-			Game_Interface->AddToViewport();
+			HUD->ToggleHUD(true);
 		}
-		else
-		{
-			Game_Interface->SetVisibility(ESlateVisibility::Visible);
-		}
-		Cast<ABaseTank>(GetPawn())->Main_Widget = Game_Interface;
+		Cast<ABaseTank>(GetPawn())->Main_Widget = HUD->GetHUDWidget();
 	}
-	else if (!HasAuthority() && Game_Interface != nullptr)
+	else if (!HasAuthority())
 	{
-		Game_Interface->SetVisibility(ESlateVisibility::Collapsed);
-		//Game_Interface->Widget_HP->Ref_MainTank = nullptr;
+		if (HUD != nullptr)
+		{
+			HUD->ToggleHUD(false);
+		}
 	}
 }
 

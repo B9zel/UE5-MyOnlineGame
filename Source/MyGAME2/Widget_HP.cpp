@@ -41,11 +41,11 @@ void UWidget_HP::UpdateData()
 		Ref_MainTank = InitailizeRefWidget();
 	}
 
-	Max_HP->SetText(FText::FromString(FString::FromInt(Ref_MainTank->component->Max_HP)));
-	CourentHP->SetText(FText::FromString(FString::FromInt(Ref_MainTank->component->Courrent_HP)));
-	
+	//Max_HP->SetText(FText::FromString(FString::FromInt(Ref_MainTank->component->Max_HP)));
+	//CourentHP->SetText(FText::FromString(FString::FromInt(Ref_MainTank->component->Courrent_HP)));
+	HP_TextBlock->SetText(FText::FromString(FString::FromInt(Ref_MainTank->component->Courrent_HP) + " | " + FString::FromInt(Ref_MainTank->component->Max_HP)));
+
 	percent = Ref_MainTank->component->Courrent_HP / Ref_MainTank->component->Max_HP;//(Ref_MainTank->component->Courrent_HP / (Ref_MainTank->component->Max_HP / 100.0f));
-	//percent /= 100.0f;
 
 	progress_bar->SetPercent(percent);
 

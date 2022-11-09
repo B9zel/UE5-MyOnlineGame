@@ -24,13 +24,12 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	UFUNCTION()
 	void RoundEnded();
+	UFUNCTION()
+	void RoundStarted();
 
 	void Respawn();
 
 	void TimerRespawn(float Time);
-
-	UFUNCTION()
-		UStatisticsMenu* CreateTabMenu();
 
 	void EnableTabMenu();
 
@@ -52,6 +51,4 @@ public:
 	class UGame_Interface* Game_Interface;
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
 //	class UStatisticsMenu* TabMenu;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TSubclassOf<UUserWidget> UserWidget;
 };

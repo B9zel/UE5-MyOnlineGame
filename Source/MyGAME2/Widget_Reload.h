@@ -29,12 +29,6 @@ public:
 	void Timer();
 
 	UPROPERTY(meta = (BindWidget))
-		class UCanvasPanel* canvas_panel;
-
-	UPROPERTY(meta = (BindWidget))
-	class UBorder* border;
-
-	UPROPERTY(meta = (BindWidget))
 		class UTextBlock* Text;
 
 	UPROPERTY(meta = (BindWidget))

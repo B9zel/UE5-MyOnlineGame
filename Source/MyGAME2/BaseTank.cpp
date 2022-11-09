@@ -198,7 +198,7 @@ void ABaseTank::Shoot_Multicast_Implementation()
 	}
 	//Start Widget Timer
 	if(Main_Widget != nullptr)
-		Main_Widget->Widget_Reload->Construct_Widget();
+		Main_Widget->ReloadStats->Construct_Widget();
 	//Spawn Sound
 	UGameplayStatics::SpawnSoundAttached(struction.Shoot_sound, bscene);
 	
@@ -214,8 +214,8 @@ void ABaseTank::Widget_ReloadShoot_Implementation()
 {
 	if (Main_Widget != nullptr)
 	{
-		if (Main_Widget->Widget_Reload != nullptr)
-			Main_Widget->Widget_Reload->FinishTimer();
+		if (Main_Widget->ReloadStats != nullptr)
+			Main_Widget->ReloadStats->FinishTimer();
 	}
 }
 

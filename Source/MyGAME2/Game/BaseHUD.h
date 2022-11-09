@@ -15,15 +15,22 @@ class MYGAME2_API ABaseHUD : public AHUD
 	
 public:
 
+	~ABaseHUD();
+
+	virtual void BeginPlay() override;
 	void ToggleHUD(bool isShow);
 
 	void ToggleTab(bool isShow);
-
+	UFUNCTION()
+	void CreateHUD();
+	UFUNCTION()
+	UGame_Interface* GetHUDWidget();
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TSubclassOf<class UStatisticsMenu> TabWidgetClass;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TSubclassOf<class UGame_Interface> HUDWidgetClass;
+private:
 
 	class UStatisticsMenu* TabWidget;
 	class UGame_Interface* HUDWidget;

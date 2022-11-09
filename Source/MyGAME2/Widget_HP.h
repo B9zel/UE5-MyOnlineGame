@@ -29,12 +29,6 @@ public:
 	void UpdateData();
 
 	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
-		class UCanvasPanel* canves_panel;
-	
-	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
-	class UBorder* border;
-
-	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
 	class UVerticalBox* verticalbox;
 
 	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
@@ -43,21 +37,16 @@ public:
 	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
 	class UProgressBar* progress_bar;
 
-	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
-	class UOverlay* overlap;
-
-	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
-	class UHorizontalBox* Horizonta_fromText;
-
-	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	/*UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	class UTextBlock* Max_HP;
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	class UTextBlock* CourentHP;
 
 	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
-	class UTextBlock* Slesh;
-
+	class UTextBlock* Slesh;*/
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	class UTextBlock* HP_TextBlock;
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	//	TSubclassOf<class ABaseTank> object;
 

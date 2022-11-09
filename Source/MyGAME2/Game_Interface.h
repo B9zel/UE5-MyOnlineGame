@@ -26,8 +26,8 @@ public:
 	class UCanvasPanel* canvasPanel;
 
 	UPROPERTY(meta = (BindWidget))
-	class UWidget_HP* Widget_HP;
+	class UWidget_HP* HeadsStats;
 
 	UPROPERTY(meta = (BindWidget))
-	class UWidget_Reload* Widget_Reload;
+	class UWidget_Reload* ReloadStats;
 };

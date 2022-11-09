@@ -58,7 +58,7 @@ void UHeads_Stats::OnRep_UpdateWidget()
 	{
 		if (owner->Main_Widget != nullptr)
 		{
-			owner->Main_Widget->Widget_HP->UpdateData();
+			owner->Main_Widget->HeadsStats->UpdateData();
 		}
 	}
 }
