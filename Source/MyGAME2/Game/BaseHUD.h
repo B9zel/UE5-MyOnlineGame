@@ -18,20 +18,34 @@ public:
 	~ABaseHUD();
 
 	virtual void BeginPlay() override;
+
 	void ToggleHUD(bool isShow);
 
 	void ToggleTab(bool isShow);
+
+	void ToggleSpectatorHUD(bool isShow);
 	UFUNCTION()
-	void CreateHUD();
+	void OnRoundStaeted();
+
 	UFUNCTION()
 	UGame_Interface* GetHUDWidget();
+	UFUNCTION()
+	UStatisticsMenu* GetTabWidget();
+	UFUNCTION()
+	void OnPlayerAlive();
+	UFUNCTION()
+	void OnPlayerDead();
+
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TSubclassOf<class UStatisticsMenu> TabWidgetClass;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TSubclassOf<class UGame_Interface> HUDWidgetClass;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TSubclassOf<class UW_Spectator> SpectatorWidgetClass;
 private:
 
 	class UStatisticsMenu* TabWidget;
 	class UGame_Interface* HUDWidget;
+	class UW_Spectator* SpectatorWidget;
 };

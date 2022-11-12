@@ -4,12 +4,14 @@
 #include "PlayerStat.h"
 #include <Components/TextBlock.h>
 #include <MyGAME2/Game/PlayerStatistic.h>
+#include <Styling/SlateColor.h>
 
 void UPlayerStat::NativeConstruct()
 {
 	Super::NativeConstruct();
 
 	NickName->TextDelegate.BindDynamic(this, &UPlayerStat::BindNickName);
+	NickName->ColorAndOpacityDelegate.BindDynamic(this, &UPlayerStat::BindColorName);
 	NickName->SynchronizeProperties();
 
 	Deaths->TextDelegate.BindDynamic(this, &UPlayerStat::BindDeaths);
@@ -22,6 +24,16 @@ void UPlayerStat::NativeConstruct()
 FText UPlayerStat::BindNickName()
 {
 	return FText::FromString(PlayerState->GetPlayerName());
+}
+
+FSlateColor UPlayerStat::BindColorName()
+{
+	FLinearColor Color(1,1,1);
+	if (!PlayerState->isAlive)
+	{
+		Color = FLinearColor(0.1f, 0.0f, 0.0f, 0.65f);
+	}
+	return FSlateColor(Color);
 }
 
 FText UPlayerStat::BindDeaths()

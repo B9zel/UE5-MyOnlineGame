@@ -41,7 +41,7 @@ public:
 public:
 
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
-		  void Pawn_Dead(ABaseTank* DeadPawn, APlayerController* DeathInstigator);
+		  void Pawn_Dead(APlayerController* DeadPlayer, APlayerController* DeathInstigator);
 
 	UFUNCTION()
 		virtual AGame_Spectator* Spawn_Spectator(class APlayerController* Player, class APlayerController* DeadInstigator);

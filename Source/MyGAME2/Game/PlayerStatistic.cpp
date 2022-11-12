@@ -4,6 +4,10 @@
 #include "PlayerStatistic.h"
 #include <MyGAME2/BaseTank.h>
 #include <Net/UnrealNetwork.h>
+#include <MyGAME2/Widgets/PlayerStat.h>
+#include <MyGAME2/Game/BaseHUD.h>
+#include <MyGAME2/Widgets/StatisticsMenu.h>
+
 
 APlayerStatistic::APlayerStatistic()
 {
@@ -12,6 +16,20 @@ APlayerStatistic::APlayerStatistic()
 	Kills = 0;
 
 	Deaths = 0;
+
+	isAlive = false;
+}
+
+void APlayerStatistic::SwitchWidgetNames()
+{
+	if (isAlive)
+	{
+		PlayerAlive.Broadcast();
+	}
+	else
+	{
+		PlayerDead.Broadcast();
+	}
 }
 
 void APlayerStatistic::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -21,6 +39,8 @@ void APlayerStatistic::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 	DOREPLIFETIME(APlayerStatistic, Kills);
 
 	DOREPLIFETIME(APlayerStatistic, Deaths);
+
+	DOREPLIFETIME(APlayerStatistic, isAlive);
 }
 
 void APlayerStatistic::AddKill()

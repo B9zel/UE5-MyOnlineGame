@@ -99,7 +99,7 @@ protected:
 
 	bool isSuper_Power;
 
-	float Time_SpawnSpectator;
+	float TimeDestroy;
 
 	float TimeReload_SuperPower;
 
@@ -151,6 +151,8 @@ public:
 
 	UFUNCTION(NetMulticast, Unreliable)
 		virtual void VisualDeadMulticast();
+
+	void Destroy();
 
 	ABase_GameMode* Get_GameMode(class AActor* Object);
 

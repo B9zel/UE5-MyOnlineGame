@@ -25,7 +25,7 @@ AMedium_Tank::AMedium_Tank()
 
 	TimeReload = 2.0f;
 
-	Time_SpawnSpectator = 4.0f;
+	TimeDestroy = 4.0f;
 
 	TimeUse_SuperPower = 5.0f;
 

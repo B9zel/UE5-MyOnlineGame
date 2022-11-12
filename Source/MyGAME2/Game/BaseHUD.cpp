@@ -6,7 +6,9 @@
 #include <MyGAME2/Game_Interface.h>
 #include <MyGAME2/Game/BaseGameState.h>
 #include <Kismet/GameplayStatics.h>
-
+#include <MyGAME2/Game/PlayerStatistic.h>
+#include <MyGAME2/Widgets/W_Spectator.h>
+//#include <GameFramework/PlayerController.h>
 
 
 ABaseHUD::~ABaseHUD()
@@ -19,14 +21,15 @@ void ABaseHUD::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//Cast<ABaseGameState>(UGameplayStatics::GetGameState(this))->RoundStarted.AddDynamic(this, &ABaseHUD::CreateHUD);
+	Cast<ABaseGameState>(UGameplayStatics::GetGameState(this))->RoundStarted.AddDynamic(this, &ABaseHUD::OnRoundStaeted);
 }
 
 void ABaseHUD::ToggleHUD(bool isShow)
 {
-	if (Cast<ABaseGameState>(UGameplayStatics::GetGameState(this))->RoundInProgress)
+	
+	if (isShow)
 	{
-		if (isShow)
+		if (Cast<APlayerStatistic>(GetOwningPlayerController()->GetPlayerState<APlayerStatistic>())->isAlive)
 		{
 			if (HUDWidget == nullptr)
 			{
@@ -34,11 +37,16 @@ void ABaseHUD::ToggleHUD(bool isShow)
 			}
 			HUDWidget->AddToViewport();
 		}
-		else
+	}
+	else
+	{
+		if (HUDWidget != nullptr)
 		{
 			HUDWidget->RemoveFromParent();
+			HUDWidget = nullptr;
 		}
 	}
+	
 }
 
 void ABaseHUD::ToggleTab(bool isShow)
@@ -55,17 +63,63 @@ void ABaseHUD::ToggleTab(bool isShow)
 		}
 		else
 		{
-			TabWidget->RemoveFromParent();
+			if (TabWidget != nullptr)
+			{
+				TabWidget->RemoveFromParent();
+				TabWidget = nullptr;
+			}
 		}
 	}
 }
 
-void ABaseHUD::CreateHUD()
+void ABaseHUD::ToggleSpectatorHUD(bool isShow)
 {
-	ToggleHUD(true);
+	if (isShow)
+	{
+		if (SpectatorWidget == nullptr)
+		{
+			SpectatorWidget = CreateWidget<UW_Spectator>(GetOwningPlayerController(), SpectatorWidgetClass);
+		}
+		SpectatorWidget->AddToViewport();
+	}
+	else
+	{
+		if (SpectatorWidget != nullptr)
+		{
+			SpectatorWidget->RemoveFromParent();
+			SpectatorWidget = nullptr;
+		}
+	}
+}
+
+void ABaseHUD::OnRoundStaeted()
+{
+	APlayerStatistic* PlayerState = GetOwningPlayerController()->GetPlayerState<APlayerStatistic>();
+	if (PlayerState != nullptr)
+	{
+		PlayerState->PlayerAlive.AddDynamic(this, &ABaseHUD::OnPlayerAlive);
+		PlayerState->PlayerDead.AddDynamic(this, &ABaseHUD::OnPlayerDead);
+	}
 }
 
 UGame_Interface* ABaseHUD::GetHUDWidget()
 {
 	return HUDWidget;
+}
+
+UStatisticsMenu* ABaseHUD::GetTabWidget()
+{
+	return TabWidget;
+}
+
+void ABaseHUD::OnPlayerAlive()
+{
+	ToggleHUD(true);
+	ToggleSpectatorHUD(false);
+}
+
+void ABaseHUD::OnPlayerDead()
+{
+	ToggleHUD(false);
+	ToggleSpectatorHUD(true);
 }

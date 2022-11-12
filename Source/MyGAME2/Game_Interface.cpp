@@ -11,6 +11,6 @@
 void UGame_Interface::Take_Ref(class ABaseTank* pawn)
 {
 	//pawn->Main_Widget = this;
-	Cast<ABaseTank>(GetOwningPlayer()->GetPawn())->Main_Widget = this;
+	//Cast<ABaseTank>(GetOwningPlayer()->GetPawn())->Main_Widget = this;
 	//Cast<APawnController>(GetOwningPlayer())->Game_Interface = this;
 }

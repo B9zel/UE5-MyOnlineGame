@@ -82,14 +82,12 @@ void ABaseTank::Take_Damage(AActor* DamagedActor, float damage, const UDamageTyp
 {
 	component->Courrent_HP -= FMath::Clamp(damage, 0.0f, component->Max_HP);
 
-	if (component->Courrent_HP <= 0.0f)
-	{
-		component->EnamyController = InstigatedBy;
-		GameMode->Pawn_Dead(this, Cast<APlayerController>(InstigatedBy));
+	if (component->Courrent_HP <= 0.0f && !component->IsDead)
+	{	
+		GameMode->Pawn_Dead(Cast<APlayerController>(GetController()), Cast<APlayerController>(InstigatedBy));
 
 		FTimerHandle handle;
-		GetWorld()->GetTimerManager().SetTimer(handle, component, &UHeads_Stats::CallSpawnSpectator, Time_SpawnSpectator, false);
-
+		GetWorldTimerManager().SetTimer(handle, this, &ABaseTank::Destroy, TimeDestroy, false);
 		component->IsDead = true;
 	}
 }
@@ -232,6 +230,11 @@ void ABaseTank::VisualDeadMulticast_Implementation()
 		Mesh->SetCollisionEnabled(ECollisionEnabled::Type::NoCollision);
 		Towermesh->SetCollisionEnabled(ECollisionEnabled::Type::PhysicsOnly);
 	}
+}
+
+void ABaseTank::Destroy()
+{
+	AActor::Destroy();
 }
 
 inline ABase_GameMode* ABaseTank::Get_GameMode(class AActor* Object)

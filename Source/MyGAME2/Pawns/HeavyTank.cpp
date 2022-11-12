@@ -23,7 +23,7 @@ AHeavyTank::AHeavyTank()
 
 	TimeReload = 3.0;
 
-	Time_SpawnSpectator = 4.0f;
+	TimeDestroy = 4.0f;
 
 	TimeUse_SuperPower = 0.0f;
 

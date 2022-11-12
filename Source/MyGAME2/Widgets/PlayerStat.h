@@ -6,9 +6,8 @@
 #include "Blueprint/UserWidget.h"
 #include "PlayerStat.generated.h"
 
-/**
- * 
- */
+
+
 UCLASS()
 class MYGAME2_API UPlayerStat : public UUserWidget
 {
@@ -28,9 +27,12 @@ public:
 
 public:
 
+	UFUNCTION()
 	virtual void NativeConstruct() override;
 	UFUNCTION()
 	FText BindNickName();
+	UFUNCTION()
+	FSlateColor BindColorName();
 	UFUNCTION()
 	FText BindDeaths();
 	UFUNCTION()

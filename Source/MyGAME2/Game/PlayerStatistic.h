@@ -7,6 +7,8 @@
 
 
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDispatcher);
+
 UCLASS()
 class MYGAME2_API APlayerStatistic : public APlayerState
 {
@@ -20,12 +22,20 @@ public:
 		int Kills;
 	UPROPERTY(Replicated,BlueprintReadWrite)
 		int Deaths;
-	
+	UPROPERTY(ReplicatedUsing = SwitchWidgetNames, BlueprintReadWrite)
+		bool isAlive;
+
+	FDispatcher PlayerAlive;
+
+	FDispatcher PlayerDead;
 public:
 	UFUNCTION()
 	void AddKill();
 	UFUNCTION()
 	void AddDeath();
+
+	UFUNCTION()
+	void SwitchWidgetNames();
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 };

@@ -7,6 +7,7 @@
 #include "Game_Interface.h"
 #include <MyGAME2/Game/Base_GameMode.h>
 #include "PawnController.h"
+#include <MyGAME2/Game/BaseHUD.h>
 
 
 // Sets default values for this component's properties
@@ -54,13 +55,16 @@ void UHeads_Stats::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLife
 
 void UHeads_Stats::OnRep_UpdateWidget()
 {
-	if (owner != nullptr)
+	/*ABaseHUD* HUD = Cast<APawnController>(GetOwner()->GetInstigatorController())->GetHUD<ABaseHUD>();
+	if (owner->Main_Widget == nullptr && HUD->GetHUDWidget() != nullptr)
 	{
-		if (owner->Main_Widget != nullptr)
-		{
-			owner->Main_Widget->HeadsStats->UpdateData();
-		}
+		owner->Main_Widget = HUD->GetHUDWidget();
 	}
+	if (owner->Main_Widget != nullptr)
+	{
+		owner->Main_Widget->HeadsStats->UpdateData();
+	}*/
+	
 }
 
 
@@ -68,12 +72,8 @@ void UHeads_Stats::Dead_OnOwnerClient()
 {
 	if (owner != nullptr && IsDead)
 	{
-		/*if (owner->Main_Widget != nullptr)
-		{
-			owner->Main_Widget->SetVisibility(ESlateVisibility::Collapsed);
-		}*/
 		owner->DisableInput(Cast<APlayerController>(owner->GetController()));
-		Dead_Server();
+		Dead_Server_Implementation();
 	}
 }
 
@@ -81,7 +81,6 @@ void UHeads_Stats::Dead_Server_Implementation()
 {
 	if (owner != nullptr)
 	{
-		Cast<APawnController>(owner->GetController())->isActivateWidget = false;
 		owner->VisualDeadMulticast();
 	}
 }
@@ -89,12 +88,4 @@ void UHeads_Stats::Dead_Server_Implementation()
 void UHeads_Stats::InitailizrProperty_Implementation()
 {
 	Courrent_HP = Max_HP;
-}
-
-void UHeads_Stats::CallSpawnSpectator()
-{
-	if (owner != nullptr)
-	{
-		owner->GameMode->Spawn_Spectator(Cast<APlayerController>(owner->GetController()), Cast<APlayerController>(EnamyController));
-	}
 }

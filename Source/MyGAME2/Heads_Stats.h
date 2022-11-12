@@ -27,8 +27,6 @@ public:
 	
 	float Impulse;
 
-	class AController* EnamyController;
-
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -51,6 +49,4 @@ public:
 	UFUNCTION(Server, Unreliable)
 	void InitailizrProperty();
 
-	UFUNCTION()
-	void CallSpawnSpectator();
 };

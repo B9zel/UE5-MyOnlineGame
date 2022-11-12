@@ -19,9 +19,12 @@ public:
 	//UFUNCTION(BlueprintCallable)
 	virtual bool Initialize() override;
 
+	virtual void NativeTick(const FGeometry& MyGeometry, float DelatTime) override;
+
 	UFUNCTION()
 	ABaseTank* InitailizeRefWidget();
 
+public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		class ABaseTank* Ref_MainTank;
 

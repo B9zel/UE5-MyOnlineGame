@@ -35,20 +35,17 @@ public:
 
 	void DisableTabMenu();
 
-	void Set_GameWidget(class UGame_Interface* Widget);
-	
-	UFUNCTION()
-	void Set_RefForWidget_OnClient();
+
+	/*UFUNCTION()
+	void Set_RefForWidget_OnClient();*/
 
 public:
 
-	UPROPERTY(ReplicatedUsing = Set_RefForWidget_OnClient)
-	bool isActivateWidget;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<class APawn> Spawn_Pawn;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	class UGame_Interface* Game_Interface;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	//class UGame_Interface* Game_Interface;
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
 //	class UStatisticsMenu* TabMenu;
 };

@@ -19,7 +19,7 @@ ALight_Tank::ALight_Tank()
 
 	TimeReload = 1.5f;
 
-	Time_SpawnSpectator = 4.0f;
+	TimeDestroy = 4.0f;
 
 	TimeUse_SuperPower = 5.0f;
 

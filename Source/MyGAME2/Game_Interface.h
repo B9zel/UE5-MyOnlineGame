@@ -30,4 +30,6 @@ public:
 
 	UPROPERTY(meta = (BindWidget))
 	class UWidget_Reload* ReloadStats;
+	UPROPERTY(meta = (BindWidget))
+	class UW_RoundTime* Timer;
 };

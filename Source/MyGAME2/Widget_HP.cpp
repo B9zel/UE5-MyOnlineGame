@@ -1,5 +1,6 @@
 
 #include "Widget_HP.h"
+#include <Blueprint/UserWidget.h>
 #include <Components/CanvasPanel.h>
 #include <Components/Border.h>
 #include <Components/VerticalBox.h>
@@ -22,30 +23,36 @@ ABaseTank* UWidget_HP::InitailizeRefWidget()
 bool UWidget_HP::Initialize()
 {
 	Super::Initialize();
-
+	
 	Ref_MainTank = InitailizeRefWidget();
 	
-	if (Ref_MainTank != nullptr)
-	{
-		UpdateData();
-		return true;
-	}
+	//if (Ref_MainTank != nullptr)
+	//{
+	//	UpdateData();
+	//	return true;
+	//}
 	return false;
 }
+
+void UWidget_HP::NativeTick(const FGeometry& MyGeometry, float DelatTime)
+{
+	Super::NativeTick(MyGeometry, DelatTime);
+
+	UpdateData();
+}
+
+
 
 
 void UWidget_HP::UpdateData()
 {
-	if (Ref_MainTank != GetOwningPlayerPawn())
+	if (Ref_MainTank == nullptr)
 	{
 		Ref_MainTank = InitailizeRefWidget();
 	}
-
-	//Max_HP->SetText(FText::FromString(FString::FromInt(Ref_MainTank->component->Max_HP)));
-	//CourentHP->SetText(FText::FromString(FString::FromInt(Ref_MainTank->component->Courrent_HP)));
 	HP_TextBlock->SetText(FText::FromString(FString::FromInt(Ref_MainTank->component->Courrent_HP) + " | " + FString::FromInt(Ref_MainTank->component->Max_HP)));
 
-	percent = Ref_MainTank->component->Courrent_HP / Ref_MainTank->component->Max_HP;//(Ref_MainTank->component->Courrent_HP / (Ref_MainTank->component->Max_HP / 100.0f));
+	percent = Ref_MainTank->component->Courrent_HP / Ref_MainTank->component->Max_HP;
 
 	progress_bar->SetPercent(percent);
 

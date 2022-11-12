@@ -21,11 +21,14 @@ public:
 
 	UPROPERTY(Replicated,EditAnywhere, BlueprintReadWrite)
 	class ABaseTank* FollowPawn;
-	
-	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float FollowSpeed;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	void SpeedUpSpectator();
 
 public:	
 	// Called every frame

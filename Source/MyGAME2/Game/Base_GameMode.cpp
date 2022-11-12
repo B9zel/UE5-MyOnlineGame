@@ -5,12 +5,13 @@
 #include <Engine/World.h>
 #include <MyGAME2/Pawns/HeavyTank.h>
 #include <MyGAME2/Game_Spectator.h>
-#include <GameFramework/SpringArmComponent.h>
-//#include <GameFramework/PlayerState.h>
+#include <MyGAME2/Game/BaseHUD.h>
 #include "BaseGameState.h"
 #include <Kismet/GameplayStatics.h>
 #include "PlayerStatistic.h"
 #include <MyGAME2/Game_Interface.h>
+#include <MyGAME2/Game/PlayerStatistic.h>
+
 
 ABase_GameMode::ABase_GameMode()
 {
@@ -32,12 +33,15 @@ void ABase_GameMode::BeginPlay()
 	GetWorldTimerManager().SetTimer(Handle, this, &ABase_GameMode::StartRound, 4.0f, false);
 }
 
-void ABase_GameMode::Pawn_Dead_Implementation(ABaseTank* DeadPawn, APlayerController* DeadInstigator)
+void ABase_GameMode::Pawn_Dead_Implementation(APlayerController* DeadPlayer, APlayerController* DeadInstigator)
 {
-	UpdateDeathPoints(Cast<APlayerController>(DeadPawn->GetController()), DeadInstigator);
+	UpdateDeathPoints(DeadPlayer, DeadInstigator);
+	Spawn_Spectator(DeadPlayer, DeadInstigator);
+	Cast<APlayerStatistic>(DeadPlayer->PlayerState)->isAlive = false;
+
 	if (AutoRespawn)
 	{
-		Cast<APawnController>(DeadPawn->Controller)->TimerRespawn(5.0f);
+		Cast<APawnController>(DeadPlayer)->TimerRespawn(5.0f);
 	}
 
 }
@@ -46,15 +50,12 @@ AGame_Spectator* ABase_GameMode::Spawn_Spectator(class APlayerController* Player
 {
 	FActorSpawnParameters SpawnParameters;
 	SpawnParameters.Owner = Player;
-	
-	ABaseTank* Pawn_of_DeadInstigator = Cast<ABaseTank>(DeadInstigator->GetPawn());
 
 	//Spawn Spectator
-	AGame_Spectator* SpawnActor = GetWorld()->SpawnActor<AGame_Spectator>(Spectator_Class, FTransform(Pawn_of_DeadInstigator->spring_arm->GetComponentLocation()), SpawnParameters); // - FVector(0.0f, 0.0f, 500.0f))
+	AGame_Spectator* SpawnActor = GetWorld()->SpawnActor<AGame_Spectator>(Spectator_Class, Player->GetPawn()->GetActorTransform(), SpawnParameters); // - FVector(0.0f, 0.0f, 500.0f))
+	
+	SpawnActor->FollowPawn = Cast<ABaseTank>(DeadInstigator->GetPawn());
 
-	SpawnActor->FollowPawn = Pawn_of_DeadInstigator;
-
-	Player->GetPawn()->Destroy();
 	Player->Possess(SpawnActor);
 	
 	return SpawnActor;
@@ -102,9 +103,9 @@ void ABase_GameMode::StopRoundOnClient_Implementation(APlayerController* PlayerC
 	{
 		DisableInput(PlayerController);
 		APawnController* Controller = Cast<APawnController>(PlayerController);
-		if (Controller->Game_Interface != nullptr)
+		if (Controller != nullptr)
 		{
-			Controller->Game_Interface->RemoveFromParent();
+			Cast<ABaseHUD>(Controller->GetHUD())->ToggleHUD(false);
 		}
 	}
 }

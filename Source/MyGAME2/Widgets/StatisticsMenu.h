@@ -16,7 +16,7 @@ class MYGAME2_API UStatisticsMenu : public UUserWidget
 public:
 
 	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
-	class UTextBlock* Timer;
+	class UW_RoundTime* RoundTime;
 	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
 	class UVerticalBox* VB_PlayerState;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -25,13 +25,11 @@ public:
 	class ABaseGameState* Game_State;
 
 public:
-	
-	
+	UFUNCTION()
 	virtual void NativeConstruct() override;
+
 	ABaseGameState* GetBaseGameState();
 
-	void UpdatePlayerList();
-
 	UFUNCTION()
-	FText UpdateTimerTick();
+	void UpdatePlayerList();
 };
