@@ -25,7 +25,7 @@ public:
 
 	void ToggleSpectatorHUD(bool isShow);
 	UFUNCTION()
-	void OnRoundStaeted();
+	void OnRoundStarted();
 
 	UFUNCTION()
 	UGame_Interface* GetHUDWidget();
@@ -34,7 +34,7 @@ public:
 	UFUNCTION()
 	void OnPlayerAlive();
 	UFUNCTION()
-	void OnPlayerDead();
+	void OnPlayerDead(ABaseTank* DeathInstigator);
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

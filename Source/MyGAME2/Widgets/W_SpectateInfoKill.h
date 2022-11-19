@@ -4,24 +4,23 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "W_Spectator.generated.h"
+#include "W_SpectateInfoKill.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class MYGAME2_API UW_Spectator : public UUserWidget
+class MYGAME2_API UW_SpectateInfoKill : public UUserWidget
 {
 	GENERATED_BODY()
 public:
 
 	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
-	class UW_RoundTime* TimerOfRound;
-	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
-	class UW_SpectateInfoKill* InfoKill;
+	class UTextBlock* NameKiller;
 
 public:
 
-	void SetDeathInfo(class ABaseTank* Instigator);
+	UFUNCTION()
+	void SetKilledInfo(APlayerStatistic* PlayerState);
 
 };

@@ -45,6 +45,8 @@ ABaseTank::ABaseTank()
 	projectile = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Projectile Movement"));
 	
 	OnTakeAnyDamage.AddDynamic(this, &ABaseTank::Take_Damage);
+
+	
 }
 
 // Called when the game starts or when spawned

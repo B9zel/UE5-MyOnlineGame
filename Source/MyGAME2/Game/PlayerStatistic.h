@@ -8,6 +8,7 @@
 
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDispatcher);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDispatcherOneParams, ABaseTank*, Instigator);
 
 UCLASS()
 class MYGAME2_API APlayerStatistic : public APlayerState
@@ -24,18 +25,24 @@ public:
 		int Deaths;
 	UPROPERTY(ReplicatedUsing = SwitchWidgetNames, BlueprintReadWrite)
 		bool isAlive;
+	
 
 	FDispatcher PlayerAlive;
-
-	FDispatcher PlayerDead;
+	FDispatcherOneParams PlayerDead;
 public:
+
+	
 	UFUNCTION()
 	void AddKill();
 	UFUNCTION()
 	void AddDeath();
+	UFUNCTION(NetMulticast,Unreliable)
+	void OnwerPawnDead(ABaseTank* Deadinstigator);
 
 	UFUNCTION()
 	void SwitchWidgetNames();
+protected:
+	virtual void BeginPlay() override;
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 };

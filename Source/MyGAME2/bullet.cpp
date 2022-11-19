@@ -27,7 +27,7 @@ Abullet::Abullet()
 	Box_collision->OnComponentBeginOverlap.AddDynamic(this, &Abullet::BaginOverlap);
 
 	Box_collision->OnComponentHit.AddDynamic(this, &Abullet::OnHit);
-
+	
 	TimeDestroy = 3.0f;
 }
 
@@ -68,10 +68,13 @@ void Abullet::BaginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Oth
 		{
 			UGameplayStatics::ApplyDamage(OtherActor, Damage, GetOwner()->GetInstigatorController(), this, typeDamage);
 		}
+		else
+		{
+			UGameplayStatics::SpawnEmitterAtLocation(this->GetWorld(), iscra, FTransform(GetActorRotation(), GetActorLocation(), FVector(0.5f, 0.5f, 0.5f)));
+		}
 		Destroy();
 
-		UGameplayStatics::SpawnEmitterAtLocation(this->GetWorld(), iscra, FTransform(GetActorRotation(), GetActorLocation(), FVector(0.5f, 0.5f, 0.5f)));	
-	}	
+	}
 }
 
 void Abullet::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)

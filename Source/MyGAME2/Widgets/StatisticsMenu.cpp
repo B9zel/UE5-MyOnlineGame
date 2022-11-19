@@ -25,13 +25,18 @@ ABaseGameState* UStatisticsMenu::GetBaseGameState()
 	return Cast<ABaseGameState>(UGameplayStatics::GetGameState(this));
 }
 
+UVerticalBox* UStatisticsMenu::GetPlayerList(APlayerState* PlayerStat)
+{
+	return VB_Player;
+}
+
 void UStatisticsMenu::UpdatePlayerList()
 {
-	VB_PlayerState->ClearChildren();
+	VB_Player->ClearChildren();
 	for (auto& el : Game_State->PlayerArray)
 	{
 		UPlayerStat* widget = CreateWidget<UPlayerStat>(GetOwningPlayer(), UserWidget);
 		widget->PlayerState = Cast<APlayerStatistic>(el);
-		VB_PlayerState->AddChildToVerticalBox(widget);
+		GetPlayerList(el)->AddChildToVerticalBox(widget);
 	}
 }

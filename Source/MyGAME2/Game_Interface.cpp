@@ -8,9 +8,11 @@
 #include "BaseTank.h"
 #include "PawnController.h"
 
-void UGame_Interface::Take_Ref(class ABaseTank* pawn)
+
+
+void UGame_Interface::NativeConstruct()
 {
-	//pawn->Main_Widget = this;
-	//Cast<ABaseTank>(GetOwningPlayer()->GetPawn())->Main_Widget = this;
-	//Cast<APawnController>(GetOwningPlayer())->Game_Interface = this;
+	Super::NativeConstruct();
+
+	Cast<ABaseTank>(GetOwningPlayerPawn())->Main_Widget = this;
 }

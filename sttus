@@ -1,0 +1,35 @@
+[33mcommit adb4c206d5d427d2282008f946bcb5f4e627772e[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m
+Author: B9zel <vadimshamanskiy2811@mail.ru>
+Date:   Sun Nov 13 00:56:59 2022 +0300
+
+    Add widget for spectator and minor changes
+
+[33mcommit 63ea9af6a401c80bd1fadcb8f7ee2d926e7b22a4[m[33m ([m[1;31morigin/main[m[33m)[m
+Author: B9zel <vadimshamanskiy2811@mail.ru>
+Date:   Wed Nov 9 23:16:35 2022 +0300
+
+    Add C++ Rechenge classses
+
+[33mcommit 033b3d2e0875f885f8528d88ed78ae564afe405f[m
+Author: B9zel <vadimshamanskiy2811@mail.ru>
+Date:   Wed Nov 9 23:10:17 2022 +0300
+
+    Rechenge classes
+
+[33mcommit bb5eafdd6c75dcf571dfd2e0e102a15e57148320[m
+Author: B9zel <vadimshamanskiy2811@mail.ru>
+Date:   Tue Nov 8 22:23:34 2022 +0300
+
+    Rechange widgets
+
+[33mcommit f4f5508c651445f830d7afc232bf683e2b48095f[m
+Author: B9zel <vadimshamanskiy2811@mail.ru>
+Date:   Tue Nov 8 11:01:56 2022 +0300
+
+    Create C++ HUD class
+
+[33mcommit a4729e8ecb401a968051cddfafd1cd821b5fdf3a[m
+Author: B9zel <vadimshamanskiy2811@mail.ru>
+Date:   Sat Nov 5 17:23:37 2022 +0300
+
+    Initial commit

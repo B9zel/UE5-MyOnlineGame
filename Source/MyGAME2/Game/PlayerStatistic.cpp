@@ -16,19 +16,21 @@ APlayerStatistic::APlayerStatistic()
 	Kills = 0;
 
 	Deaths = 0;
-
+	
 	isAlive = false;
 }
 
+void APlayerStatistic::BeginPlay()
+{
+	Super::BeginPlay();
+
+	
+}
 void APlayerStatistic::SwitchWidgetNames()
 {
 	if (isAlive)
 	{
 		PlayerAlive.Broadcast();
-	}
-	else
-	{
-		PlayerDead.Broadcast();
 	}
 }
 
@@ -43,6 +45,8 @@ void APlayerStatistic::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 	DOREPLIFETIME(APlayerStatistic, isAlive);
 }
 
+
+
 void APlayerStatistic::AddKill()
 {
 	++Kills;
@@ -51,5 +55,11 @@ void APlayerStatistic::AddKill()
 void APlayerStatistic::AddDeath()
 {
 	++Deaths;
+}
+
+void APlayerStatistic::OnwerPawnDead_Implementation(ABaseTank* DeadInstigator)
+{
+	isAlive = false;
+	PlayerDead.Broadcast(DeadInstigator);
 }
 

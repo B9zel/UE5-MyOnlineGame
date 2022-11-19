@@ -1,5 +1,6 @@
 
 #include "Base_GameMode.h"
+#include <MyGAME2/Enums/E_Team.h>
 #include <MyGAME2/BaseTank.h>
 #include <MyGAME2/PawnController.h>
 #include <Engine/World.h>
@@ -37,7 +38,7 @@ void ABase_GameMode::Pawn_Dead_Implementation(APlayerController* DeadPlayer, APl
 {
 	UpdateDeathPoints(DeadPlayer, DeadInstigator);
 	Spawn_Spectator(DeadPlayer, DeadInstigator);
-	Cast<APlayerStatistic>(DeadPlayer->PlayerState)->isAlive = false;
+	Cast<APlayerStatistic>(DeadPlayer->PlayerState)->OnwerPawnDead(Cast<ABaseTank>(DeadInstigator->GetPawn()));
 
 	if (AutoRespawn)
 	{

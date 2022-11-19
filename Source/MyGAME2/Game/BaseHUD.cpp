@@ -21,7 +21,7 @@ void ABaseHUD::BeginPlay()
 {
 	Super::BeginPlay();
 
-	Cast<ABaseGameState>(UGameplayStatics::GetGameState(this))->RoundStarted.AddDynamic(this, &ABaseHUD::OnRoundStaeted);
+	Cast<ABaseGameState>(UGameplayStatics::GetGameState(this))->RoundStarted.AddDynamic(this, &ABaseHUD::OnRoundStarted);
 }
 
 void ABaseHUD::ToggleHUD(bool isShow)
@@ -74,25 +74,28 @@ void ABaseHUD::ToggleTab(bool isShow)
 
 void ABaseHUD::ToggleSpectatorHUD(bool isShow)
 {
-	if (isShow)
+	if (Cast<ABaseGameState>(UGameplayStatics::GetGameState(this))->RoundInProgress)
 	{
-		if (SpectatorWidget == nullptr)
+		if (isShow)
 		{
-			SpectatorWidget = CreateWidget<UW_Spectator>(GetOwningPlayerController(), SpectatorWidgetClass);
+			if (SpectatorWidget == nullptr)
+			{
+				SpectatorWidget = CreateWidget<UW_Spectator>(GetOwningPlayerController(), SpectatorWidgetClass);
+			}
+			SpectatorWidget->AddToViewport();
 		}
-		SpectatorWidget->AddToViewport();
-	}
-	else
-	{
-		if (SpectatorWidget != nullptr)
+		else
 		{
-			SpectatorWidget->RemoveFromParent();
-			SpectatorWidget = nullptr;
+			if (SpectatorWidget != nullptr)
+			{
+				SpectatorWidget->RemoveFromParent();
+				SpectatorWidget = nullptr;
+			}
 		}
 	}
 }
 
-void ABaseHUD::OnRoundStaeted()
+void ABaseHUD::OnRoundStarted()
 {
 	APlayerStatistic* PlayerState = GetOwningPlayerController()->GetPlayerState<APlayerStatistic>();
 	if (PlayerState != nullptr)
@@ -118,8 +121,12 @@ void ABaseHUD::OnPlayerAlive()
 	ToggleSpectatorHUD(false);
 }
 
-void ABaseHUD::OnPlayerDead()
+void ABaseHUD::OnPlayerDead(ABaseTank* DeathInstigator)
 {
 	ToggleHUD(false);
 	ToggleSpectatorHUD(true);
+	if (SpectatorWidget != nullptr)
+	{
+		SpectatorWidget->SetDeathInfo(DeathInstigator);
+	}
 }

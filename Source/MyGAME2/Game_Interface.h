@@ -19,8 +19,7 @@ class MYGAME2_API UGame_Interface : public UUserWidget
 
 public:
 	
-	UFUNCTION(BlueprintCallable)
-		void Take_Ref(class ABaseTank* pawn);
+	void NativeConstruct() override;
 
 	UPROPERTY(meta = (BindWidget))
 	class UCanvasPanel* canvasPanel;
