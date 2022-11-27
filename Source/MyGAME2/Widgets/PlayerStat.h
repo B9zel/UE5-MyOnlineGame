@@ -21,7 +21,8 @@ public:
 		class UTextBlock* Deaths;
 	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
 		class UTextBlock* Kills;
-
+	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
+		class UBorder* ColorBorder;
 
 	class APlayerStatistic* PlayerState;
 
@@ -29,6 +30,7 @@ public:
 
 	UFUNCTION()
 	virtual void NativeConstruct() override;
+
 	UFUNCTION()
 	FText BindNickName();
 	UFUNCTION()

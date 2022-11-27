@@ -113,6 +113,9 @@ private:
 
 	float target;
 
+	virtual void PossessedBy(AController* Controller) override;
+		
+
 public:	
 	
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;

@@ -14,5 +14,9 @@ void UGame_Interface::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	Cast<ABaseTank>(GetOwningPlayerPawn())->Main_Widget = this;
+	ABaseTank* Pawn = Cast<ABaseTank>(GetOwningPlayerPawn());
+	if (Pawn != nullptr)
+	{
+		Pawn->Main_Widget = this;
+	}
 }

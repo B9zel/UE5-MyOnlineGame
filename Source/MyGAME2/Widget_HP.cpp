@@ -14,6 +14,7 @@
 
 
 
+
 ABaseTank* UWidget_HP::InitailizeRefWidget()
 {
 	return Cast<ABaseTank>(GetOwningPlayerPawn());
@@ -25,7 +26,7 @@ bool UWidget_HP::Initialize()
 	Super::Initialize();
 	
 	Ref_MainTank = InitailizeRefWidget();
-	
+	percent = 1.0f;
 	//if (Ref_MainTank != nullptr)
 	//{
 	//	UpdateData();
@@ -50,15 +51,17 @@ void UWidget_HP::UpdateData()
 	{
 		Ref_MainTank = InitailizeRefWidget();
 	}
-	HP_TextBlock->SetText(FText::FromString(FString::FromInt(Ref_MainTank->component->Courrent_HP) + " | " + FString::FromInt(Ref_MainTank->component->Max_HP)));
-
-	percent = Ref_MainTank->component->Courrent_HP / Ref_MainTank->component->Max_HP;
-
-	progress_bar->SetPercent(percent);
-
-	if (percent <= 0.2f && Ref_MainTank->component->Courrent_HP != 0.0f)
+	else
 	{
-		progress_bar->SetFillColorAndOpacity(FLinearColor::Red);
+		HP_TextBlock->SetText(FText::FromString(FString::FromInt(Ref_MainTank->component->Courrent_HP) + " | " + FString::FromInt(Ref_MainTank->component->Max_HP)));
+
+		percent = Ref_MainTank->component->Courrent_HP / Ref_MainTank->component->Max_HP;
+		progress_bar->SetPercent(FMath::FInterpTo(progress_bar->Percent, percent, GetWorld()->GetDeltaSeconds(), 7));
+
+		if (percent <= 0.2f && Ref_MainTank->component->Courrent_HP != 0.0f)
+		{
+			progress_bar->SetFillColorAndOpacity(FLinearColor::Red);
+		}
 	}
 }
 

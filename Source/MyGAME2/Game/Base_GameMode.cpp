@@ -62,7 +62,7 @@ AGame_Spectator* ABase_GameMode::Spawn_Spectator(class APlayerController* Player
 	return SpawnActor;
 }
 
-void ABase_GameMode::StartRound()
+void ABase_GameMode::StartRound_Implementation()
 {
 	ABaseGameState* Game_State = Cast<ABaseGameState>(UGameplayStatics::GetGameState(this));
 	class APawnController* Controller;

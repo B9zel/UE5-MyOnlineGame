@@ -24,6 +24,8 @@ protected:
 
 	UFUNCTION()
 	E_Team GetRandomTeam();
+	UFUNCTION(BlueprintCallable)
+	E_Team GetBalansedSelectTeam(TEnumAsByte<enum E_Team> SetTeam);
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const;
 };

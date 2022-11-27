@@ -49,15 +49,17 @@ ABaseTank::ABaseTank()
 	
 }
 
-// Called when the game starts or when spawned
+void ABaseTank::PossessedBy(AController* controller)
+{
+	Super::PossessedBy(controller);
+
+	controller->ClientSetRotation(Towermesh->GetComponentRotation());
+}
+
 void ABaseTank::BeginPlay()
 {
 	Super::BeginPlay();
 
-	/*if (Main_Widget == nullptr && !HasAuthority() && GetOwner() != nullptr)
-	{
-		Main_Widget	= Cast<APawnController>(GetOwner())->Game_Interface;
-	}*/
 	component->Max_HP = this->Max_HP;
 }
 
@@ -72,6 +74,8 @@ void ABaseTank::Tick(float DeltaTime)
 		ClientRotateTower(DeltaTime);
 	}
 }
+
+
 
 
 void ABaseTank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -131,12 +135,10 @@ void ABaseTank::ClientRotateTower(float DeltaTime)
 {
 	if (!HasAuthority())
 	{
+		//target = GetControlRotation().Yaw - Mesh->GetComponentRotation().Yaw;
 		target = GetControlRotation().Yaw - Mesh->GetComponentRotation().Yaw;
-		
 		if (target > 180)
-		{
 			target -= 360;
-		}
 		CallRotateTower(DeltaTime, target);
 	}
 }

@@ -49,8 +49,8 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 		 ABaseTank* Spawn_Player(APlayerController* PlayerController, TSubclassOf<class AActor> SpawnClass);
 
-	UFUNCTION(BlueprintCallable)
-		virtual void StartRound();
+	UFUNCTION(BlueprintNativeEvent)
+		 void StartRound();
 
 	UFUNCTION(BlueprintCallable)
 		  virtual void UpdateDeathPoints(APlayerController* DeadPlayer, APlayerController* DeathInstigatorPlayer);

@@ -5,6 +5,7 @@
 #include <Components/TextBlock.h>
 #include <MyGAME2/Game/PlayerStatistic.h>
 #include <Styling/SlateColor.h>
+#include <Components/Border.h>
 
 void UPlayerStat::NativeConstruct()
 {
@@ -16,10 +17,12 @@ void UPlayerStat::NativeConstruct()
 
 	Deaths->TextDelegate.BindDynamic(this, &UPlayerStat::BindDeaths);
 	Deaths->SynchronizeProperties();
-
+	
 	Kills->TextDelegate.BindDynamic(this, &UPlayerStat::BindKills);
 	Kills->SynchronizeProperties();
 }
+
+
 
 FText UPlayerStat::BindNickName()
 {
