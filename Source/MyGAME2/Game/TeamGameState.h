@@ -24,6 +24,7 @@ public:
 
 	ATeamGameState();
 
+	UFUNCTION(BlueprintCallable, BlueprintPure)
 	int GetPoints(E_Team Team);
 
 	UFUNCTION(BlueprintCallable)

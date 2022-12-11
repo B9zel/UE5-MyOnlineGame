@@ -52,8 +52,8 @@ public:
 	UFUNCTION(BlueprintNativeEvent)
 		 void StartRound();
 
-	UFUNCTION(BlueprintCallable)
-		  virtual void UpdateDeathPoints(APlayerController* DeadPlayer, APlayerController* DeathInstigatorPlayer);
+	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
+		  void UpdateDeathPoints(APlayerController* DeadPlayer, APlayerController* DeathInstigatorPlayer);
 
 	UFUNCTION(BlueprintCallable)
 		virtual void StopRound();
@@ -63,4 +63,6 @@ public:
 
 	UFUNCTION()
 		void RechedTimeLimit();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable,BlueprintPure)
+	bool ShouldDamagePlayer(APlayerController* Player, APlayerController* InstigatorPLayer);
 };

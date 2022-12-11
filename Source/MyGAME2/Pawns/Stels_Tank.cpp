@@ -1,13 +1,15 @@
 
 #include "Stels_Tank.h"
 #include <GameFramework/SpringArmComponent.h>
-#include <MyGAME2/Heads_Stats.h>
+#include <MyGAME2/HealthStat.h>
 #include <Net/UnrealNetwork.h>
 
 AStels_Tank::AStels_Tank()
 {
 	Mesh->SetIsReplicated(true);
 	Towermesh->SetIsReplicated(true);
+
+	OnTakeAnyDamage.AddDynamic(this, &AStels_Tank::Take_Damage);
 
 	spring_arm->bUsePawnControlRotation = true;
 	spring_arm->bInheritRoll = false;
@@ -76,9 +78,7 @@ void AStels_Tank::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifet
 
 void AStels_Tank::Take_Damage(AActor* DamagedActor, float damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
 {
-	ABaseTank::Take_Damage(DamagedActor, damage, DamageType, InstigatedBy, DamageCauser);
-
-	if (component->IsDead && isSuper_Power)
+	if (HP_Component->IsDead && isSuper_Power)
 	{
 		GetWorldTimerManager().ClearTimer(TimerKey);
 		DisableSuperPower_Multicast();

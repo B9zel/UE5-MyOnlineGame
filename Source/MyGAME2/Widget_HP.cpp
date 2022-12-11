@@ -8,7 +8,7 @@
 #include <Components/ProgressBar.h>
 #include <Components/Overlay.h>
 #include <Components/TextBlock.h>
-#include "Heads_Stats.h"
+#include "HealthStat.h"
 #include <MyGAME2/BaseTank.h>
 
 
@@ -53,12 +53,12 @@ void UWidget_HP::UpdateData()
 	}
 	else
 	{
-		HP_TextBlock->SetText(FText::FromString(FString::FromInt(Ref_MainTank->component->Courrent_HP) + " | " + FString::FromInt(Ref_MainTank->component->Max_HP)));
+		HP_TextBlock->SetText(FText::FromString(FString::FromInt(Ref_MainTank->HP_Component->Courrent_HP) + " | " + FString::FromInt(Ref_MainTank->HP_Component->Max_HP)));
 
-		percent = Ref_MainTank->component->Courrent_HP / Ref_MainTank->component->Max_HP;
+		percent = Ref_MainTank->HP_Component->Courrent_HP / Ref_MainTank->HP_Component->Max_HP;
 		progress_bar->SetPercent(FMath::FInterpTo(progress_bar->Percent, percent, GetWorld()->GetDeltaSeconds(), 7));
 
-		if (percent <= 0.2f && Ref_MainTank->component->Courrent_HP != 0.0f)
+		if (percent <= 0.2f && Ref_MainTank->HP_Component->Courrent_HP != 0.0f)
 		{
 			progress_bar->SetFillColorAndOpacity(FLinearColor::Red);
 		}

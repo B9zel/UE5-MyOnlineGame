@@ -75,7 +75,7 @@ void ABase_GameMode::StartRound_Implementation()
 	RoundStart.Broadcast();
 }
 
-void ABase_GameMode::UpdateDeathPoints(APlayerController* DeadPlayer, APlayerController* DeathInstigatorPlayer)
+void ABase_GameMode::UpdateDeathPoints_Implementation(APlayerController* DeadPlayer, APlayerController* DeathInstigatorPlayer)
 {
 	Cast<APlayerStatistic>(DeadPlayer->PlayerState)->AddDeath();
 	Cast<APlayerStatistic>(DeathInstigatorPlayer->PlayerState)->AddKill();
@@ -117,4 +117,9 @@ void ABase_GameMode::RechedTimeLimit()
 	{
 		StopRound();
 	}
+}
+
+bool ABase_GameMode::ShouldDamagePlayer_Implementation(APlayerController* Player, APlayerController* InstigatorPLayer)
+{
+	return true;
 }

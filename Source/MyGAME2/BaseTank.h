@@ -58,8 +58,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		class USceneComponent* bscene;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		class UHeads_Stats* component;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+		class UHealthStat* HP_Component;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		class UCameraComponent* SecondCamera;
@@ -78,14 +78,13 @@ public:
 
 	float TimeUse_SuperPower;
 
+	float TimeDestroy;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	virtual void Tick(float DeltaTime) override;
-
-	UFUNCTION()
-	virtual	void Take_Damage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
 
 	float Speed;
 
@@ -98,8 +97,6 @@ protected:
 	bool IsAim;
 
 	bool isSuper_Power;
-
-	float TimeDestroy;
 
 	float TimeReload_SuperPower;
 

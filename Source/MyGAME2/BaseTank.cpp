@@ -9,7 +9,7 @@
 #include <Kismet/GameplayStatics.h>
 #include <MyGAME2/PawnController.h>
 #include <Net/UnrealNetwork.h>
-#include "Heads_Stats.h"
+#include <MyGAME2/HealthStat.h>
 #include "bullet.h"
 #include "Widget_Reload.h"
 #include "Game_Interface.h"
@@ -40,12 +40,9 @@ ABaseTank::ABaseTank()
 	SecondCamera->SetupAttachment(Towermesh);
 	SecondCamera->bAutoActivate = false;
 
-	component = CreateDefaultSubobject<UHeads_Stats>(TEXT("Heads_Stats"));
+	HP_Component = CreateDefaultSubobject<UHealthStat>(TEXT("HealthStat"));
 
 	projectile = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Projectile Movement"));
-	
-	OnTakeAnyDamage.AddDynamic(this, &ABaseTank::Take_Damage);
-
 	
 }
 
@@ -60,7 +57,7 @@ void ABaseTank::BeginPlay()
 {
 	Super::BeginPlay();
 
-	component->Max_HP = this->Max_HP;
+	HP_Component->Max_HP = this->Max_HP;
 }
 
 // Called every frame
@@ -69,33 +66,15 @@ void ABaseTank::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 //	UE_LOG(LogTemp, Warning, TEXT("Releativ %f"), Towermesh->GetRelativeRotation().Yaw);
 //	UE_LOG(LogTemp, Warning, TEXT("Component%f"), Towermesh->GetComponentRotation().Yaw);
-	if (!component->IsDead)
+	if (!HP_Component->IsDead)
 	{
 		ClientRotateTower(DeltaTime);
 	}
 }
 
-
-
-
 void ABaseTank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-}
-
-void ABaseTank::Take_Damage(AActor* DamagedActor, float damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
-{
-	component->Courrent_HP -= FMath::Clamp(damage, 0.0f, component->Max_HP);
-
-	if (component->Courrent_HP <= 0.0f && !component->IsDead)
-	{	
-		GameMode->Pawn_Dead(Cast<APlayerController>(GetController()), Cast<APlayerController>(InstigatedBy));
-
-		FTimerHandle handle;
-		GetWorldTimerManager().SetTimer(handle, this, &ABaseTank::Destroy, TimeDestroy, false);
-		component->IsDead = true;
-	}
 }
 
 void ABaseTank::CallForwardMove_Implementation(float axis)
@@ -110,7 +89,6 @@ void ABaseTank::ForwardMove_Implementation(float Axis)
 		FVector diracthion = GetActorForwardVector();
 		FVector locathion = GetActorLocation();
 		//UE_LOG(LogTemp, Warning, TEXT("%s"), *diracthion.ToString());
-
 		TeleportTo(locathion + diracthion * Axis * (Speed * GetWorld()->GetDeltaSeconds()), GetActorRotation());
 	}
 }
@@ -154,7 +132,6 @@ void ABaseTank::RotateTower_Implementation(float deltaTime, float Target)
 	{
 		//math = FMath::FInterpTo(Towermesh->GetRelativeRotation().Yaw, Target, deltaTime, Towerrotation_speed);
 		math = InterpTo(Towermesh->GetRelativeRotation().Yaw, Target, deltaTime, Towerrotation_speed);
-		
 		Towermesh->SetRelativeRotation(FRotator(0.0f, FMath::Clamp(math, -120.0f, 120.0f), 0.0f));
 	}
 }
@@ -178,7 +155,6 @@ void ABaseTank::Shoot_OnServer_Implementation()
 	if (struction.objctBullet != nullptr && !blockShoot)
 	{
 		blockShoot = true;
-
 		FActorSpawnParameters spawnParametars;
 		spawnParametars.Owner = this;
 
@@ -229,7 +205,7 @@ void ABaseTank::VisualDeadMulticast_Implementation()
 
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), struction.Explosion, FTransform(Towermesh->GetComponentRotation(), Towermesh->GetComponentLocation(), FVector(2.0f, 2.0f, 2.0f)));
 
-		Towermesh->AddImpulse(FVector(FMath::FRandRange(component->Impulse * -1, component->Impulse), FMath::FRandRange(component->Impulse * -1, component->Impulse), component->Impulse));
+		Towermesh->AddImpulse(FVector(FMath::FRandRange(HP_Component->Impulse * -1, HP_Component->Impulse), FMath::FRandRange(HP_Component->Impulse * -1, HP_Component->Impulse), HP_Component->Impulse));
 
 		Mesh->SetCollisionEnabled(ECollisionEnabled::Type::NoCollision);
 		Towermesh->SetCollisionEnabled(ECollisionEnabled::Type::PhysicsOnly);
