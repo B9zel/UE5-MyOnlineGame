@@ -5,11 +5,16 @@
 #include <Kismet/GameplayStatics.h>
 #include <MyGAME2/PawnController.h>
 #include <MyGAME2/Widgets/StatisticsMenu.h>
+#include "../Enums/E_GameState.h"
 
 
 ABaseGameState::ABaseGameState()
 {
+	this->PrimaryActorTick.bCanEverTick = true;
+	this->PrimaryActorTick.TickInterval = 1.0f;
+
 	SetReplicates(true);
+	RoundInProgress = E_GameState::PreStart;
 	
 }
 
@@ -25,33 +30,55 @@ void ABaseGameState::BeginPlay()
 		{
 			GameMode->RoundEnded.AddDynamic(this, &ABaseGameState::OnRoundEnded);
 
-			GameMode->RoundStart.AddDynamic(this, &ABaseGameState::OnRoundStarted);
+			//GameMode->RoundStart.AddDynamic(this, &ABaseGameState::OnRoundStarted);
 		}
 	}
 }
 
-void ABaseGameState::StartRoundTimer()
+void ABaseGameState::Tick(float DeltaTime)
 {
-	GetWorldTimerManager().SetTimer(Timer, this, &ABaseGameState::TickRoundTime, 1.0f, true);
+	Super::Tick(DeltaTime);
+
+	if (HasAuthority())
+	{
+		switch (RoundInProgress)
+		{
+		case PreStart:
+			TickPreRoundTime();
+			break;
+		case Game:
+			TickRoundTime();
+			break;
+		case EndGame:
+			break;
+		default:
+			break;
+		}
+	}
 }
+
 
 void ABaseGameState::TickRoundTime()
 {
 	RoundTime += FTimespan::FromSeconds(1.0f);
 
-	if (GameMode->TimeLimit <= RoundTime)
+	if (GameMode->TimeLimit <= RoundTime && RoundInProgress == E_GameState::Game)
 	{
-		//
-		TimeEnded.Broadcast();
+		Cast<ABase_GameMode>(UGameplayStatics::GetGameMode(this))->RechedTimeLimit();
 	}
 	
 }
 
-void ABaseGameState::OnRoundEnded()
+
+void ABaseGameState::TickPreRoundTime()
 {
-	GetWorldTimerManager().ClearTimer(Timer);
-	RoundInProgress = false;
-	RoundEnd_Multicast();
+	PreStartRoundTimer -= FTimespan::FromSeconds(1.0f);
+	if (PreStartRoundTimer.GetTotalSeconds() <= 0 && RoundInProgress == E_GameState::PreStart)
+	{
+		Cast<ABase_GameMode>(UGameplayStatics::GetGameMode(this))->StartRound();
+		RoundInProgress = E_GameState::Game;
+		RoundStarted.Broadcast();
+	}
 }
 
 void ABaseGameState::RoundEnd_Multicast_Implementation()
@@ -59,18 +86,32 @@ void ABaseGameState::RoundEnd_Multicast_Implementation()
 	RoundEnded.Broadcast();
 }
 
-void ABaseGameState::OnRoundStarted()
+void ABaseGameState::OnRep_RoundInProgress()
 {
-	RoundInProgress = true;
-	StartRoundTimer();
+	switch (RoundInProgress)
+	{
+	case E_GameState::PreStart:
+		break;
+	case E_GameState::Game:
+		RoundStarted.Broadcast();
+		break;
+	case E_GameState::EndGame:
+
+	default:
+		break;
+	}
 }
 
-void ABaseGameState::OnRep_OnRoundInProgress()
+
+void ABaseGameState::OnRoundStarted()
 {
-	if (RoundInProgress)
-	{
-		RoundStarted.Broadcast();
-	}
+}
+
+
+void ABaseGameState::OnRoundEnded()
+{
+	RoundInProgress = E_GameState::EndGame;
+	RoundEnd_Multicast();
 }
 
 void ABaseGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -79,5 +120,17 @@ void ABaseGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLi
 
 	DOREPLIFETIME(ABaseGameState, RoundTime);
 
+	DOREPLIFETIME(ABaseGameState, PreStartRoundTimer);
+
 	DOREPLIFETIME(ABaseGameState, RoundInProgress);
+}
+
+FTimespan ABaseGameState::GetRoundTime()
+{
+	return RoundTime;
+}
+
+FTimespan ABaseGameState::GetPreStartRoundTime()
+{
+	return PreStartRoundTimer;
 }

@@ -10,5 +10,8 @@
 
 void UW_Spectator::SetDeathInfo(ABaseTank* Instigator)
 {
-	InfoKill->SetKilledInfo(Cast<APlayerStatistic>(Instigator->GetPlayerState()));
+	if (Instigator != nullptr)
+	{
+		InfoKill->SetKilledInfo(Cast<APlayerStatistic>(Instigator->GetPlayerState()));
+	}
 }

@@ -17,19 +17,19 @@ void UW_RoundTime::NativeConstruct()
 
 FText UW_RoundTime::UpdateTimerTick()
 {
-	if (Game_State->RoundTime.GetMinutes() < 10)
+	if (Game_State->GetRoundTime().GetMinutes() < 10)
 	{
-		if (Game_State->RoundTime.GetSeconds() < 10)
+		if (Game_State->GetRoundTime().GetSeconds() < 10)
 		{
-			return FText::FromString("0" + FString::FromInt(Game_State->RoundTime.GetMinutes()) + ":" + "0" + FString::FromInt(Game_State->RoundTime.GetSeconds()));
+			return FText::FromString("0" + FString::FromInt(Game_State->GetRoundTime().GetMinutes()) + ":" + "0" + FString::FromInt(Game_State->GetRoundTime().GetSeconds()));
 		}
 		else
 		{
-			return FText::FromString("0" + FString::FromInt(Game_State->RoundTime.GetMinutes()) + ":" + FString::FromInt(Game_State->RoundTime.GetSeconds()));
+			return FText::FromString("0" + FString::FromInt(Game_State->GetRoundTime().GetMinutes()) + ":" + FString::FromInt(Game_State->GetRoundTime().GetSeconds()));
 		}
 	}
 	else
 	{
-		return FText::AsTimespan(Game_State->RoundTime);
+		return FText::AsTimespan(Game_State->GetRoundTime());
 	}
 }

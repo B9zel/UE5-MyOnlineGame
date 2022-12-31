@@ -18,40 +18,50 @@ public:
 
 	ABaseGameState();
 
-	virtual void BeginPlay() override;
-
-	UPROPERTY(Replicated, BlueprintReadWrite)
-		FTimespan RoundTime;
-	
-	class ABase_GameMode* GameMode;
-	
-	UPROPERTY(BlueprintAssignable)
-		FDelegate TimeEnded;
-
+	//UPROPERTY(BlueprintAssignable)
+	//	FDelegate TimeEnded;
 	UPROPERTY(BlueprintAssignable)
 		FDelegate RoundEnded;
 	UPROPERTY(BlueprintAssignable)
 		FDelegate RoundStarted;
-	UPROPERTY(ReplicatedUsing = OnRep_OnRoundInProgress,BlueprintReadWrite)
-		bool RoundInProgress;
-	UPROPERTY()
-		FTimerHandle Timer;
+
+	UPROPERTY(ReplicatedUsing = OnRep_RoundInProgress,BlueprintReadWrite)
+		TEnumAsByte<enum E_GameState> RoundInProgress;
+protected:
+
+	class ABase_GameMode* GameMode;
+
+	UPROPERTY(Replicated, BlueprintReadWrite)
+		FTimespan RoundTime;
+	UPROPERTY(Replicated,BlueprintReadWrite)
+		FTimespan PreStartRoundTimer;
+
+protected:
+
+	virtual void BeginPlay() override;
+
+	virtual void Tick(float DeltaTime) override;
+
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 public:
-
-	void StartRoundTimer();
 
 	void TickRoundTime();
 	UFUNCTION()
 	void OnRoundEnded();
 	
+	void TickPreRoundTime();
+
 	UFUNCTION(NetMulticast,Reliable)
 	void RoundEnd_Multicast();
 
 	UFUNCTION()
-	void OnRoundStarted();
-	UFUNCTION()
-	void OnRep_OnRoundInProgress();
+	void OnRep_RoundInProgress();
 
-	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	UFUNCTION()
+	void OnRoundStarted();
+
+	FTimespan GetRoundTime();
+
+	FTimespan GetPreStartRoundTime();
 };

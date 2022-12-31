@@ -24,22 +24,18 @@ void ABase_GameMode::BeginPlay()
 {
 	Super::BeginPlay();
 
-	ABaseGameState* Game_State = Cast<ABaseGameState>(UGameplayStatics::GetGameState(this));
-	if (GameState == UGameplayStatics::GetGameState(this))
-	{
-		Game_State->TimeEnded.AddDynamic(this,&ABase_GameMode::RechedTimeLimit);
-	}
-	
-	FTimerHandle Handle;
-	GetWorldTimerManager().SetTimer(Handle, this, &ABase_GameMode::StartRound, 4.0f, false);
+
+	//FTimerHandle Handle;
+	//GetWorldTimerManager().SetTimer(Handle, this, &ABase_GameMode::StartRound, 4.0f, false);
 }
 
 void ABase_GameMode::Pawn_Dead_Implementation(APlayerController* DeadPlayer, APlayerController* DeadInstigator)
 {
 	UpdateDeathPoints(DeadPlayer, DeadInstigator);
-	Spawn_Spectator(DeadPlayer, DeadInstigator);
+	SpawnSpectator(DeadPlayer, DeadInstigator);
 	Cast<APlayerStatistic>(DeadPlayer->PlayerState)->OnwerPawnDead(Cast<ABaseTank>(DeadInstigator->GetPawn()));
-
+	
+	
 	if (AutoRespawn)
 	{
 		Cast<APawnController>(DeadPlayer)->TimerRespawn(5.0f);
@@ -47,7 +43,7 @@ void ABase_GameMode::Pawn_Dead_Implementation(APlayerController* DeadPlayer, APl
 
 }
 
-AGame_Spectator* ABase_GameMode::Spawn_Spectator(class APlayerController* Player, class APlayerController* DeadInstigator)
+AGame_Spectator* ABase_GameMode::SpawnSpectator(class APlayerController* Player, class APlayerController* DeadInstigator)
 {
 	FActorSpawnParameters SpawnParameters;
 	SpawnParameters.Owner = Player;
@@ -55,8 +51,10 @@ AGame_Spectator* ABase_GameMode::Spawn_Spectator(class APlayerController* Player
 	//Spawn Spectator
 	AGame_Spectator* SpawnActor = GetWorld()->SpawnActor<AGame_Spectator>(Spectator_Class, Player->GetPawn()->GetActorTransform(), SpawnParameters); // - FVector(0.0f, 0.0f, 500.0f))
 	
-	SpawnActor->FollowPawn = Cast<ABaseTank>(DeadInstigator->GetPawn());
-
+	if (DeadInstigator != nullptr)
+	{
+		SpawnActor->FollowPawn = Cast<ABaseTank>(DeadInstigator->GetPawn());
+	}
 	Player->Possess(SpawnActor);
 	
 	return SpawnActor;
@@ -86,16 +84,14 @@ void ABase_GameMode::StopRound()
 	class AGameStateBase* Game_State = UGameplayStatics::GetGameState(this);
 	class APawnController* PlayerController;
 
-	AutoRespawn = false;
 	for (auto& el : Game_State->PlayerArray)
 	{	
 		PlayerController = Cast<APawnController>(el->GetOwner());
-		
-		
 		PlayerController->GetPawn()->Destroy();
+		//SpawnSpectator(PlayerController, nullptr);
+	
 	}
 	RoundEnded.Broadcast();
-	
 }
 
 void ABase_GameMode::StopRoundOnClient_Implementation(APlayerController* PlayerController)

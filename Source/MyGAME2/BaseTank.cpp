@@ -3,7 +3,6 @@
 #include <Components/StaticMeshComponent.h>
 #include <GameFramework/SpringArmComponent.h>
 #include <Camera/CameraComponent.h>
-#include <Components/InputComponent.h>
 #include <Components/SceneComponent.h>
 #include <GameFramework/ProjectileMovementComponent.h>
 #include <Kismet/GameplayStatics.h>
@@ -14,11 +13,11 @@
 #include "Widget_Reload.h"
 #include "Game_Interface.h"
 #include <MyGAME2/Game/Base_GameMode.h>
+#include "Game/PlayerStatistic.h"
 
 
 ABaseTank::ABaseTank()
 {
- 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
@@ -32,6 +31,7 @@ ABaseTank::ABaseTank()
 
 	camera = CreateDefaultSubobject<UCameraComponent>(TEXT("camera"));
 	camera->SetupAttachment(spring_arm);
+	camera->FieldOfView = 97.0f;
 
 	bscene = CreateDefaultSubobject<USceneComponent>(TEXT("BScene"));
 	bscene->SetupAttachment(Towermesh);
@@ -66,9 +66,9 @@ void ABaseTank::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 //	UE_LOG(LogTemp, Warning, TEXT("Releativ %f"), Towermesh->GetRelativeRotation().Yaw);
 //	UE_LOG(LogTemp, Warning, TEXT("Component%f"), Towermesh->GetComponentRotation().Yaw);
-	if (!HP_Component->IsDead)
+	if (!HP_Component->IsDead && !HasAuthority())
 	{
-		ClientRotateTower(DeltaTime);
+		ClientRotateTower();
 	}
 }
 
@@ -109,31 +109,26 @@ void ABaseTank::RightMove_Implementation(float Axis)
 	}
 }
 
-void ABaseTank::ClientRotateTower(float DeltaTime)
-{
-	if (!HasAuthority())
-	{
-		//target = GetControlRotation().Yaw - Mesh->GetComponentRotation().Yaw;
-		target = GetControlRotation().Yaw - Mesh->GetComponentRotation().Yaw;
-		if (target > 180)
-			target -= 360;
-		CallRotateTower(DeltaTime, target);
-	}
+
+void ABaseTank::ClientRotateTower()
+{	
+	target = GetControlRotation().Yaw - Mesh->GetComponentRotation().Yaw;
+	if (target > 180)
+		target -= 360;
+	CallRotateTower(target);
+	
 }
 
-void ABaseTank::CallRotateTower_Implementation(float deltatime, float Target)
+void ABaseTank::CallRotateTower_Implementation(float Target)
 {
-	RotateTower_Implementation(deltatime, Target);
+	RotateTower_Implementation(Target);
 }
 
-void ABaseTank::RotateTower_Implementation(float deltaTime, float Target)
+void ABaseTank::RotateTower_Implementation(float Target)
 {
-	if (HasAuthority())
-	{
-		//math = FMath::FInterpTo(Towermesh->GetRelativeRotation().Yaw, Target, deltaTime, Towerrotation_speed);
-		math = InterpTo(Towermesh->GetRelativeRotation().Yaw, Target, deltaTime, Towerrotation_speed);
-		Towermesh->SetRelativeRotation(FRotator(0.0f, FMath::Clamp(math, -120.0f, 120.0f), 0.0f));
-	}
+	//math = FMath::FInterpTo(Towermesh->GetRelativeRotation().Yaw, Target, GetWorld()->GetDeltaSeconds(), Towerrotation_speed);
+	math = InterpTo(Towermesh->GetRelativeRotation().Yaw, Target, GetWorld()->GetDeltaSeconds(), Towerrotation_speed);
+	Towermesh->SetRelativeRotation(FRotator(0.0f, FMath::Clamp(math, -120.0f, 120.0f), 0.0f));
 }
 
 void ABaseTank::EnableAim()
@@ -157,11 +152,13 @@ void ABaseTank::Shoot_OnServer_Implementation()
 		blockShoot = true;
 		FActorSpawnParameters spawnParametars;
 		spawnParametars.Owner = this;
+		spawnParametars.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::DontSpawnIfColliding;
 
 		Abullet* Ref_Bullet = GetWorld()->SpawnActor<Abullet>(struction.objctBullet, FTransform(bscene->GetComponentRotation(), bscene->GetComponentLocation(), FVector(1.0f, 1.0f, 1.0f)), spawnParametars);
-		Ref_Bullet->Damage = this->Damage;
-		Shoot_Multicast();
-
+		if (Ref_Bullet != nullptr)
+		{
+			Shoot_Multicast();
+		}
 		FTimerHandle handle;
 		GetWorldTimerManager().SetTimer(handle, this, &ABaseTank::RecharchShoot, TimeReload + 0.1f, false);
 	}
@@ -201,14 +198,14 @@ void ABaseTank::VisualDeadMulticast_Implementation()
 {
 	if (!HasAuthority())
 	{
-		Towermesh->SetSimulatePhysics(true);
-
-		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), struction.Explosion, FTransform(Towermesh->GetComponentRotation(), Towermesh->GetComponentLocation(), FVector(2.0f, 2.0f, 2.0f)));
-
-		Towermesh->AddImpulse(FVector(FMath::FRandRange(HP_Component->Impulse * -1, HP_Component->Impulse), FMath::FRandRange(HP_Component->Impulse * -1, HP_Component->Impulse), HP_Component->Impulse));
-
 		Mesh->SetCollisionEnabled(ECollisionEnabled::Type::NoCollision);
 		Towermesh->SetCollisionEnabled(ECollisionEnabled::Type::PhysicsOnly);
+		Towermesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldStatic, ECollisionResponse::ECR_Block);
+		
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), struction.Explosion, FTransform(Towermesh->GetComponentRotation(), Towermesh->GetComponentLocation(), FVector(2.0f, 2.0f, 2.0f)));
+
+		Towermesh->SetSimulatePhysics(true);
+		Towermesh->AddImpulse(FVector(FMath::FRandRange(HP_Component->Impulse * -1, HP_Component->Impulse), FMath::FRandRange(HP_Component->Impulse * -1, HP_Component->Impulse), HP_Component->Impulse));
 	}
 }
 
@@ -222,7 +219,7 @@ inline ABase_GameMode* ABaseTank::Get_GameMode(class AActor* Object)
 	return Cast<ABase_GameMode>(UGameplayStatics::GetGameMode(Object));
 }
 
-float ABaseTank::Get_Damage()
+float ABaseTank::GetDamage()
 {
 	return Damage;
 }
@@ -233,9 +230,9 @@ float ABaseTank::InterpTo(float Current, float Target, float DeltaTime, float sp
 		return Current;
 	
 	float DeltaSpeed = speed * DeltaTime;
-	if (Current > Target - 2.f && Current < Target + 2.f)
+	if (Current > Target - 2 && Current < Target +2)
 	{
-		return Current + DeltaSpeed * (Target - Current);
+		return Current + FMath::Clamp<float>(DeltaSpeed, 0, 1) * (Target - Current);
 	}
 	else
 	{
@@ -244,6 +241,5 @@ float ABaseTank::InterpTo(float Current, float Target, float DeltaTime, float sp
 		else if (Current > Target)
 			Current -= DeltaSpeed;
 	}
-
 	return Current;
 }

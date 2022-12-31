@@ -24,7 +24,6 @@ void APlayerStatistic::BeginPlay()
 {
 	Super::BeginPlay();
 
-	
 }
 void APlayerStatistic::SwitchWidgetNames()
 {

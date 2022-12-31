@@ -117,22 +117,22 @@ public:
 	
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	UFUNCTION(NetMulticast, Unreliable)
+	UFUNCTION(NetMulticast, Reliable)
 		virtual void ForwardMove(float Axis);
-	UFUNCTION(Server, Unreliable)
+	UFUNCTION(Server, Reliable)
 		virtual void CallForwardMove(float axis);
 
-	UFUNCTION(NetMulticast, Unreliable)
+	UFUNCTION(NetMulticast, Reliable)
 		virtual void RightMove(float Axis);
-	UFUNCTION(Server, Unreliable)
+	UFUNCTION(Server, Reliable)
 		virtual void CallRightMove(float axis);
+	UFUNCTION()
+	virtual void ClientRotateTower();
+	UFUNCTION(Server, Reliable)
+	void CallRotateTower(float Target);
 
-	virtual void ClientRotateTower(float DeltaTime);
-
-	UFUNCTION(NetMulticast, Unreliable)
-		virtual void RotateTower(float deltaTime, float Target);
-	UFUNCTION(Server, Unreliable)
-		virtual void CallRotateTower(float deltatime, float Target);
+	UFUNCTION(NetMulticast, Reliable)
+		virtual void RotateTower(float Target);
 
 	UFUNCTION()
 		void EnableAim();
@@ -148,8 +148,8 @@ public:
 
 	UFUNCTION(Client, Unreliable)
 		void Widget_ReloadShoot();
-
-	UFUNCTION(NetMulticast, Unreliable)
+	
+	UFUNCTION(NetMulticast, Reliable)
 		virtual void VisualDeadMulticast();
 
 	void Destroy();
@@ -157,7 +157,7 @@ public:
 	ABase_GameMode* Get_GameMode(class AActor* Object);
 
 	UFUNCTION(BlueprintCallable)
-	float Get_Damage();
+	float GetDamage();
 
 	UFUNCTION(BlueprintCallable)
 	float InterpTo(float Current, float Target, float DeltaTime, float Speed);

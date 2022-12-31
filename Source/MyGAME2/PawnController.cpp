@@ -28,9 +28,12 @@ void APawnController::BeginPlay()
 	ABaseGameState* Game_State = Cast<ABaseGameState>(UGameplayStatics::GetGameState(this));
 	if (Game_State != nullptr)
 	{
-		Game_State->RoundEnded.AddDynamic(this, &APawnController::RoundEnded);
-		
+		Game_State->RoundEnded.AddDynamic(this, &APawnController::RoundEndedOnClient);
 		Game_State->RoundStarted.AddDynamic(this, &APawnController::RoundStarted);
+	}
+	if (HasAuthority())
+	{
+		Cast<ABase_GameMode>(UGameplayStatics::GetGameMode(this))->RoundEnded.AddDynamic(this, &APawnController::RoundEndedInRespawnOnServer);
 	}
 }
 
@@ -57,8 +60,8 @@ void APawnController::Respawn()
 
 void APawnController::TimerRespawn(float Time)
 {
-	FTimerHandle Handle;
-	GetWorldTimerManager().SetTimer(Handle, this, &APawnController::Respawn, Time);
+	RespswnTime.Invalidate();
+	GetWorldTimerManager().SetTimer(RespswnTime, this, &APawnController::Respawn, Time);
 }
 
 
@@ -82,35 +85,20 @@ void APawnController::DisableTabMenu()
 	}
 }
 
-
-void APawnController::OnPossess(APawn* InPawn)
+void APawnController::RoundEndedInRespawnOnServer()
 {
-	Super::OnPossess(InPawn);
-
-	/*ABaseTank* pawn = Cast<ABaseTank>(InPawn);
-	if (pawn != nullptr && Cast<ABaseGameState>(UGameplayStatics::GetGameState(this))->RoundInProgress)
-	{
-		if (pawn->component != nullptr)
-		{
-			
-		}
-	}*/
+	Cast<ABase_GameMode>(UGameplayStatics::GetGameMode(this))->RoundEnded.RemoveDynamic(this, &APawnController::RoundEndedInRespawnOnServer);
+	GetWorldTimerManager().ClearTimer(RespswnTime);
 }
-
 
 void APawnController::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 }
 
-void APawnController::RoundEnded()
+void APawnController::RoundEndedOnClient()
 {
-	ABaseHUD* HUD = Cast<ABaseHUD>(GetHUD());
-	if (HUD != nullptr)
-	{
-		HUD->ToggleHUD(false);
-		DisableInput(this);
-	}
+	DisableInput(this);
 }
 
 void APawnController::RoundStarted()

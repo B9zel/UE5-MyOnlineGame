@@ -23,6 +23,7 @@ AGame_Spectator::AGame_Spectator()
 	
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(Spring_Arm);
+	
 //	Camera->SetRelativeRotation(FRotator(10.0f, 0.0f, 0.0f));
 	//UCollisionProfile::GetChannelAndResponseParams("Spectator", ECollisionChannel::ECC_GameTraceChannel1, FCollisionResponseParams::DefaultResponseParam);
 	bUseControllerRotationPitch = true;

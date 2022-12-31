@@ -1,4 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -24,18 +23,25 @@ public:
 	void ToggleTab(bool isShow);
 
 	void ToggleSpectatorHUD(bool isShow);
+
+	void TogglePreRound(bool isShow);
+
+	void ToggleEndRound(bool isShow);
 	UFUNCTION()
 	void OnRoundStarted();
+
+	UFUNCTION()
+		void OnRoundEnded();
 
 	UFUNCTION()
 	UGame_Interface* GetHUDWidget();
 	UFUNCTION()
 	UStatisticsMenu* GetTabWidget();
+
 	UFUNCTION()
 	void OnPlayerAlive();
 	UFUNCTION()
 	void OnPlayerDead(ABaseTank* DeathInstigator);
-
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TSubclassOf<class UStatisticsMenu> TabWidgetClass;
@@ -43,9 +49,15 @@ public:
 		TSubclassOf<class UGame_Interface> HUDWidgetClass;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TSubclassOf<class UW_Spectator> SpectatorWidgetClass;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TSubclassOf<class UW_PreRound> PreRoundWidgetClass;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TSubclassOf<class UW_ResultsEndRound> EndRoundWidgetClass;
 private:
 
-	class UStatisticsMenu* TabWidget;
-	class UGame_Interface* HUDWidget;
-	class UW_Spectator* SpectatorWidget;
+	class UStatisticsMenu* m_TabWidget;
+	class UGame_Interface* m_HUDWidget;
+	class UW_Spectator* m_SpectatorWidget;
+	class UW_PreRound* m_PreRoundWidget;
+	class UW_ResultsEndRound* m_EndRoundWidget;
 };

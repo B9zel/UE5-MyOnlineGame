@@ -18,7 +18,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, ReplicatedUsing = InitailizrProperty)
 		float Max_HP;
 
-	UPROPERTY(BlueprintReadWrite, ReplicatedUsing = OnRep_UpdateWidget)
+	UPROPERTY(BlueprintReadWrite, Replicated)
 		float Courrent_HP;
 	UPROPERTY(BlueprintReadWrite, ReplicatedUsing = Dead_OnOwnerClient)
 		bool IsDead;
@@ -37,9 +37,6 @@ public:
 
 	UFUNCTION()
 		void OnPlayerTakeAnyDamage(AActor* DamagedActor, float damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);
-
-	UFUNCTION()
-		void OnRep_UpdateWidget();
 
 	UFUNCTION()
 		void Dead_OnOwnerClient();

@@ -44,7 +44,8 @@ public:
 		  void Pawn_Dead(APlayerController* DeadPlayer, APlayerController* DeathInstigator);
 
 	UFUNCTION()
-		virtual AGame_Spectator* Spawn_Spectator(class APlayerController* Player, class APlayerController* DeadInstigator);
+		virtual AGame_Spectator* SpawnSpectator(class APlayerController* Player, class APlayerController* DeadInstigator);
+
 	// Implementation in Blueprint
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 		 ABaseTank* Spawn_Player(APlayerController* PlayerController, TSubclassOf<class AActor> SpawnClass);

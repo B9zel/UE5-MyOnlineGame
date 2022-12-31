@@ -10,5 +10,8 @@
 
 void UW_SpectateInfoKill::SetKilledInfo(APlayerStatistic* PlayerState)
 {
-	NameKiller->SetText(FText::FromString(PlayerState->GetPlayerName()));
+	if (PlayerState != nullptr)
+	{
+		NameKiller->SetText(FText::FromString(PlayerState->GetPlayerName()));
+	}
 }

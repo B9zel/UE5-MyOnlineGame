@@ -4,7 +4,7 @@
 #include <Components/StaticMeshComponent.h>
 #include <GameFramework/ProjectileMovementComponent.h>
 #include <Kismet/GameplayStatics.h>
-#include <MyGAME2/Pawns/HeavyTank.h>
+#include <MyGAME2/HealthStat.h>
 #include "BaseTank.h"
 
 
@@ -22,16 +22,12 @@ Abullet::Abullet()
 
 	ProjectileMovement->ProjectileGravityScale = 0.2f;
 
-	//Box_collision->OnComponentHit.AddDynamic(this, &Abullet::OnHit);
-
 	Box_collision->OnComponentBeginOverlap.AddDynamic(this, &Abullet::BaginOverlap);
+	Box_collision->OnComponentHit.AddDynamic(this, &Abullet::HitOverlap);
 
-	Box_collision->OnComponentHit.AddDynamic(this, &Abullet::OnHit);
-	
 	TimeDestroy = 3.0f;
 }
 
-// Called when the game starts or when spawned
 void Abullet::BeginPlay()
 {
 	Super::BeginPlay();
@@ -40,13 +36,14 @@ void Abullet::BeginPlay()
 	{
 		SetReplicates(true);
 		SetReplicateMovement(true);
-	}
 
+		Damage = Cast<ABaseTank>(GetOwner())->GetDamage();
+	}
+	
 	FTimerHandle handle;
 	GetWorldTimerManager().SetTimer(handle, this, &Abullet::Destroyer, TimeDestroy, false);
 }
 
-// Called every frame
 void Abullet::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -59,25 +56,37 @@ void Abullet::Destroyer()
 
 void Abullet::BaginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	//	class ABaseTank* actor = Cast<ABaseTank>(OtherActor);
-	TSubclassOf<UDamageType> typeDamage;
-
-	if (GetOwner() != OtherActor)
+	class ABaseTank* pawn = Cast<ABaseTank>(OtherActor);
+	
+	if (pawn != nullptr)
 	{
-		if (HasAuthority())
-		{
-			UGameplayStatics::ApplyDamage(OtherActor, Damage, GetOwner()->GetInstigatorController(), this, typeDamage);
-		}
-		else
-		{
-			UGameplayStatics::SpawnEmitterAtLocation(this->GetWorld(), iscra, FTransform(GetActorRotation(), GetActorLocation(), FVector(0.5f, 0.5f, 0.5f)));
-		}
-		Destroy();
+		if (pawn->HP_Component->IsDead)
+			return;
 
+		if (GetOwner() != pawn)
+		{
+			if (HasAuthority())
+			{
+				TSubclassOf<UDamageType> typeDamage;
+				UGameplayStatics::ApplyDamage(pawn, Damage, GetOwner()->GetInstigatorController(), this, typeDamage);
+				ShowDamgeOnServer(Damage, GetActorLocation());
+			}
+			else
+			{
+				UGameplayStatics::SpawnEmitterAtLocation(this->GetWorld(), iscra, FTransform(GetActorRotation(), GetActorLocation(), FVector(0.5f, 0.5f, 0.5f)));
+			}
+			Destroy();
+		}
+
+	}
+	else
+	{
+		Destroy();
 	}
 }
 
-void Abullet::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+void Abullet::HitOverlap(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
+	//For collision with walls
 	Destroy();
 }

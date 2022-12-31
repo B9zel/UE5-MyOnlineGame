@@ -10,13 +10,12 @@
 #include <MyGAME2/Game/Base_GameMode.h>
 #include "PawnController.h"
 #include <MyGAME2/Game/BaseHUD.h>
+#include "Game/PlayerStatistic.h"
 // Sets default values for this component's properties
 UHealthStat::UHealthStat()
 {
 	PrimaryComponentTick.bCanEverTick = false;
 
-	SetIsReplicated(true);
-	
 	IsDead = false;
 
 	Impulse = 50000.0f;
@@ -28,6 +27,8 @@ void UHealthStat::BeginPlay()
 {
 	Super::BeginPlay();
 
+	SetIsReplicated(true);
+
 	owner = Cast<ABaseTank>(GetOwner());
 	if (owner != nullptr)
 	{
@@ -35,8 +36,6 @@ void UHealthStat::BeginPlay()
 	}
 	
 }
-
-
 
 void UHealthStat::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
@@ -51,6 +50,8 @@ void UHealthStat::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifet
 
 void UHealthStat::OnPlayerTakeAnyDamage(AActor* DamagedActor, float damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
 {
+	if (IsDead)
+		return;
 	if (owner->GameMode->ShouldDamagePlayer(Cast<APlayerController>(owner->GetController()), Cast<APlayerController>(InstigatedBy)))
 	{
 		Courrent_HP -= FMath::Clamp(damage, 0.0f, Max_HP);
@@ -66,24 +67,11 @@ void UHealthStat::OnPlayerTakeAnyDamage(AActor* DamagedActor, float damage, cons
 	}
 }
 
-void UHealthStat::OnRep_UpdateWidget()
-{
-	/*ABaseHUD* HUD = Cast<APawnController>(GetOwner()->GetInstigatorController())->GetHUD<ABaseHUD>();
-	if (owner->Main_Widget == nullptr && HUD->GetHUDWidget() != nullptr)
-	{
-		owner->Main_Widget = HUD->GetHUDWidget();
-	}
-	if (owner->Main_Widget != nullptr)
-	{
-		owner->Main_Widget->HeadsStats->UpdateData();
-	}*/
-}
 
 void UHealthStat::Dead_OnOwnerClient()
 {
 	if (owner != nullptr && IsDead)
 	{
-		owner->DisableInput(Cast<APlayerController>(owner->GetController()));
 		Dead_Server_Implementation();
 	}
 }
