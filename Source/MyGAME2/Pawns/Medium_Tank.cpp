@@ -3,6 +3,8 @@
 #include <GameFramework/SpringArmComponent.h>
 #include <Engine/EngineTypes.h>
 #include <Engine/CollisionProfile.h>
+#include "../Game/BaseHUD.h"
+
 
 AMedium_Tank::AMedium_Tank()
 {
@@ -74,6 +76,7 @@ void AMedium_Tank::Enable_SuperPower_OnServer_Implementation()
 	if (!isSuper_Power)
 	{
 		Enable_SuperPower_NetMulticast();
+		EnableSuperPower_OnClient();
 
 		isSuper_Power = true;
 
@@ -93,9 +96,15 @@ void AMedium_Tank::Enable_SuperPower_NetMulticast_Implementation()
 	}
 }
 
+void AMedium_Tank::EnableSuperPower_OnClient_Implementation()
+{
+	GetController<APlayerController>()->GetHUD<ABaseHUD>()->ActivateSuperSkillWidget(TimeUse_SuperPower);
+}
+
 void AMedium_Tank::Disable_SuperPower_OnServer()
 {
 	Disable_SuperPower_NetMulticast();
+	DisableSuperPower_OnClient();
 	
 	FTimerHandle Handle;
 	GetWorldTimerManager().SetTimer(Handle, this, &AMedium_Tank::Disable_isSuperPower, TimeReload_SuperPower, false);
@@ -110,6 +119,11 @@ void AMedium_Tank::Disable_SuperPower_NetMulticast_Implementation()
 		Mesh->SetMaterial(0, BaseMaterial);
 		Towermesh->SetMaterial(0, TowerMaterial);
 	}
+}
+
+void AMedium_Tank::DisableSuperPower_OnClient_Implementation()
+{
+	GetController<APlayerController>()->GetHUD<ABaseHUD>()->ReloadSuperSkillWidget(TimeReload_SuperPower);
 }
 
 void AMedium_Tank::Disable_isSuperPower()

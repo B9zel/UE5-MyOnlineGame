@@ -24,11 +24,15 @@ public:
 	void Enable_SuperPower_OnServer();
 	UFUNCTION(NetMulticast, Unreliable)
 	void Enable_SuperPower_NetMulticast();
+	UFUNCTION(Client, Unreliable)
+	void EnableSuperPower_OnClient();
 
 	void Disable_SuperPower_OnServer();
 
 	UFUNCTION(NetMulticast, Unreliable)
 	void Disable_SuperPower_NetMulticast();
+	UFUNCTION(Client, Unreliable)
+		void DisableSuperPower_OnClient();
 
 	void Disable_isSuperPower();
 private:

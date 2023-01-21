@@ -9,12 +9,21 @@
 #include "../Enums/E_GameState.h"
 #include "../Widgets/PreRound/W_PreRound.h"
 #include "../Widgets/EndRound/W_ResultsEndRound.h"
+#include "../Widgets/Ganeral/Chat/W_Chat.h"
+#include "../Widgets/InGame/W_SuperPower.h"
+#include "../Widgets/InGame/W_Aim.h"
+#include "../BaseTank.h"
+
 
 
 ABaseHUD::~ABaseHUD()
 {
 	m_HUDWidget = nullptr;
 	m_TabWidget = nullptr;
+	m_EndRoundWidget = nullptr;
+	m_ChatWidget = nullptr;
+	m_PreRoundWidget = nullptr;
+	m_SpectatorWidget = nullptr;
 }
 
 void ABaseHUD::BeginPlay()
@@ -22,6 +31,7 @@ void ABaseHUD::BeginPlay()
 	Super::BeginPlay();
 
 	TogglePreRound(true);
+	CreateChat();
 	ABaseGameState* pGameState = Cast<ABaseGameState>(UGameplayStatics::GetGameState(this));
 	pGameState->RoundStarted.AddDynamic(this, &ABaseHUD::OnRoundStarted);
 	pGameState->RoundEnded.AddDynamic(this, &ABaseHUD::OnRoundEnded);
@@ -31,13 +41,16 @@ void ABaseHUD::ToggleHUD(bool isShow)
 {
 	if (isShow)
 	{
-		if (Cast<APlayerStatistic>(GetOwningPlayerController()->GetPlayerState<APlayerStatistic>())->isAlive)
+		if (Cast<ABaseGameState>(UGameplayStatics::GetGameState(this))->RoundInProgress == E_GameState::Game)
 		{
-			if (m_HUDWidget == nullptr)
+			if (Cast<APlayerStatistic>(GetOwningPlayerController()->GetPlayerState<APlayerStatistic>())->isAlive)
 			{
-				m_HUDWidget = CreateWidget<UGame_Interface>(GetOwningPlayerController(), HUDWidgetClass);
+				if (m_HUDWidget == nullptr)
+				{
+					m_HUDWidget = CreateWidget<UGame_Interface>(GetOwningPlayerController(), HUDWidgetClass);
+				}
+				m_HUDWidget->AddToViewport();
 			}
-			m_HUDWidget->AddToViewport();
 		}
 	}
 	else
@@ -48,6 +61,7 @@ void ABaseHUD::ToggleHUD(bool isShow)
 			m_HUDWidget = nullptr;
 		}
 	}
+	
 }
 
 void ABaseHUD::ToggleTab(bool isShow)
@@ -136,48 +150,158 @@ void ABaseHUD::ToggleEndRound(bool isShow)
 	}
 }
 
+void ABaseHUD::ToggleChat(bool isActivate)
+{
+	if (isActivate)
+	{
+		m_ChatWidget->ActivateChat();
+	}
+	else
+	{
+		m_ChatWidget->DeactivateChat();
+
+		FInputModeGameOnly inputMode;
+		GetOwningPlayerController()->SetInputMode(inputMode);
+	}
+}
+
+void ABaseHUD::ToggleSuperPower(bool isShow, bool isRemove)
+{
+	if (isShow)
+	{
+		if (m_superskillWidget == nullptr)
+		{
+			m_superskillWidget = CreateWidget<UW_SuperPower>(GetOwningPlayerController(), superskillWidgetClass);
+			m_superskillWidget->AddToViewport();
+		}
+		else if (m_superskillWidget != nullptr)
+		{
+			m_superskillWidget->SetVisibility(ESlateVisibility::Visible);
+		}
+	}
+	else
+	{
+		if (isRemove && m_superskillWidget != nullptr)
+		{
+			m_superskillWidget->RemoveFromParent();
+			m_superskillWidget = nullptr;
+		}
+		else if (m_superskillWidget != nullptr)
+		{
+			m_superskillWidget->SetVisibility(ESlateVisibility::Collapsed);
+		}
+	}
+}
+
+void ABaseHUD::ToggleAim(bool isShow)
+{
+	if (isShow)
+	{
+		if (m_aimWidget == nullptr)
+		{
+			m_aimWidget = CreateWidget<UW_Aim>(GetOwningPlayerController(), AimWidgetClass);
+		}
+		m_aimWidget->AddToViewport(-1);
+	}
+	else if (m_aimWidget != nullptr)
+	{
+		m_aimWidget->RemoveFromParent();
+		m_aimWidget = nullptr;
+	}
+}
+
 void ABaseHUD::OnRoundStarted()
 {
 	APlayerStatistic* PlayerState = GetOwningPlayerController()->GetPlayerState<APlayerStatistic>();
+	
 	TogglePreRound(false);
 	ToggleHUD(true);
 	if (PlayerState != nullptr)
 	{
 		PlayerState->PlayerAlive.AddDynamic(this, &ABaseHUD::OnPlayerAlive);
 		PlayerState->PlayerDead.AddDynamic(this, &ABaseHUD::OnPlayerDead);
+		PlayerState->GetPlayerController()->GetPawn<ABaseTank>()->D_SpawnTankPawn.AddDynamic(this, &ABaseHUD::OnSpawnTankPawn);
 	}
+	
+	
 }
 
 void ABaseHUD::OnRoundEnded()
 {
 	ToggleHUD(false);
 	ToggleTab(false);
+	ToggleSuperPower(false, true);
 	ToggleSpectatorHUD(false);
 	ToggleEndRound(true);
 }
 
-UGame_Interface* ABaseHUD::GetHUDWidget()
+const UGame_Interface* ABaseHUD::GetHUDWidget() const
 {
 	return m_HUDWidget;
 }
 
-UStatisticsMenu* ABaseHUD::GetTabWidget()
+const UStatisticsMenu* ABaseHUD::GetTabWidget() const
 {
 	return m_TabWidget;
 }
 
+const UW_Chat* ABaseHUD::GetChatWidget() const
+{
+	return m_ChatWidget;
+}
+
 void ABaseHUD::OnPlayerAlive()
 {
-	ToggleHUD(true);
 	ToggleSpectatorHUD(false);
+	ToggleHUD(true);
+	ToggleSuperPower(true);
 }
 
 void ABaseHUD::OnPlayerDead(ABaseTank* DeathInstigator)
 {
 	ToggleHUD(false);
+	ToggleSuperPower(false, true);
 	ToggleSpectatorHUD(true);
 	if (m_SpectatorWidget != nullptr && Cast<ABaseGameState>(UGameplayStatics::GetGameState(this))->RoundInProgress == E_GameState::Game)
 	{
 		m_SpectatorWidget->SetDeathInfo(DeathInstigator);
+	}
+}
+
+void ABaseHUD::SetWidgetSuperPower(class UW_SuperPower* Widget)
+{
+	m_superskillWidget = Widget;
+}
+
+void ABaseHUD::CreateChat()
+{
+	m_ChatWidget = CreateWidget<UW_Chat>(GetOwningPlayerController(), ChatWidgetClass);
+	m_ChatWidget->AddToViewport(1);
+}
+
+bool ABaseHUD::isActivateChat()
+{
+	return m_ChatWidget->isActivate;
+}
+
+void ABaseHUD::OnSpawnTankPawn(TSubclassOf<UW_SuperPower> Widget)
+{
+	superskillWidgetClass = Widget;
+}
+
+
+void ABaseHUD::ActivateSuperSkillWidget(float InRate)
+{
+	if (m_superskillWidget != nullptr)
+	{
+		m_superskillWidget->Activate(InRate);
+	}
+}
+
+void ABaseHUD::ReloadSuperSkillWidget(float InRate)
+{
+	if (m_superskillWidget != nullptr)
+	{
+		m_superskillWidget->Reload(InRate);
 	}
 }

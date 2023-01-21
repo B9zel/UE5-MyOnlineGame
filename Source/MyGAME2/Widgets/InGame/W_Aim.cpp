@@ -1,12 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Test.h"
+#include "W_Aim.h"
 
-Test::Test()
-{
-}
-
-Test::~Test()
-{
-}

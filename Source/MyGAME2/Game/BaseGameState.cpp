@@ -6,6 +6,7 @@
 #include <MyGAME2/PawnController.h>
 #include <MyGAME2/Widgets/StatisticsMenu.h>
 #include "../Enums/E_GameState.h"
+#include <MyGAME2/Game/Components/ChatComponent.h>
 
 
 ABaseGameState::ABaseGameState()
@@ -13,9 +14,11 @@ ABaseGameState::ABaseGameState()
 	this->PrimaryActorTick.bCanEverTick = true;
 	this->PrimaryActorTick.TickInterval = 1.0f;
 
-	SetReplicates(true);
+	chatComponent = CreateDefaultSubobject<UChatComponent>(TEXT("Chat Component"));
 	RoundInProgress = E_GameState::PreStart;
+	playerInSession = 2;
 	
+	SetReplicates(true);
 }
 
 void ABaseGameState::BeginPlay()
@@ -72,13 +75,21 @@ void ABaseGameState::TickRoundTime()
 
 void ABaseGameState::TickPreRoundTime()
 {
-	PreStartRoundTimer -= FTimespan::FromSeconds(1.0f);
-	if (PreStartRoundTimer.GetTotalSeconds() <= 0 && RoundInProgress == E_GameState::PreStart)
+	if (PlayerArray.Num() >= playerInSession)
 	{
-		Cast<ABase_GameMode>(UGameplayStatics::GetGameMode(this))->StartRound();
-		RoundInProgress = E_GameState::Game;
-		RoundStarted.Broadcast();
+		PreStartRoundTimer -= FTimespan::FromSeconds(1.0f);
+		if (PreStartRoundTimer.GetTotalSeconds() <= 0 && RoundInProgress == E_GameState::PreStart)
+		{
+			Cast<ABase_GameMode>(UGameplayStatics::GetGameMode(this))->StartRound();
+			RoundInProgress = E_GameState::Game;
+			RoundStarted.Broadcast();
+		}
 	}
+	else
+	{
+		PreStartRoundTimer = FTimespan::FromSeconds(10);
+	}
+	
 }
 
 void ABaseGameState::RoundEnd_Multicast_Implementation()

@@ -12,13 +12,15 @@ class MYGAME2_API AHeavyTank : public ABaseTank
 {
 	GENERATED_BODY()
 
-public:
+protected:
 
 	AHeavyTank();
 
 	virtual void BeginPlay() override;
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	//virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	
 	UFUNCTION()
 	void EnableSuperPower_OnClient();
@@ -31,11 +33,15 @@ public:
 
 	UFUNCTION(Server, Unreliable)
 		void Shoot_Server();
+	UFUNCTION(Client, Unreliable)
+	void ToggleActivateSuperSkillWidget(bool isActivate);
+	UFUNCTION(Client, Unreliable)
+	void OnReloadSuperSkillWidget();
 
 	void Disable_isSuperPower();
 private:
 
 	float SuperDamage_Multiply;
 
-	bool isUse_SuperPower;
+	bool isReload;
 };

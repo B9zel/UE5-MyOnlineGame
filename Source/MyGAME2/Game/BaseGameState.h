@@ -18,6 +18,9 @@ public:
 
 	ABaseGameState();
 
+	UPROPERTY(BlueprintReadWrite,EditAnywhere)
+	class UChatComponent* chatComponent;
+
 	//UPROPERTY(BlueprintAssignable)
 	//	FDelegate TimeEnded;
 	UPROPERTY(BlueprintAssignable)
@@ -27,6 +30,9 @@ public:
 
 	UPROPERTY(ReplicatedUsing = OnRep_RoundInProgress,BlueprintReadWrite)
 		TEnumAsByte<enum E_GameState> RoundInProgress;
+	UPROPERTY(EditAnywhere)
+		uint16 playerInSession;
+	
 protected:
 
 	class ABase_GameMode* GameMode;

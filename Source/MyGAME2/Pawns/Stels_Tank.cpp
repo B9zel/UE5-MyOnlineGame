@@ -3,6 +3,8 @@
 #include <GameFramework/SpringArmComponent.h>
 #include <MyGAME2/HealthStat.h>
 #include <Net/UnrealNetwork.h>
+#include "../Game/BaseHUD.h"
+
 
 AStels_Tank::AStels_Tank()
 {
@@ -95,7 +97,7 @@ void AStels_Tank::Take_Damage(AActor* DamagedActor, float damage, const UDamageT
 
 void AStels_Tank::EnableSuperPower_OnClient_Implementation()
 {
-	if (isUseSuper_Power)
+	if (!isSuper_Power && isUseSuper_Power)
 	{
 		if (Material_InvisibleBase != nullptr && Material_InvisibleTower != nullptr && Material_Base != nullptr)
 		{
@@ -103,6 +105,8 @@ void AStels_Tank::EnableSuperPower_OnClient_Implementation()
 			Towermesh->SetMaterial(0, Material_InvisibleTower);
 		}
 		isSuper_Power = true;
+
+		GetController<APlayerController>()->GetHUD<ABaseHUD>()->ActivateSuperSkillWidget(TimeUse_SuperPower);
 		EnableSuperPower_OnServer();
 	}
 }
@@ -131,6 +135,7 @@ void AStels_Tank::EnableSuperPower_Multicast_Implementation()
 
 void AStels_Tank::DisableSuperPower_OnClient()
 {
+	GetController<APlayerController>()->GetHUD<ABaseHUD>()->ReloadSuperSkillWidget(TimeReload_SuperPower);
 	if (Material_Base != nullptr && Material_BaseTower != nullptr)
 	{
 		Mesh->SetMaterial(0, Material_Base);

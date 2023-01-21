@@ -23,8 +23,12 @@ public:
 
 	UFUNCTION(Server, Unreliable)
 	void EnableSuperPower_OnServer();
+	UFUNCTION(Client, Unreliable)
+	void EnableSuperPower_OnClient();
 
 	void DisableSuperPower_OnServer();
+	UFUNCTION(Client, Unreliable)
+	void DisableSuperPower_OnClient();
 
 	void Disable_isSuperPower();
 private:

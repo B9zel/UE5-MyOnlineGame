@@ -1,6 +1,7 @@
 
 #include "Light_Tank.h"
 #include <GameFramework/SpringArmComponent.h>
+#include "../Game/BaseHUD.h"
 
 
 ALight_Tank::ALight_Tank()
@@ -15,7 +16,7 @@ ALight_Tank::ALight_Tank()
 
 	Rotation_speed = 90.0f;
 
-	Towerrotation_speed = 90.0f;
+	Towerrotation_speed = 60.0f;
 
 	TimeReload = 1.5f;
 
@@ -69,6 +70,15 @@ void ALight_Tank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	PlayerInputComponent->BindAction("SuperPower", IE_Pressed, this, &ALight_Tank::EnableSuperPower_OnServer);
 }
 
+
+
+
+void ALight_Tank::EnableSuperPower_OnClient_Implementation()
+{
+	GetController<APlayerController>()->GetHUD<ABaseHUD>()->ActivateSuperSkillWidget(TimeUse_SuperPower);
+}
+
+
 void ALight_Tank::EnableSuperPower_OnServer_Implementation()
 {
 	if (!isSuper_Power)
@@ -79,10 +89,12 @@ void ALight_Tank::EnableSuperPower_OnServer_Implementation()
 		Rotation_speed += Super_rotationSpeed;
 		Towerrotation_speed += Super_TowerRotation_Speed;
 
+		EnableSuperPower_OnClient();
 		FTimerHandle Timer;
 		GetWorldTimerManager().SetTimer(Timer, this, &ALight_Tank::DisableSuperPower_OnServer, TimeUse_SuperPower, false);
 	}
 }
+
 
 void ALight_Tank::DisableSuperPower_OnServer()
 {
@@ -90,8 +102,14 @@ void ALight_Tank::DisableSuperPower_OnServer()
 	Rotation_speed -= Super_rotationSpeed;
 	Towerrotation_speed -= Super_TowerRotation_Speed;
 
+	DisableSuperPower_OnClient();
 	FTimerHandle Timer;
 	GetWorldTimerManager().SetTimer(Timer, this, &ALight_Tank::Disable_isSuperPower, TimeReload_SuperPower, false);
+}
+
+void ALight_Tank::DisableSuperPower_OnClient_Implementation()
+{
+	GetController<APlayerController>()->GetHUD<ABaseHUD>()->ReloadSuperSkillWidget(TimeReload_SuperPower);
 }
 
 void ALight_Tank::Disable_isSuperPower()

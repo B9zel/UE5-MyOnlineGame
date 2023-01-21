@@ -14,7 +14,7 @@ class MYGAME2_API UPlayerStat : public UUserWidget
 	GENERATED_BODY()
 
 public:
-	
+
 	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
 		class UTextBlock* NickName;
 	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
@@ -25,9 +25,11 @@ public:
 		class UBorder* ColorBorder;
 
 	class APlayerStatistic* PlayerState;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FSlateColor colorAllComponents;
+protected:
 
-public:
-
+	
 	UFUNCTION()
 	virtual void NativeConstruct() override;
 
@@ -39,4 +41,5 @@ public:
 	FText BindDeaths();
 	UFUNCTION()
 	FText BindKills();
+
 };

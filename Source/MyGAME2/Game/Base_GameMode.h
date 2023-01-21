@@ -44,7 +44,7 @@ public:
 		  void Pawn_Dead(APlayerController* DeadPlayer, APlayerController* DeathInstigator);
 
 	UFUNCTION()
-		virtual AGame_Spectator* SpawnSpectator(class APlayerController* Player, class APlayerController* DeadInstigator);
+		virtual void SpawnSpectator(class APlayerController* Player, class APlayerController* DeadInstigator);
 
 	// Implementation in Blueprint
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
@@ -58,9 +58,6 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		virtual void StopRound();
-
-	UFUNCTION(NetMulticast, Unreliable)
-		void StopRoundOnClient(APlayerController* PlayerController);
 
 	UFUNCTION()
 		void RechedTimeLimit();

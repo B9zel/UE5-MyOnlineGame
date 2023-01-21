@@ -12,7 +12,7 @@ class MYGAME2_API APawnController : public APlayerController
 {
 	GENERATED_BODY()
 
-public:
+private:
 	APawnController();
 	
 	virtual void BeginPlay() override;
@@ -25,28 +25,29 @@ public:
 	UFUNCTION()
 	void RoundStarted();
 
-	void Respawn();
-
-	void TimerRespawn(float Time);
-
 	void EnableTabMenu();
 
 	void DisableTabMenu();
 
-	UFUNCTION()
-	void RoundEndedInRespawnOnServer();
-	//UFUNCTION()
-	
+	void ActivateChatWidget();
 
+	void DeactivateChatWidget();
+
+	void Respawn();
 public:
 
+	UFUNCTION()
+	void RoundEndedInRespawnOnServer();
+	
+	void TimerRespawn(float Time);
+	UFUNCTION(Server, Reliable)
+	void SendMessege_OnServer(const FText& messege);
+
+	
+public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<class APawn> Spawn_Pawn;
 
-	FTimerHandle RespswnTime;
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	//class UGame_Interface* Game_Interface;
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
-//	class UStatisticsMenu* TabMenu;
+	FTimerHandle RespawnTime;
 };

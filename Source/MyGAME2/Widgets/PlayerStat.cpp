@@ -7,6 +7,7 @@
 #include <Styling/SlateColor.h>
 #include <Components/Border.h>
 
+
 void UPlayerStat::NativeConstruct()
 {
 	Super::NativeConstruct();
@@ -20,6 +21,13 @@ void UPlayerStat::NativeConstruct()
 	
 	Kills->TextDelegate.BindDynamic(this, &UPlayerStat::BindKills);
 	Kills->SynchronizeProperties();
+
+	if (PlayerState->GetPlayerController() == GetOwningPlayer())
+	{
+		NickName->SetColorAndOpacity(colorAllComponents);
+		Deaths->SetColorAndOpacity(colorAllComponents);
+		Kills->SetColorAndOpacity(colorAllComponents);
+	}
 }
 
 
@@ -35,6 +43,10 @@ FSlateColor UPlayerStat::BindColorName()
 	if (!PlayerState->isAlive)
 	{
 		Color = FLinearColor(0.1f, 0.0f, 0.0f, 0.65f);
+	}
+	else if (PlayerState->GetPlayerController() == GetOwningPlayer())
+	{
+		Color = FLinearColor(0.f, 1.f, 1.f, 1.f);
 	}
 	return FSlateColor(Color);
 }

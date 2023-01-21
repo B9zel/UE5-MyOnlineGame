@@ -6,6 +6,7 @@
 #include <Components/SceneComponent.h>
 #include <GameFramework/ProjectileMovementComponent.h>
 #include <Kismet/GameplayStatics.h>
+#include <GameFramework/Controller.h>
 #include <MyGAME2/PawnController.h>
 #include <Net/UnrealNetwork.h>
 #include <MyGAME2/HealthStat.h>
@@ -14,12 +15,16 @@
 #include "Game_Interface.h"
 #include <MyGAME2/Game/Base_GameMode.h>
 #include "Game/PlayerStatistic.h"
+#include "Widgets/InGame/W_SuperPower.h"
+#include "Game/BaseHUD.h"
+
 
 
 ABaseTank::ABaseTank()
 {
-	PrimaryActorTick.bCanEverTick = true;
-
+	
+		PrimaryActorTick.bCanEverTick = true;
+	
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	Mesh->SetupAttachment(RootComponent);
 
@@ -58,7 +63,18 @@ void ABaseTank::BeginPlay()
 	Super::BeginPlay();
 
 	HP_Component->Max_HP = this->Max_HP;
+	
+	if (!HasAuthority())
+	{
+		ABaseHUD* HUD = GetController<APlayerController>() != nullptr ? GetController<APlayerController>()->GetHUD<ABaseHUD>() : nullptr;
+		if (HUD != nullptr)
+		{
+			HUD->superskillWidgetClass = struction.superSkillWidgetClass;
+		}
+	}
+	
 }
+
 
 // Called every frame
 void ABaseTank::Tick(float DeltaTime)
@@ -112,23 +128,19 @@ void ABaseTank::RightMove_Implementation(float Axis)
 
 void ABaseTank::ClientRotateTower()
 {	
-	target = GetControlRotation().Yaw - Mesh->GetComponentRotation().Yaw;
-	if (target > 180)
-		target -= 360;
-	CallRotateTower(target);
-	
+	if (IsLocallyControlled())
+	{
+		target = GetControlRotation().Yaw - Mesh->GetComponentRotation().Yaw;
+		if (target > 180)
+			target -= 360;
+		RotateTower_OnServer(target);
+	}
 }
 
-void ABaseTank::CallRotateTower_Implementation(float Target)
+void ABaseTank::RotateTower_OnServer_Implementation(float Target)
 {
-	RotateTower_Implementation(Target);
-}
-
-void ABaseTank::RotateTower_Implementation(float Target)
-{
-	//math = FMath::FInterpTo(Towermesh->GetRelativeRotation().Yaw, Target, GetWorld()->GetDeltaSeconds(), Towerrotation_speed);
 	math = InterpTo(Towermesh->GetRelativeRotation().Yaw, Target, GetWorld()->GetDeltaSeconds(), Towerrotation_speed);
-	Towermesh->SetRelativeRotation(FRotator(0.0f, FMath::Clamp(math, -120.0f, 120.0f), 0.0f));
+	Towermesh->SetRelativeRotation(FRotator(0.0f, FMath::Clamp(Target, -120.0f, 120.0f), 0.0f));
 }
 
 void ABaseTank::EnableAim()
@@ -136,6 +148,12 @@ void ABaseTank::EnableAim()
 	IsAim = true;
 	camera->Deactivate();
 	SecondCamera->Activate();
+	ABaseHUD* HUD = GetController<APlayerController>()->GetHUD<ABaseHUD>();
+	if (HUD != nullptr)
+	{
+		HUD->ToggleAim(true);
+		HUD->ToggleSuperPower(false);
+	}
 }
 
 void ABaseTank::DisableAim()
@@ -143,6 +161,12 @@ void ABaseTank::DisableAim()
 	IsAim = false;
 	SecondCamera->Deactivate();
 	camera->Activate();
+	ABaseHUD* HUD = GetController<APlayerController>()->GetHUD<ABaseHUD>();
+	if (HUD != nullptr)
+	{
+		HUD->ToggleAim(false);
+		HUD->ToggleSuperPower(true);
+	}
 }
 
 void ABaseTank::Shoot_OnServer_Implementation()
@@ -243,3 +267,9 @@ float ABaseTank::InterpTo(float Current, float Target, float DeltaTime, float sp
 	}
 	return Current;
 }
+
+//TSubclassOf<UW_SuperPower> ABaseTank::GetSuperSkillWidget()
+//{
+//	//Cast<APlayerController>(GetController())->GetHUD<ABaseHUD>()->superskillWidgetClass =
+//	return struction.superSkillWidgetClass;
+//}

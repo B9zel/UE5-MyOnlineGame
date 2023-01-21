@@ -7,10 +7,10 @@
 #include "BaseTank.generated.h"
 
 
-
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDelegateSpawn, TSubclassOf<UW_SuperPower>,Widget);
 
 USTRUCT(BlueprintType)
-struct FObject_struction
+struct FReferenceOnElement
 {
 
 	GENERATED_BODY()
@@ -24,8 +24,8 @@ public:
 		class UParticleSystem* Explosion;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		class USoundBase* Shoot_sound;
-
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TSubclassOf<class UW_SuperPower> superSkillWidgetClass;
 	/*UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TSubclassOf<class APArticleAndSound> Shoot_effect;*/
 };
@@ -65,8 +65,7 @@ public:
 		class UCameraComponent* SecondCamera;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		FObject_struction struction;
-
+		FReferenceOnElement struction;
 
 	class UGame_Interface* Main_Widget;
 
@@ -74,11 +73,13 @@ public:
 
 	float TimeReload;
 
-	float TimeReoload_SuperPower;
+	float TimeReload_SuperPower;
 
 	float TimeUse_SuperPower;
 
 	float TimeDestroy;
+
+	FDelegateSpawn D_SpawnTankPawn;
 
 protected:
 	// Called when the game starts or when spawned
@@ -98,8 +99,6 @@ protected:
 
 	bool isSuper_Power;
 
-	float TimeReload_SuperPower;
-
 	float Damage;
 
 	float Max_HP;
@@ -112,8 +111,8 @@ private:
 
 	virtual void PossessedBy(AController* Controller) override;
 		
-
-public:	
+	
+protected:
 	
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
@@ -129,10 +128,7 @@ public:
 	UFUNCTION()
 	virtual void ClientRotateTower();
 	UFUNCTION(Server, Reliable)
-	void CallRotateTower(float Target);
-
-	UFUNCTION(NetMulticast, Reliable)
-		virtual void RotateTower(float Target);
+	void RotateTower_OnServer(float Target);
 
 	UFUNCTION()
 		void EnableAim();
@@ -148,17 +144,21 @@ public:
 
 	UFUNCTION(Client, Unreliable)
 		void Widget_ReloadShoot();
-	
-	UFUNCTION(NetMulticast, Reliable)
-		virtual void VisualDeadMulticast();
 
+	UFUNCTION(BlueprintCallable)
+		float InterpTo(float Current, float Target, float DeltaTime, float Speed);
+	//UFUNCTION(Client, Unreliable)
+	//	TSubclassOf<class UW_SuperPower> GetSuperSkillWidget();
+public:
+	
 	void Destroy();
 
 	ABase_GameMode* Get_GameMode(class AActor* Object);
 
 	UFUNCTION(BlueprintCallable)
-	float GetDamage();
+		float GetDamage();
 
-	UFUNCTION(BlueprintCallable)
-	float InterpTo(float Current, float Target, float DeltaTime, float Speed);
+	UFUNCTION(NetMulticast, Reliable)
+		virtual void VisualDeadMulticast();
+	
 };

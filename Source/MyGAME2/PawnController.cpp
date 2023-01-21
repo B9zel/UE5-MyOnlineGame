@@ -1,20 +1,19 @@
-// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include <MyGAME2/PawnController.h>
 #include <Blueprint/WidgetBlueprintLibrary.h>
-#include <GameFramework/HUD.h>
 #include <Kismet/GameplayStatics.h>
 #include <MyGAME2/Game/Base_GameMode.h>
-#include <MyGAME2/Game_Interface.h>
-#include "BaseTank.h"
 #include <Net/UnrealNetwork.h>
-#include "Widget_HP.h"
 #include <MyGAME2/Game/BaseGameState.h>
 #include <MyGAME2/Widgets/StatisticsMenu.h>
-#include <Blueprint/WidgetBlueprintLibrary.h>
 #include <MyGAME2/Game/BaseHUD.h>
 #include <MyGAME2/Game_Spectator.h>
+#include <MyGAME2/Game/Components/ChatComponent.h>
+#include <GameFramework/PlayerState.h>
+#include <MyGAME2/Widgets/Ganeral/Chat/W_Chat.h>
+
+
 
 
 APawnController::APawnController()
@@ -47,6 +46,8 @@ void APawnController::SetupInputComponent()
 		InputComponent->BindAxis("LookRight", this, &APawnController::AddYawInput);
 		InputComponent->BindAction("CreateWidget",IE_Pressed, this, &APawnController::EnableTabMenu);
 		InputComponent->BindAction("CreateWidget", IE_Released, this, &APawnController::DisableTabMenu);
+		InputComponent->BindAction("SwitchChat", IE_Pressed, this, &APawnController::ActivateChatWidget);
+		InputComponent->BindAction("Escape", IE_Pressed, this, &APawnController::DeactivateChatWidget);
 	}
 }
 
@@ -60,8 +61,8 @@ void APawnController::Respawn()
 
 void APawnController::TimerRespawn(float Time)
 {
-	RespswnTime.Invalidate();
-	GetWorldTimerManager().SetTimer(RespswnTime, this, &APawnController::Respawn, Time);
+	RespawnTime.Invalidate();
+	GetWorldTimerManager().SetTimer(RespawnTime, this, &APawnController::Respawn, Time);
 }
 
 
@@ -71,6 +72,7 @@ void APawnController::EnableTabMenu()
 	if (HUD != nullptr && !HasAuthority())
 	{
 		HUD->ToggleTab(true);
+		HUD->ToggleSuperPower(false);
 		HUD->ToggleHUD(false);
 	}
 }
@@ -81,14 +83,40 @@ void APawnController::DisableTabMenu()
 	if (HUD != nullptr && !HasAuthority())
 	{
 		HUD->ToggleTab(false);
+		HUD->ToggleSuperPower(true);
 		HUD->ToggleHUD(true);
 	}
 }
 
+void APawnController::ActivateChatWidget()
+{
+	ABaseHUD* HUD = GetHUD<ABaseHUD>();
+	if (HUD != nullptr)
+	{
+		if (!HUD->isActivateChat())
+		{
+			HUD->ToggleChat(true);
+		}
+	}
+}
+
+void APawnController::DeactivateChatWidget()
+{
+	ABaseHUD* HUD = GetHUD<ABaseHUD>();
+	if (HUD != nullptr)
+	{
+		if (HUD->isActivateChat())
+		{
+			HUD->ToggleChat(false);
+		}
+	}
+}
+
+
 void APawnController::RoundEndedInRespawnOnServer()
 {
 	Cast<ABase_GameMode>(UGameplayStatics::GetGameMode(this))->RoundEnded.RemoveDynamic(this, &APawnController::RoundEndedInRespawnOnServer);
-	GetWorldTimerManager().ClearTimer(RespswnTime);
+	GetWorldTimerManager().ClearTimer(RespawnTime);
 }
 
 void APawnController::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -98,13 +126,18 @@ void APawnController::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutL
 
 void APawnController::RoundEndedOnClient()
 {
-	DisableInput(this);
+	//DisableInput(this);
 }
 
 void APawnController::RoundStarted()
 {
 }
 
+
+void APawnController::SendMessege_OnServer_Implementation(const FText& messege)
+{
+	Cast<ABaseGameState>(UGameplayStatics::GetGameState(this))->chatComponent->OnPostMessage(messege, GetPlayerState<APlayerState>());
+}
 
 //void APawnController::Set_RefForWidget_OnClient()
 //{

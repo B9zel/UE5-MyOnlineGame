@@ -3,7 +3,7 @@
 #include <GameFramework/SpringArmComponent.h>
 #include <Kismet/GameplayStatics.h>
 #include <MyGAME2/bullet.h>
-//#include <MyGAME2/Heads_Stats.h>
+#include "../Game/BaseHUD.h"
 #include <MyGAME2/BaseTank.h>
 //#include <Kismet/KismetSystemLibrary.h>
 
@@ -14,6 +14,8 @@ AHeavyTank::AHeavyTank()
 
 	spring_arm->bUsePawnControlRotation = true;
 	spring_arm->bInheritRoll = false;
+
+	this->Max_HP = 300;
 
 	Speed = 100.0f;
 	
@@ -38,6 +40,8 @@ AHeavyTank::AHeavyTank()
 	isSuper_Power = false;
 
 	SuperDamage_Multiply = 2.0f;
+
+	isReload = false;
 }
 
 void AHeavyTank::BeginPlay()
@@ -68,7 +72,6 @@ void AHeavyTank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 	PlayerInputComponent->BindAction("SuperPower", IE_Pressed, this, &AHeavyTank::EnableSuperPower_OnClient);
 }
 
-
 void AHeavyTank::Shoot_Server_Implementation()
 {
 	ABaseTank::Shoot_OnServer();
@@ -76,8 +79,10 @@ void AHeavyTank::Shoot_Server_Implementation()
 	if (isSuper_Power)
 	{
 		isSuper_Power = false;
+		isReload = true;
 		DisableSuperPower_OnServer_Implementation();
 
+		OnReloadSuperSkillWidget();
 		FTimerHandle TimerHandle;
 		GetWorldTimerManager().SetTimer(TimerHandle, this, &AHeavyTank::Disable_isSuperPower, TimeReload_SuperPower, false);
 	}
@@ -90,10 +95,17 @@ void AHeavyTank::EnableSuperPower_OnClient()
 
 void AHeavyTank::EnableSuperPower_OnServer_Implementation()
 {
-	if (isSuper_Power)
+	if (!isSuper_Power && !isReload)
 	{
 		isSuper_Power = true;
 		Damage *= SuperDamage_Multiply;
+		ToggleActivateSuperSkillWidget(true);
+	}
+	else if (!isReload)
+	{
+		DisableSuperPower_OnServer_Implementation();
+		Disable_isSuperPower();
+		ToggleActivateSuperSkillWidget(false);
 	}
 }
 
@@ -102,7 +114,27 @@ void AHeavyTank::DisableSuperPower_OnServer_Implementation()
 	Damage /= SuperDamage_Multiply;
 }
 
+void AHeavyTank::ToggleActivateSuperSkillWidget_Implementation(bool isActivate)
+{
+	if (isActivate)
+	{
+		GetController<APlayerController>()->GetHUD<ABaseHUD>()->ActivateSuperSkillWidget(true);
+	}
+	else
+	{
+		GetController<APlayerController>()->GetHUD<ABaseHUD>()->ActivateSuperSkillWidget(false);
+	}
+}
+
+void AHeavyTank::OnReloadSuperSkillWidget_Implementation()
+{
+	ABaseHUD* HUD = GetController<APlayerController>()->GetHUD<ABaseHUD>();
+	HUD->ActivateSuperSkillWidget(false);
+	HUD->ReloadSuperSkillWidget(TimeReload_SuperPower);
+}
+
 void AHeavyTank::Disable_isSuperPower()
 {
 	isSuper_Power = false;
+	isReload = false;
 }

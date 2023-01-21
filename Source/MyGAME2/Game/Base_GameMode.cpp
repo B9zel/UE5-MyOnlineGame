@@ -14,19 +14,18 @@
 #include <MyGAME2/Game/PlayerStatistic.h>
 
 
+
 ABase_GameMode::ABase_GameMode()
 {
-	AutoRespawn = true;
+	PrimaryActorTick.bCanEverTick = false;
 
+	AutoRespawn = true;
 }
 
 void ABase_GameMode::BeginPlay()
 {
 	Super::BeginPlay();
 
-
-	//FTimerHandle Handle;
-	//GetWorldTimerManager().SetTimer(Handle, this, &ABase_GameMode::StartRound, 4.0f, false);
 }
 
 void ABase_GameMode::Pawn_Dead_Implementation(APlayerController* DeadPlayer, APlayerController* DeadInstigator)
@@ -35,29 +34,24 @@ void ABase_GameMode::Pawn_Dead_Implementation(APlayerController* DeadPlayer, APl
 	SpawnSpectator(DeadPlayer, DeadInstigator);
 	Cast<APlayerStatistic>(DeadPlayer->PlayerState)->OnwerPawnDead(Cast<ABaseTank>(DeadInstigator->GetPawn()));
 	
-	
 	if (AutoRespawn)
 	{
 		Cast<APawnController>(DeadPlayer)->TimerRespawn(5.0f);
 	}
-
 }
 
-AGame_Spectator* ABase_GameMode::SpawnSpectator(class APlayerController* Player, class APlayerController* DeadInstigator)
+void ABase_GameMode::SpawnSpectator(class APlayerController* Player, class APlayerController* DeadInstigator)
 {
 	FActorSpawnParameters SpawnParameters;
 	SpawnParameters.Owner = Player;
 
 	//Spawn Spectator
-	AGame_Spectator* SpawnActor = GetWorld()->SpawnActor<AGame_Spectator>(Spectator_Class, Player->GetPawn()->GetActorTransform(), SpawnParameters); // - FVector(0.0f, 0.0f, 500.0f))
-	
+	AGame_Spectator* SpawnActor = GetWorld()->SpawnActor<AGame_Spectator>(Spectator_Class, FTransform(Player->GetPawn()->GetActorLocation() + FVector(0, 0, 50)), SpawnParameters);
 	if (DeadInstigator != nullptr)
 	{
 		SpawnActor->FollowPawn = Cast<ABaseTank>(DeadInstigator->GetPawn());
 	}
 	Player->Possess(SpawnActor);
-	
-	return SpawnActor;
 }
 
 void ABase_GameMode::StartRound_Implementation()
@@ -87,24 +81,17 @@ void ABase_GameMode::StopRound()
 	for (auto& el : Game_State->PlayerArray)
 	{	
 		PlayerController = Cast<APawnController>(el->GetOwner());
-		PlayerController->GetPawn()->Destroy();
-		//SpawnSpectator(PlayerController, nullptr);
-	
+		SpawnSpectator(PlayerController, nullptr);
 	}
-	RoundEnded.Broadcast();
-}
 
-void ABase_GameMode::StopRoundOnClient_Implementation(APlayerController* PlayerController)
-{
-	if (!HasAuthority())
+	TArray<AActor*,FDefaultAllocator> ArrBaseTank;
+	UGameplayStatics::GetAllActorsOfClass(this, ABaseTank::StaticClass(), ArrBaseTank);
+	ArrBaseTank.RemoveAll([](class AActor* actor)
 	{
-		DisableInput(PlayerController);
-		APawnController* Controller = Cast<APawnController>(PlayerController);
-		if (Controller != nullptr)
-		{
-			Cast<ABaseHUD>(Controller->GetHUD())->ToggleHUD(false);
-		}
-	}
+		return actor->Destroy();
+	});
+
+	RoundEnded.Broadcast();
 }
 
 void ABase_GameMode::RechedTimeLimit()
