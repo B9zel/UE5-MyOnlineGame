@@ -9,6 +9,7 @@
 #include <MyGAME2/Game/PlayerStatistic.h>
 #include <Kismet/GameplayStatics.h>
 #include <MyGAME2/Game/BaseGameState.h>
+#include "W_EndRoundMapVote.h"
 
 
 

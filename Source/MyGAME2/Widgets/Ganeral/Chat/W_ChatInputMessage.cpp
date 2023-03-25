@@ -9,14 +9,19 @@
 
 
 
+
+
 void UW_ChatInputMessage::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	m_TB_inputMessage->RevertTextOnEscape = false;
+	m_TB_inputMessage->SetRevertTextOnEscape(false);
 	m_TB_inputMessage->OnTextCommitted.AddDynamic(this, &UW_ChatInputMessage::BindOnTextCommited);
 
 	m_B_sendMessage->OnClicked.AddDynamic(this, &UW_ChatInputMessage::BindButtonClick);
+
+
+
 }
 
 void UW_ChatInputMessage::BindOnTextCommited(const FText& Text, ETextCommit::Type CommitMethod)
@@ -26,6 +31,7 @@ void UW_ChatInputMessage::BindOnTextCommited(const FText& Text, ETextCommit::Typ
 		GetOwningPlayer<APawnController>()->SendMessege_OnServer(Text);
 		m_TB_inputMessage->SetText(FText());
 		GetOwningPlayer()->GetHUD<ABaseHUD>()->ToggleChat(false);
+
 	}
 }
 

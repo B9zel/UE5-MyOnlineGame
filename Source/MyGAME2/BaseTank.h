@@ -26,6 +26,8 @@ public:
 		class USoundBase* Shoot_sound;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TSubclassOf<class UW_SuperPower> superSkillWidgetClass;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UMaterialInstance* M_OutTeam;
 	/*UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TSubclassOf<class APArticleAndSound> Shoot_effect;*/
 };
@@ -87,13 +89,13 @@ protected:
 
 	virtual void Tick(float DeltaTime) override;
 
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
 	float Speed;
 
 	float Rotation_speed;
 
 	float Towerrotation_speed;
-
-	bool blockShoot;
 
 	bool IsAim;
 
@@ -102,10 +104,12 @@ protected:
 	float Damage;
 
 	float Max_HP;
+	UPROPERTY(Replicated)
+	bool isReload;
+
+	bool isReloadSuperPower;
 
 private:
-
-	float math;
 
 	float target;
 
@@ -133,7 +137,7 @@ protected:
 	UFUNCTION()
 		void EnableAim();
 	UFUNCTION()
-		void DisableAim();
+		virtual void DisableAim();
 
 	UFUNCTION(NetMulticast, Unreliable)
 		virtual void Shoot_Multicast();
@@ -160,5 +164,7 @@ public:
 
 	UFUNCTION(NetMulticast, Reliable)
 		virtual void VisualDeadMulticast();
+	UFUNCTION()
+	void ActivateOurTeamMaterial();
 	
 };

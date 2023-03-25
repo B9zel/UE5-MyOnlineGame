@@ -18,8 +18,10 @@ public:
 
 	ABaseGameState();
 
-	UPROPERTY(BlueprintReadWrite,EditAnywhere)
+	UPROPERTY(EditAnywhere)
 	class UChatComponent* chatComponent;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	class UVoteComponent* voteComponent;
 
 	//UPROPERTY(BlueprintAssignable)
 	//	FDelegate TimeEnded;
@@ -37,9 +39,9 @@ protected:
 
 	class ABase_GameMode* GameMode;
 
-	UPROPERTY(Replicated, BlueprintReadWrite)
+	UPROPERTY(Replicated, BlueprintReadWrite,EditAnywhere)
 		FTimespan RoundTime;
-	UPROPERTY(Replicated,BlueprintReadWrite)
+	UPROPERTY(Replicated,BlueprintReadWrite, EditAnywhere)
 		FTimespan PreStartRoundTimer;
 
 protected:
@@ -49,6 +51,8 @@ protected:
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	UFUNCTION()
+	void OpenNexpMap(FName MapName);
 
 public:
 

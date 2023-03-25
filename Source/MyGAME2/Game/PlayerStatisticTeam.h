@@ -28,4 +28,7 @@ protected:
 	E_Team GetBalansedSelectTeam(TEnumAsByte<enum E_Team> SetTeam);
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const;
+
+	UFUNCTION()
+		void OnStartRound();
 };

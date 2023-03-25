@@ -88,6 +88,13 @@ void ABaseTank::Tick(float DeltaTime)
 	}
 }
 
+void ABaseTank::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(ABaseTank, isReload);
+}
+
 void ABaseTank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
@@ -139,8 +146,8 @@ void ABaseTank::ClientRotateTower()
 
 void ABaseTank::RotateTower_OnServer_Implementation(float Target)
 {
-	math = InterpTo(Towermesh->GetRelativeRotation().Yaw, Target, GetWorld()->GetDeltaSeconds(), Towerrotation_speed);
-	Towermesh->SetRelativeRotation(FRotator(0.0f, FMath::Clamp(Target, -120.0f, 120.0f), 0.0f));
+	float math = InterpTo(Towermesh->GetRelativeRotation().Yaw, Target, GetWorld()->GetDeltaSeconds(), Towerrotation_speed);
+	Towermesh->SetRelativeRotation(FRotator(0.0f, FMath::Clamp(math, -120.0f, 120.0f), 0.0f));
 }
 
 void ABaseTank::EnableAim()
@@ -152,7 +159,7 @@ void ABaseTank::EnableAim()
 	if (HUD != nullptr)
 	{
 		HUD->ToggleAim(true);
-		HUD->ToggleSuperPower(false);
+		//HUD->ToggleSuperPower(false);
 	}
 }
 
@@ -165,15 +172,15 @@ void ABaseTank::DisableAim()
 	if (HUD != nullptr)
 	{
 		HUD->ToggleAim(false);
-		HUD->ToggleSuperPower(true);
+	//	HUD->ToggleSuperPower(true);
 	}
 }
 
 void ABaseTank::Shoot_OnServer_Implementation()
 {
-	if (struction.objctBullet != nullptr && !blockShoot)
+	if (struction.objctBullet != nullptr && !isReload)
 	{
-		blockShoot = true;
+		isReload = true;
 		FActorSpawnParameters spawnParametars;
 		spawnParametars.Owner = this;
 		spawnParametars.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::DontSpawnIfColliding;
@@ -205,7 +212,7 @@ void ABaseTank::Shoot_Multicast_Implementation()
 
 void ABaseTank::RecharchShoot()
 {
-	blockShoot = false;
+	isReload = false;
 	Widget_ReloadShoot();
 }
 
@@ -248,13 +255,19 @@ float ABaseTank::GetDamage()
 	return Damage;
 }
 
+void ABaseTank::ActivateOurTeamMaterial()
+{
+	Mesh->SetOverlayMaterial(struction.M_OutTeam);
+	Towermesh->SetOverlayMaterial(struction.M_OutTeam);
+}
+
 float ABaseTank::InterpTo(float Current, float Target, float DeltaTime, float speed)
 {
 	if (Current == Target)
 		return Current;
 	
 	float DeltaSpeed = speed * DeltaTime;
-	if (Current > Target - 2 && Current < Target +2)
+	if (Current > Target - 4  && Current < Target + 4)
 	{
 		return Current + FMath::Clamp<float>(DeltaSpeed, 0, 1) * (Target - Current);
 	}

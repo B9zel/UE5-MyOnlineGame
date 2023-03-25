@@ -19,7 +19,10 @@ protected:
 	class UBorder* B_ResultsRound;
 	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
 	class UTextBlock* T_Winner;
-
+	
+public:
+	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
+		 class UW_EndRoundMapVote* EndRoundMap;
 private:
 
 	virtual void NativeConstruct() override;

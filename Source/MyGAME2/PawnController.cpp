@@ -11,19 +11,22 @@
 #include <MyGAME2/Game_Spectator.h>
 #include <MyGAME2/Game/Components/ChatComponent.h>
 #include <GameFramework/PlayerState.h>
-#include <MyGAME2/Widgets/Ganeral/Chat/W_Chat.h>
+#include "Widgets/Ganeral/Chat/W_Chat.h"
+#include "Game/Components/VoteComponent.h"
+
 
 
 
 
 APawnController::APawnController()
 {
-	SetReplicates(true);
+	
 }
 
 void APawnController::BeginPlay()
 {
 	Super::BeginPlay();
+
 	ABaseGameState* Game_State = Cast<ABaseGameState>(UGameplayStatics::GetGameState(this));
 	if (Game_State != nullptr)
 	{
@@ -33,13 +36,15 @@ void APawnController::BeginPlay()
 	if (HasAuthority())
 	{
 		Cast<ABase_GameMode>(UGameplayStatics::GetGameMode(this))->RoundEnded.AddDynamic(this, &APawnController::RoundEndedInRespawnOnServer);
+		SetReplicates(true);
 	}
+	
 }
 
 void APawnController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
-
+	
 	if (InputComponent != nullptr)
 	{
 		InputComponent->BindAxis("LookUp", this, &APawnController::AddPitchInput);
@@ -65,6 +70,25 @@ void APawnController::TimerRespawn(float Time)
 	GetWorldTimerManager().SetTimer(RespawnTime, this, &APawnController::Respawn, Time);
 }
 
+void APawnController::SetInputOnUI(bool isEnable, UWidget* widget)
+{
+	if (isEnable)
+	{
+		bShowMouseCursor = true;
+		FInputModeUIOnly InputMode;
+		InputMode.SetWidgetToFocus(widget->TakeWidget());
+		InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+
+		SetInputMode(InputMode);
+	}
+	else
+	{
+		bShowMouseCursor = false;
+		
+		FInputModeGameOnly InputMode;
+		SetInputMode(InputMode);
+	}
+}
 
 void APawnController::EnableTabMenu()
 {
@@ -126,6 +150,7 @@ void APawnController::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutL
 
 void APawnController::RoundEndedOnClient()
 {
+
 	//DisableInput(this);
 }
 
@@ -138,6 +163,13 @@ void APawnController::SendMessege_OnServer_Implementation(const FText& messege)
 {
 	Cast<ABaseGameState>(UGameplayStatics::GetGameState(this))->chatComponent->OnPostMessage(messege, GetPlayerState<APlayerState>());
 }
+
+
+void APawnController::SetSelectedMap_Implementation(int MapIndex)
+{
+	Cast<ABaseGameState>(UGameplayStatics::GetGameState(this))->voteComponent->SetVote(GetPlayerState<APlayerState>(), MapIndex);
+}
+
 
 //void APawnController::Set_RefForWidget_OnClient()
 //{

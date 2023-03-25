@@ -10,14 +10,21 @@
 #include <Net/UnrealNetwork.h>
 #include <MyGAME2/Game/TeamGameState.h>
 #include <MyGAME2/Enums/E_Team.h>
+#include "../BaseTank.h"
+#include <GameFramework/Controller.h>
+
 
 
 void APlayerStatisticTeam::BeginPlay()
 {
-	Super::BeginPlay();
+	APlayerStatistic::BeginPlay();
 	if (HasAuthority())
-	{	
+	{
 		Team = GetRandomTeam();
+	}
+	else
+	{
+		Cast<ABaseGameState>(UGameplayStatics::GetGameState(this))->RoundStarted.AddDynamic(this, &APlayerStatisticTeam::OnStartRound);
 	}
 }
 
@@ -71,4 +78,26 @@ void APlayerStatisticTeam::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>&
 	APlayerStatistic::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(APlayerStatisticTeam, Team);
+}
+
+
+void APlayerStatisticTeam::OnStartRound()
+{
+	if (GetOwningController() != nullptr)
+	{
+		TArray<AActor*, FDefaultAllocator> ArrPlayerStat;
+		UGameplayStatics::GetAllActorsOfClass(this, APlayerState::StaticClass(), ArrPlayerStat);
+		
+		for (auto& el : ArrPlayerStat)
+		{
+			if (el != this)
+			{
+				APlayerStatisticTeam* temaPlayerState = Cast<APlayerStatisticTeam>(el);
+				if (Team == temaPlayerState->Team)
+				{
+					Cast<ABaseTank>(temaPlayerState->GetPawn())->ActivateOurTeamMaterial();
+				}	
+			}
+		}
+	}
 }

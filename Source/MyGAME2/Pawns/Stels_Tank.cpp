@@ -34,7 +34,7 @@ AStels_Tank::AStels_Tank()
 
 	Damage = 50.0f;
 
-	blockShoot = false;
+	isReload = false;
 
 	IsAim = false;
 

@@ -26,5 +26,5 @@ public:
 	virtual void NativeConstruct() override;
 
 	UFUNCTION()
-	FText UpdateTimerTick();
+	virtual FText UpdateTimerTick();
 };

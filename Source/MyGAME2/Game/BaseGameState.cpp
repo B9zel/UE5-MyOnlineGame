@@ -6,7 +6,8 @@
 #include <MyGAME2/PawnController.h>
 #include <MyGAME2/Widgets/StatisticsMenu.h>
 #include "../Enums/E_GameState.h"
-#include <MyGAME2/Game/Components/ChatComponent.h>
+#include "Components/ChatComponent.h"
+#include "Components/VoteComponent.h"
 
 
 ABaseGameState::ABaseGameState()
@@ -15,10 +16,12 @@ ABaseGameState::ABaseGameState()
 	this->PrimaryActorTick.TickInterval = 1.0f;
 
 	chatComponent = CreateDefaultSubobject<UChatComponent>(TEXT("Chat Component"));
+
+	voteComponent = CreateDefaultSubobject<UVoteComponent>(TEXT("Vote Component"));
 	RoundInProgress = E_GameState::PreStart;
 	playerInSession = 2;
 	
-	SetReplicates(true);
+
 }
 
 void ABaseGameState::BeginPlay()
@@ -27,12 +30,13 @@ void ABaseGameState::BeginPlay()
 
 	if (HasAuthority())
 	{
+		SetReplicates(true);
 		GameMode = Cast<ABase_GameMode>(UGameplayStatics::GetGameMode(this));
 
 		if (GameMode != nullptr)
 		{
 			GameMode->RoundEnded.AddDynamic(this, &ABaseGameState::OnRoundEnded);
-
+			
 			//GameMode->RoundStart.AddDynamic(this, &ABaseGameState::OnRoundStarted);
 		}
 	}
@@ -123,6 +127,8 @@ void ABaseGameState::OnRoundEnded()
 {
 	RoundInProgress = E_GameState::EndGame;
 	RoundEnd_Multicast();
+	voteComponent->StartVote();
+	voteComponent->VoteEnded.AddDynamic(this, &ABaseGameState::OpenNexpMap);
 }
 
 void ABaseGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -130,10 +136,13 @@ void ABaseGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLi
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(ABaseGameState, RoundTime);
-
 	DOREPLIFETIME(ABaseGameState, PreStartRoundTimer);
-
 	DOREPLIFETIME(ABaseGameState, RoundInProgress);
+}
+
+void ABaseGameState::OpenNexpMap(FName MapName)
+{
+	UKismetSystemLibrary::ExecuteConsoleCommand(this, FString("ServerTraver ") + MapName.ToString());
 }
 
 FTimespan ABaseGameState::GetRoundTime()

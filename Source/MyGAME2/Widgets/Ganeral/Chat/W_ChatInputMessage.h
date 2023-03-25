@@ -23,12 +23,15 @@ private:
 	class UButton* m_B_sendMessage;
 
 protected:
+
+	
 	UFUNCTION()
 	virtual void NativeConstruct() override;
 	UFUNCTION()
 	virtual void BindOnTextCommited(const FText& Text, ETextCommit::Type CommitMethod);
 	UFUNCTION()
 	virtual void BindButtonClick();
+
 public:
 
 	 UEditableTextBox* GetTB_InputMessage() const;

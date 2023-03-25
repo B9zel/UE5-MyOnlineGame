@@ -3,12 +3,28 @@
 #include <Components/ScrollBox.h>
 #include <Components/EditableTextBox.h>
 #include <Components/Border.h>
-#include <MyGAME2/Game/BaseGameState.h>
+#include "../../../Game/BaseGameState.h"
 #include <Kismet/GameplayStatics.h>
 #include <MyGAME2/Game/Components/ChatComponent.h>
 #include <MyGAME2/Widgets/Ganeral/Chat/W_ChatMessage.h>
 #include <MyGAME2/Widgets/Ganeral/Chat/W_ChatInputMessage.h>
 
+
+
+
+
+bool UW_Chat::Initialize()
+{
+	Super::Initialize();
+
+	ABaseGameState* State = Cast<ABaseGameState>(UGameplayStatics::GetGameState(this));
+	if (State != nullptr)
+	{
+		State->RoundEnded.AddDynamic(this, &UW_Chat::OnEndRound);
+	}
+
+	return true;
+}
 
 
 void UW_Chat::NativeConstruct()
@@ -21,7 +37,10 @@ void UW_Chat::NativeConstruct()
 	ABaseGameState* gameState = Cast<ABaseGameState>(UGameplayStatics::GetGameState(this));
 	if (gameState != nullptr)
 	{
-		gameState->chatComponent->PostMessage.AddDynamic(this, &UW_Chat::TakeMessage);
+		if (gameState->chatComponent != nullptr)
+		{
+			gameState->chatComponent->PostMessage.AddDynamic(this, &UW_Chat::TakeMessage);
+		}
 	}
 }
 
@@ -88,4 +107,10 @@ void UW_Chat::SetTimerActivity(float inRate)
 		GetWorld()->GetTimerManager().ClearTimer(sleepingTimer);
 	}
 	GetWorld()->GetTimerManager().SetTimer(sleepingTimer, this, &UW_Chat::ActivateSleepingChat, inRate, false);
+}
+
+
+void UW_Chat::OnEndRound()
+{
+	ActivateSleepingChat();
 }

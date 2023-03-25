@@ -4,6 +4,7 @@
 #include <Components/TextBlock.h>
 #include <Components/Border.h>
 #include <Kismet/KismetTextLibrary.h>
+#include <Kismet/KismetStringLibrary.h>
 #include "BaseTank.h"
 #include "PawnController.h"
 #include "Game_Interface.h"
@@ -33,7 +34,8 @@ void UWidget_Reload::Construct_Widget()
 	}
 	
 	Seconds = owner->TimeReload;
-	SecondsText->SetText(UKismetTextLibrary::Conv_FloatToText(Seconds, TEnumAsByte<ERoundingMode>::EnumType::HalfToEven, false, true, 1, 324, 1, 2));
+	
+	SecondsText->SetText(FText::FromString(FString::SanitizeFloat(Seconds))); //UKismetTextLibrary::Conv_FloatToText(Seconds, TEnumAsByte<ERoundingMode>::EnumType::HalfToEven, false, true, 1, 324, 1, 2)
 	SetVisibility(ESlateVisibility::Visible);
 	StartTimer();
 	
@@ -58,6 +60,6 @@ void UWidget_Reload::Timer()
 	{
 		Seconds = 0.0f;
 	}
-	SecondsText->SetText(UKismetTextLibrary::Conv_FloatToText(Seconds, TEnumAsByte<ERoundingMode>::EnumType::HalfToEven, false, true, 1, 324, 1, 2));
+	SecondsText->SetText(FText::FromString(FString::SanitizeFloat(Seconds)));
 	
 }

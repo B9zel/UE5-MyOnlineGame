@@ -28,7 +28,7 @@ ALight_Tank::ALight_Tank()
 
 	Damage = 30.0f;
 
-	blockShoot = false;
+	isReload = false;
 
 	IsAim = false;
 

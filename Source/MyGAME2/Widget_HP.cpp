@@ -56,7 +56,7 @@ void UWidget_HP::UpdateData()
 		HP_TextBlock->SetText(FText::FromString(FString::FromInt(Ref_MainTank->HP_Component->Courrent_HP) + " | " + FString::FromInt(Ref_MainTank->HP_Component->Max_HP)));
 
 		percent = Ref_MainTank->HP_Component->Courrent_HP / Ref_MainTank->HP_Component->Max_HP;
-		progress_bar->SetPercent(FMath::FInterpTo(progress_bar->Percent, percent, GetWorld()->GetDeltaSeconds(), 7));
+		progress_bar->SetPercent(FMath::FInterpTo(progress_bar->GetPercent(), percent, GetWorld()->GetDeltaSeconds(), 7));
 
 		if (percent <= 0.2f && Ref_MainTank->HP_Component->Courrent_HP != 0.0f)
 		{

@@ -35,6 +35,8 @@ public:
 
 protected: 
 
+	UFUNCTION()
+		virtual bool Initialize() override;
 	virtual void NativeConstruct() override;
 
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
@@ -45,6 +47,9 @@ protected:
 	void ActivateSleepingChat();
 
 	void SetTimerActivity(float inRate);
+
+	UFUNCTION()
+	void OnEndRound();
 
 public:
 

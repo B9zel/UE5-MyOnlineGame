@@ -13,6 +13,8 @@
 #include "../Widgets/InGame/W_SuperPower.h"
 #include "../Widgets/InGame/W_Aim.h"
 #include "../BaseTank.h"
+#include "../PawnController.h"
+#include "../Widgets/EndRound/W_EndRoundMapVote.h"
 
 
 
@@ -33,8 +35,12 @@ void ABaseHUD::BeginPlay()
 	TogglePreRound(true);
 	CreateChat();
 	ABaseGameState* pGameState = Cast<ABaseGameState>(UGameplayStatics::GetGameState(this));
-	pGameState->RoundStarted.AddDynamic(this, &ABaseHUD::OnRoundStarted);
-	pGameState->RoundEnded.AddDynamic(this, &ABaseHUD::OnRoundEnded);
+	if (pGameState != nullptr)
+	{
+		pGameState->RoundStarted.AddDynamic(this, &ABaseHUD::OnRoundStarted);
+		pGameState->RoundEnded.AddDynamic(this, &ABaseHUD::OnRoundEnded);
+	}
+	
 }
 
 void ABaseHUD::ToggleHUD(bool isShow)
@@ -139,6 +145,7 @@ void ABaseHUD::ToggleEndRound(bool isShow)
 			m_EndRoundWidget = CreateWidget<UW_ResultsEndRound>(GetOwningPlayerController(), EndRoundWidgetClass);
 		}
 		m_EndRoundWidget->AddToViewport();
+		GetOwner<APawnController>()->SetInputOnUI(true, m_EndRoundWidget->EndRoundMap);
 	}
 	else
 	{
@@ -147,6 +154,7 @@ void ABaseHUD::ToggleEndRound(bool isShow)
 			m_EndRoundWidget->RemoveFromParent();
 			m_EndRoundWidget = nullptr;
 		}
+		GetOwner<APawnController>()->SetInputOnUI(false);
 	}
 }
 
@@ -167,6 +175,9 @@ void ABaseHUD::ToggleChat(bool isActivate)
 
 void ABaseHUD::ToggleSuperPower(bool isShow, bool isRemove)
 {
+	if (Cast<ABaseGameState>(UGameplayStatics::GetGameState(this))->RoundInProgress != E_GameState::Game)
+		return;
+
 	if (isShow)
 	{
 		if (m_superskillWidget == nullptr)
@@ -230,6 +241,7 @@ void ABaseHUD::OnRoundEnded()
 {
 	ToggleHUD(false);
 	ToggleTab(false);
+	ToggleAim(false);
 	ToggleSuperPower(false, true);
 	ToggleSpectatorHUD(false);
 	ToggleEndRound(true);
@@ -260,6 +272,7 @@ void ABaseHUD::OnPlayerAlive()
 void ABaseHUD::OnPlayerDead(ABaseTank* DeathInstigator)
 {
 	ToggleHUD(false);
+	ToggleAim(false);
 	ToggleSuperPower(false, true);
 	ToggleSpectatorHUD(true);
 	if (m_SpectatorWidget != nullptr && Cast<ABaseGameState>(UGameplayStatics::GetGameState(this))->RoundInProgress == E_GameState::Game)
@@ -276,7 +289,7 @@ void ABaseHUD::SetWidgetSuperPower(class UW_SuperPower* Widget)
 void ABaseHUD::CreateChat()
 {
 	m_ChatWidget = CreateWidget<UW_Chat>(GetOwningPlayerController(), ChatWidgetClass);
-	m_ChatWidget->AddToViewport(1);
+	m_ChatWidget->AddToViewport(0);
 }
 
 bool ABaseHUD::isActivateChat()

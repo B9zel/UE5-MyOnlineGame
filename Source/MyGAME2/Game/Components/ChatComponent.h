@@ -18,7 +18,7 @@ class MYGAME2_API UChatComponent : public UActorComponent
 public:	
 	UChatComponent();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)//)
 	FChatDelegate PostMessage;
 
 protected:

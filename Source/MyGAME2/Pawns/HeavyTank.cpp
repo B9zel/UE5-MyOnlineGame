@@ -23,7 +23,7 @@ AHeavyTank::AHeavyTank()
 
 	Towerrotation_speed = 50.0f;
 
-	TimeReload = 3.0;
+	TimeReload = 1.0;
 
 	TimeDestroy = 4.0f;
 
@@ -33,8 +33,6 @@ AHeavyTank::AHeavyTank()
 
 	Damage = 20.0f;
 
-	blockShoot = false;
-
 	IsAim = false;
 
 	isSuper_Power = false;
@@ -42,6 +40,8 @@ AHeavyTank::AHeavyTank()
 	SuperDamage_Multiply = 2.0f;
 
 	isReload = false;
+
+	isReloadSuperPower = false;
 }
 
 void AHeavyTank::BeginPlay()
@@ -75,16 +75,14 @@ void AHeavyTank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 void AHeavyTank::Shoot_Server_Implementation()
 {
 	ABaseTank::Shoot_OnServer();
-
 	if (isSuper_Power)
 	{
-		isSuper_Power = false;
-		isReload = true;
-		DisableSuperPower_OnServer_Implementation();
-
+		DisableSuperPower_OnServer();
 		OnReloadSuperSkillWidget();
+
+		isReloadSuperPower = true;
 		FTimerHandle TimerHandle;
-		GetWorldTimerManager().SetTimer(TimerHandle, this, &AHeavyTank::Disable_isSuperPower, TimeReload_SuperPower, false);
+		GetWorldTimerManager().SetTimer(TimerHandle, this, &AHeavyTank::DisableReloadSuperPower, TimeReload_SuperPower, false);
 	}
 }
 
@@ -95,24 +93,26 @@ void AHeavyTank::EnableSuperPower_OnClient()
 
 void AHeavyTank::EnableSuperPower_OnServer_Implementation()
 {
-	if (!isSuper_Power && !isReload)
+	if (!isSuper_Power && !isReloadSuperPower && !isReload)
 	{
 		isSuper_Power = true;
 		Damage *= SuperDamage_Multiply;
 		ToggleActivateSuperSkillWidget(true);
 	}
-	else if (!isReload)
+	else if(!isReloadSuperPower && !isReload)
 	{
-		DisableSuperPower_OnServer_Implementation();
-		Disable_isSuperPower();
+		DisableSuperPower_OnServer();
 		ToggleActivateSuperSkillWidget(false);
 	}
 }
 
-void AHeavyTank::DisableSuperPower_OnServer_Implementation()
+
+void AHeavyTank::DisableSuperPower_OnServer()
 {
+	isSuper_Power = false;
 	Damage /= SuperDamage_Multiply;
 }
+
 
 void AHeavyTank::ToggleActivateSuperSkillWidget_Implementation(bool isActivate)
 {
@@ -133,8 +133,7 @@ void AHeavyTank::OnReloadSuperSkillWidget_Implementation()
 	HUD->ReloadSuperSkillWidget(TimeReload_SuperPower);
 }
 
-void AHeavyTank::Disable_isSuperPower()
+void AHeavyTank::DisableReloadSuperPower()
 {
-	isSuper_Power = false;
-	isReload = false;
+	isReloadSuperPower = false;
 }

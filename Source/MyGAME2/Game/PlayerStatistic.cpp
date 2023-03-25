@@ -11,8 +11,7 @@
 
 APlayerStatistic::APlayerStatistic()
 {
-	SetReplicates(true);
-
+	
 	Kills = 0;
 
 	Deaths = 0;
@@ -23,6 +22,11 @@ APlayerStatistic::APlayerStatistic()
 void APlayerStatistic::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if (HasAuthority())
+	{
+		SetReplicates(true);
+	}
 
 }
 void APlayerStatistic::SwitchWidgetNames()

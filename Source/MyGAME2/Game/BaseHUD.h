@@ -87,7 +87,7 @@ private:
 	class UGame_Interface* m_HUDWidget;
 	class UW_Spectator* m_SpectatorWidget;
 	class UW_PreRound* m_PreRoundWidget;
-	class UW_ResultsEndRound* m_EndRoundWidget;
+	      UW_ResultsEndRound* m_EndRoundWidget;
 	class UW_Chat* m_ChatWidget;
 	class UW_SuperPower* m_superskillWidget;
 	class UW_Aim* m_aimWidget;

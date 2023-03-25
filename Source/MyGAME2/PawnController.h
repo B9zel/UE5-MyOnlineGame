@@ -34,6 +34,7 @@ private:
 	void DeactivateChatWidget();
 
 	void Respawn();
+
 public:
 
 	UFUNCTION()
@@ -42,7 +43,11 @@ public:
 	void TimerRespawn(float Time);
 	UFUNCTION(Server, Reliable)
 	void SendMessege_OnServer(const FText& messege);
+	UFUNCTION(Server, Unreliable)
+	void SetSelectedMap(int MapIndex);
 
+	UFUNCTION()
+	void SetInputOnUI(bool isEnable,UWidget* widget = nullptr);
 	
 public:
 

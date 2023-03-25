@@ -36,9 +36,9 @@ void UW_SuperPower::Reload_Implementation(float InRate)
 
 void UW_SuperPower::TimerReload()
 {
-	if (PB_reloadSuperSkill->Percent < 1)
+	if (PB_reloadSuperSkill->GetPercent() < 1)
 	{
-		PB_reloadSuperSkill->SetPercent(PB_reloadSuperSkill->Percent + OffsetPercent);
+		PB_reloadSuperSkill->SetPercent(PB_reloadSuperSkill->GetPercent() + OffsetPercent);
 	}
 	else
 	{
@@ -49,9 +49,9 @@ void UW_SuperPower::TimerReload()
 
 void UW_SuperPower::TimerUse()
 {
-	if (PB_reloadSuperSkill->Percent > 0)
+	if (PB_reloadSuperSkill->GetPercent() > 0)
 	{
-		PB_reloadSuperSkill->SetPercent(PB_reloadSuperSkill->Percent - OffsetPercent);
+		PB_reloadSuperSkill->SetPercent(PB_reloadSuperSkill->GetPercent() - OffsetPercent);
 	}
 	else
 	{

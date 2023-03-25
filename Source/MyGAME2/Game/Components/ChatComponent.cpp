@@ -14,7 +14,7 @@ UChatComponent::UChatComponent()
 void UChatComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
+	
 	SetIsReplicated(true);
 }
 

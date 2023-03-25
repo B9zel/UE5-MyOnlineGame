@@ -28,8 +28,8 @@ protected:
 	UFUNCTION(Server, Unreliable)
 	void EnableSuperPower_OnServer();
 
-	UFUNCTION(Server, Unreliable)
-		void DisableSuperPower_OnServer();
+	UFUNCTION()
+	void DisableSuperPower_OnServer();
 
 	UFUNCTION(Server, Unreliable)
 		void Shoot_Server();
@@ -38,10 +38,9 @@ protected:
 	UFUNCTION(Client, Unreliable)
 	void OnReloadSuperSkillWidget();
 
-	void Disable_isSuperPower();
+	 void DisableReloadSuperPower();
 private:
 
 	float SuperDamage_Multiply;
 
-	bool isReload;
 };

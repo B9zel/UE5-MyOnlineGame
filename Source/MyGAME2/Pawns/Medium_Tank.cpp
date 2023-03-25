@@ -35,7 +35,7 @@ AMedium_Tank::AMedium_Tank()
 
 	Damage = 20.0f;
 
-	blockShoot = false;
+	isReload = false;
 
 	IsAim = false;
 
