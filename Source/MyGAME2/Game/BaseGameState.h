@@ -29,6 +29,7 @@ public:
 		FDelegate RoundEnded;
 	UPROPERTY(BlueprintAssignable)
 		FDelegate RoundStarted;
+	
 
 	UPROPERTY(ReplicatedUsing = OnRep_RoundInProgress,BlueprintReadWrite)
 		TEnumAsByte<enum E_GameState> RoundInProgress;
@@ -56,11 +57,11 @@ protected:
 
 public:
 
-	void TickRoundTime();
+	virtual void TickRoundTime();
 	UFUNCTION()
 	void OnRoundEnded();
 	
-	void TickPreRoundTime();
+	virtual void TickPreRoundTime();
 
 	UFUNCTION(NetMulticast,Reliable)
 	void RoundEnd_Multicast();

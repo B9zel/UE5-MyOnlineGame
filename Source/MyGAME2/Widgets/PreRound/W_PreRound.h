@@ -14,4 +14,7 @@ class MYGAME2_API UW_PreRound : public UUserWidget
 {
 	GENERATED_BODY()
 	
+public:
+	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
+	class UW_SelectionPawn* W_SelectionPawn;
 };

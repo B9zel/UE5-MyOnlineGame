@@ -61,7 +61,7 @@ void UHealthStat::OnPlayerTakeAnyDamage(AActor* DamagedActor, float damage, cons
 			owner->GameMode->Pawn_Dead(Cast<APlayerController>(owner->GetController()), Cast<APlayerController>(InstigatedBy));
 
 			FTimerHandle handle;
-			GetWorld()->GetTimerManager().SetTimer(handle, Cast<ABaseTank>(GetOwner()), &ABaseTank::Destroy, owner->TimeDestroy, false);
+			GetWorld()->GetTimerManager().SetTimer(handle, Cast<ABaseTank>(GetOwner()), &ABaseTank::Destroy, owner->GetTimeDestroy(), false);
 			IsDead = true;
 		}
 	}

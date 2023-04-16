@@ -48,6 +48,8 @@ public:
 
 	UFUNCTION()
 	void SetInputOnUI(bool isEnable,UWidget* widget = nullptr);
+	UFUNCTION(Server, Unreliable)
+	void SetSpawnPawn(TSubclassOf<class APawn> spawnPawn);
 	
 public:
 

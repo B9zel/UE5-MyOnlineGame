@@ -73,13 +73,7 @@ public:
 
 	class ABase_GameMode* GameMode;
 
-	float TimeReload;
-
-	float TimeReload_SuperPower;
-
-	float TimeUse_SuperPower;
-
-	float TimeDestroy;
+	
 
 	FDelegateSpawn D_SpawnTankPawn;
 
@@ -108,6 +102,14 @@ protected:
 	bool isReload;
 
 	bool isReloadSuperPower;
+
+	float TimeReload;
+
+	float TimeReload_SuperPower;
+
+	float TimeUse_SuperPower;
+
+	float TimeDestroy;
 
 private:
 
@@ -166,5 +168,21 @@ public:
 		virtual void VisualDeadMulticast();
 	UFUNCTION()
 	void ActivateOurTeamMaterial();
+
+	float GetSpeed();
+
+	float GetRotationSpeed();
+
+	float GetTowerRotationSpeed();
+
+	float GetHP();
+
+	float GetTimeReload();
+
+	float GetTimeReloadSuperPower();
+
+	float GetTimeUseSuperPower();
+
+	float GetTimeDestroy();
 	
 };

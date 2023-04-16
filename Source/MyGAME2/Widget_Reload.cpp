@@ -33,7 +33,7 @@ void UWidget_Reload::Construct_Widget()
 		owner = Cast<ABaseTank>(GetOwningPlayerPawn());
 	}
 	
-	Seconds = owner->TimeReload;
+	Seconds = owner->GetTimeReload();
 	
 	SecondsText->SetText(FText::FromString(FString::SanitizeFloat(Seconds))); //UKismetTextLibrary::Conv_FloatToText(Seconds, TEnumAsByte<ERoundingMode>::EnumType::HalfToEven, false, true, 1, 324, 1, 2)
 	SetVisibility(ESlateVisibility::Visible);
