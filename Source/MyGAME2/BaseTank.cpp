@@ -40,11 +40,10 @@ ABaseTank::ABaseTank()
 
 	bscene = CreateDefaultSubobject<USceneComponent>(TEXT("BScene"));
 	bscene->SetupAttachment(Towermesh);
-
+	
 	SecondCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("Second Camera"));
 	SecondCamera->SetupAttachment(Towermesh);
 	SecondCamera->bAutoActivate = false;
-	SecondCamera->SetVisibility(false);
 
 	HP_Component = CreateDefaultSubobject<UHealthStat>(TEXT("HealthStat"));
 
