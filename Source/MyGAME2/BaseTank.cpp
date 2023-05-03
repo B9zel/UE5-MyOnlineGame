@@ -23,7 +23,7 @@
 ABaseTank::ABaseTank()
 {
 	
-		PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = true;
 	
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	Mesh->SetupAttachment(RootComponent);
@@ -44,6 +44,7 @@ ABaseTank::ABaseTank()
 	SecondCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("Second Camera"));
 	SecondCamera->SetupAttachment(Towermesh);
 	SecondCamera->bAutoActivate = false;
+	SecondCamera->SetVisibility(false);
 
 	HP_Component = CreateDefaultSubobject<UHealthStat>(TEXT("HealthStat"));
 
@@ -250,16 +251,58 @@ inline ABase_GameMode* ABaseTank::Get_GameMode(class AActor* Object)
 	return Cast<ABase_GameMode>(UGameplayStatics::GetGameMode(Object));
 }
 
-float ABaseTank::GetDamage()
-{
-	return Damage;
-}
 
 void ABaseTank::ActivateOurTeamMaterial()
 {
 	Mesh->SetOverlayMaterial(struction.M_OutTeam);
 	Towermesh->SetOverlayMaterial(struction.M_OutTeam);
 }
+
+float ABaseTank::GetSpeed()
+{
+	return Speed;
+}
+
+float ABaseTank::GetRotationSpeed()
+{
+	return Rotation_speed;
+}
+
+float ABaseTank::GetTowerRotationSpeed()
+{
+	return Towerrotation_speed;
+}
+
+float ABaseTank::GetDamage()
+{
+	return Damage;
+}
+
+float ABaseTank::GetHP()
+{
+	return Max_HP;
+}
+
+float ABaseTank::GetTimeReload()
+{
+	return TimeReload;
+}
+
+float ABaseTank::GetTimeReloadSuperPower()
+{
+	return TimeReload_SuperPower;
+}
+
+float ABaseTank::GetTimeUseSuperPower()
+{
+	return TimeUse_SuperPower;
+}
+
+float ABaseTank::GetTimeDestroy()
+{
+	return TimeDestroy;
+}
+
 
 float ABaseTank::InterpTo(float Current, float Target, float DeltaTime, float speed)
 {

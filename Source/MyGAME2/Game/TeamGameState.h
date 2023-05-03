@@ -29,6 +29,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void ChangetTeamPoints(E_Team Team, int Value);
-
+protected:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const;
+
+	virtual void TickPreRoundTime() override;
 };

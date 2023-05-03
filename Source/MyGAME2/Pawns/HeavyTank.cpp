@@ -31,13 +31,15 @@ AHeavyTank::AHeavyTank()
 
 	TimeReload_SuperPower = 4.0f;
 
-	Damage = 20.0f;
-
+	
 	IsAim = false;
 
 	isSuper_Power = false;
 
-	SuperDamage_Multiply = 2.0f;
+	StandartDamage = 20.0f;
+	Damage = StandartDamage;
+
+	SuperDamage = 50.0f;
 
 	isReload = false;
 
@@ -96,7 +98,7 @@ void AHeavyTank::EnableSuperPower_OnServer_Implementation()
 	if (!isSuper_Power && !isReloadSuperPower && !isReload)
 	{
 		isSuper_Power = true;
-		Damage *= SuperDamage_Multiply;
+		Damage = SuperDamage;
 		ToggleActivateSuperSkillWidget(true);
 	}
 	else if(!isReloadSuperPower && !isReload)
@@ -110,7 +112,7 @@ void AHeavyTank::EnableSuperPower_OnServer_Implementation()
 void AHeavyTank::DisableSuperPower_OnServer()
 {
 	isSuper_Power = false;
-	Damage /= SuperDamage_Multiply;
+	Damage = StandartDamage;
 }
 
 
@@ -136,4 +138,9 @@ void AHeavyTank::OnReloadSuperSkillWidget_Implementation()
 void AHeavyTank::DisableReloadSuperPower()
 {
 	isReloadSuperPower = false;
+}
+
+float AHeavyTank::GetSuperDamage()
+{
+	return SuperDamage;
 }

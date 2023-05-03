@@ -22,13 +22,16 @@ protected:
 
 	virtual void BeginPlay() override;
 
-	UFUNCTION()
-	E_Team GetRandomTeam();
-	UFUNCTION(BlueprintCallable)
-	E_Team GetBalansedSelectTeam(TEnumAsByte<enum E_Team> SetTeam);
-
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const;
 
 	UFUNCTION()
 		void OnStartRound();
+
+	UFUNCTION()
+	E_Team GetRandomTeam();
+public:
+	UFUNCTION(BlueprintCallable)
+	E_Team GetBalansedSelectTeam(TEnumAsByte<enum E_Team> SetTeam);
+
+	
 };

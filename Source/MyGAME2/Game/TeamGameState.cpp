@@ -6,6 +6,9 @@
 #include <Containers/Map.h>
 #include <MyGAME2/Game/PlayerStatisticTeam.h>
 #include <Net/UnrealNetwork.h>
+#include "../Enums/E_GameState.h"
+#include <Kismet/GameplayStatics.h>
+#include "Base_GameMode.h"
 
 
 
@@ -37,4 +40,32 @@ void ATeamGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLi
 
 	DOREPLIFETIME(ATeamGameState, PointsArray);
 	
+}
+
+void ATeamGameState::TickPreRoundTime()
+{
+	if (PlayerArray.Num() >= playerInSession)
+	{
+		PreStartRoundTimer -= FTimespan::FromSeconds(1.0f);
+		if (PreStartRoundTimer.GetTotalSeconds() <= 0 && RoundInProgress == E_GameState::PreStart)
+		{
+			/*if (HasAuthority())
+			{
+				for (auto& el : PlayerArray)
+				{
+					APlayerStatisticTeam* l_PlayerState = Cast<APlayerStatisticTeam>(el);
+
+					l_PlayerState->Team = l_PlayerState->GetBalansedSelectTeam(l_PlayerState->Team);
+				}
+			}*/
+
+			Cast<ABase_GameMode>(UGameplayStatics::GetGameMode(this))->StartRound();
+			RoundInProgress = E_GameState::Game;
+			RoundStarted.Broadcast();
+		}
+	}
+	else
+	{
+		PreStartRoundTimer = FTimespan::FromSeconds(10);
+	}
 }

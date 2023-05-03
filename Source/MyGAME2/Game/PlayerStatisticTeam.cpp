@@ -21,8 +21,9 @@ void APlayerStatisticTeam::BeginPlay()
 	if (HasAuthority())
 	{
 		Team = GetRandomTeam();
+		Team = GetBalansedSelectTeam(Team);
 	}
-	else
+	else if (GetOwningController() != nullptr)
 	{
 		Cast<ABaseGameState>(UGameplayStatics::GetGameState(this))->RoundStarted.AddDynamic(this, &APlayerStatisticTeam::OnStartRound);
 	}
@@ -53,24 +54,16 @@ E_Team APlayerStatisticTeam::GetBalansedSelectTeam(TEnumAsByte<enum E_Team> team
 
 		if (valueTeam < (Game_State->PlayerArray.Num() / 2))
 		{
-			return team == E_Team::Team_A ? E_Team::Team_A : E_Team::Team_B;//Cast<APlayerStatisticTeam>(Game_State->PlayerArray[i])->Team = E_Team::Team_A;
+			return team == E_Team::Team_A ? E_Team::Team_A : E_Team::Team_B;
 		}
 		else if (valueTeam > (Game_State->PlayerArray.Num() / 2))
 		{
-			return  team == E_Team::Team_A ? E_Team::Team_B : E_Team::Team_A;//Cast<APlayerStatisticTeam>(Game_State->PlayerArray[i])->Team = E_Team::Team_B;
+			return  team == E_Team::Team_A ? E_Team::Team_B : E_Team::Team_A;
 		}
 	}
 	
 	return team;
-	/*for (int i = 0; i < Game_State->PlayerArray.Num(); i++)
-	{
-		if (valueTeamA < Game_State->PlayerArray.Num() / 2)
-		{
-		}
-		else if (valueTeamA > Game_State->PlayerArray.Num() / 2)
-		{
-		}
-	}*/
+	
 }
 
 void APlayerStatisticTeam::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -83,21 +76,15 @@ void APlayerStatisticTeam::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>&
 
 void APlayerStatisticTeam::OnStartRound()
 {
-	if (GetOwningController() != nullptr)
-	{
 		TArray<AActor*, FDefaultAllocator> ArrPlayerStat;
-		UGameplayStatics::GetAllActorsOfClass(this, APlayerState::StaticClass(), ArrPlayerStat);
-		
+		UGameplayStatics::GetAllActorsOfClass(this, APlayerStatisticTeam::StaticClass(), ArrPlayerStat);
+		ArrPlayerStat.Remove(this);
 		for (auto& el : ArrPlayerStat)
 		{
-			if (el != this)
+			APlayerStatisticTeam* temaPlayerState = Cast<APlayerStatisticTeam>(el);
+			if (Team == temaPlayerState->Team)
 			{
-				APlayerStatisticTeam* temaPlayerState = Cast<APlayerStatisticTeam>(el);
-				if (Team == temaPlayerState->Team)
-				{
-					Cast<ABaseTank>(temaPlayerState->GetPawn())->ActivateOurTeamMaterial();
-				}	
-			}
+				Cast<ABaseTank>(temaPlayerState->GetPawn())->ActivateOurTeamMaterial();
+			}	
 		}
-	}
 }

@@ -17,7 +17,6 @@
 #include "../Widgets/EndRound/W_EndRoundMapVote.h"
 
 
-
 ABaseHUD::~ABaseHUD()
 {
 	m_HUDWidget = nullptr;
@@ -125,6 +124,8 @@ void ABaseHUD::TogglePreRound(bool isShow)
 			m_PreRoundWidget = CreateWidget<UW_PreRound>(GetOwningPlayerController(), PreRoundWidgetClass);
 		}
 		m_PreRoundWidget->AddToViewport();
+
+		GetOwner<APawnController>()->SetInputOnUI(true, m_PreRoundWidget);
 	}
 	else
 	{
@@ -133,6 +134,7 @@ void ABaseHUD::TogglePreRound(bool isShow)
 			m_PreRoundWidget->RemoveFromParent();
 			m_PreRoundWidget = nullptr;
 		}
+		GetOwner<APawnController>()->SetInputOnUI(false);
 	}
 }
 
@@ -289,7 +291,7 @@ void ABaseHUD::SetWidgetSuperPower(class UW_SuperPower* Widget)
 void ABaseHUD::CreateChat()
 {
 	m_ChatWidget = CreateWidget<UW_Chat>(GetOwningPlayerController(), ChatWidgetClass);
-	m_ChatWidget->AddToViewport(0);
+	m_ChatWidget->AddToViewport(-1);
 }
 
 bool ABaseHUD::isActivateChat()

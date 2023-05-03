@@ -13,8 +13,7 @@
 #include <GameFramework/PlayerState.h>
 #include "Widgets/Ganeral/Chat/W_Chat.h"
 #include "Game/Components/VoteComponent.h"
-
-
+#include "Enums/E_GameState.h"
 
 
 
@@ -32,12 +31,14 @@ void APawnController::BeginPlay()
 	{
 		Game_State->RoundEnded.AddDynamic(this, &APawnController::RoundEndedOnClient);
 		Game_State->RoundStarted.AddDynamic(this, &APawnController::RoundStarted);
+	
 	}
 	if (HasAuthority())
 	{
 		Cast<ABase_GameMode>(UGameplayStatics::GetGameMode(this))->RoundEnded.AddDynamic(this, &APawnController::RoundEndedInRespawnOnServer);
 		SetReplicates(true);
 	}
+
 	
 }
 
@@ -88,6 +89,11 @@ void APawnController::SetInputOnUI(bool isEnable, UWidget* widget)
 		FInputModeGameOnly InputMode;
 		SetInputMode(InputMode);
 	}
+}
+
+void APawnController::SetSpawnPawn_Implementation(TSubclassOf<class APawn> pawn)
+{
+	this->Spawn_Pawn = pawn;
 }
 
 void APawnController::EnableTabMenu()

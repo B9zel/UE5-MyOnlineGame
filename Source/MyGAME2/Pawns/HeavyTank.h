@@ -39,8 +39,12 @@ protected:
 	void OnReloadSuperSkillWidget();
 
 	 void DisableReloadSuperPower();
+public:
+	 float GetSuperDamage();
 private:
 
-	float SuperDamage_Multiply;
+	float SuperDamage;
+
+	float StandartDamage;
 
 };
