@@ -135,7 +135,11 @@ void AStels_Tank::EnableSuperPower_Multicast_Implementation()
 
 void AStels_Tank::DisableSuperPower_OnClient()
 {
-	GetController<APlayerController>()->GetHUD<ABaseHUD>()->ReloadSuperSkillWidget(TimeReload_SuperPower);
+	APlayerController* controller = GetController<APlayerController>();
+	if (controller != nullptr)
+	{
+		controller->GetHUD<ABaseHUD>()->ReloadSuperSkillWidget(TimeReload_SuperPower);
+	}
 	if (Material_Base != nullptr && Material_BaseTower != nullptr)
 	{
 		Mesh->SetMaterial(0, Material_Base);

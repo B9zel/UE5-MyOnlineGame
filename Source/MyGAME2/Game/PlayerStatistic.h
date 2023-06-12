@@ -39,10 +39,15 @@ public:
 	UFUNCTION(NetMulticast,Unreliable)
 	void OnwerPawnDead(ABaseTank* Deadinstigator);
 
+	UFUNCTION(Server, Unreliable)
+		void SendNicknameServer(const FText& Nickname);
+
 	UFUNCTION()
 	void SwitchWidgetNames();
 protected:
 	virtual void BeginPlay() override;
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+	
 };

@@ -33,6 +33,11 @@ void UW_ChatInputMessage::BindOnTextCommited(const FText& Text, ETextCommit::Typ
 		GetOwningPlayer()->GetHUD<ABaseHUD>()->ToggleChat(false);
 
 	}
+	if (CommitMethod == ETextCommit::Type::OnCleared)
+	{
+		GetOwningPlayer()->GetHUD<ABaseHUD>()->ToggleChat(false); 
+		m_TB_inputMessage->SetText(FText());
+	}
 }
 
 void UW_ChatInputMessage::BindButtonClick()

@@ -27,7 +27,7 @@ void APArticleAndSound::BeginPlay()
 	
 	
 	FTimerHandle handle;
-	GetWorldTimerManager().SetTimer(handle, this, &APArticleAndSound::Destroyer,4.0f, false);
+	GetWorldTimerManager().SetTimer(handle, this, &APArticleAndSound::Destroyer,3.0f, false);
 }
 
 // Called every frame

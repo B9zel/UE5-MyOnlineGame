@@ -14,12 +14,17 @@
 #include "Widgets/Ganeral/Chat/W_Chat.h"
 #include "Game/Components/VoteComponent.h"
 #include "Enums/E_GameState.h"
+#include "Game/BaseGameInstance.h"
+#include "Game/Save/BaseSaveGame.h"
+#include "BaseTank.h"
+
+
 
 
 
 APawnController::APawnController()
 {
-	
+	isEnableInput = true;
 }
 
 void APawnController::BeginPlay()
@@ -31,15 +36,27 @@ void APawnController::BeginPlay()
 	{
 		Game_State->RoundEnded.AddDynamic(this, &APawnController::RoundEndedOnClient);
 		Game_State->RoundStarted.AddDynamic(this, &APawnController::RoundStarted);
-	
+		
 	}
 	if (HasAuthority())
 	{
 		Cast<ABase_GameMode>(UGameplayStatics::GetGameMode(this))->RoundEnded.AddDynamic(this, &APawnController::RoundEndedInRespawnOnServer);
 		SetReplicates(true);
 	}
-
-	
+	else
+	{
+		UBaseSaveGame* saveSlot = Cast<UBaseSaveGame>(UGameplayStatics::LoadGameFromSlot(CastChecked<UBaseGameInstance>(UGameplayStatics::GetGameInstance(this))->SaveSlotOptions, 0));
+		if (saveSlot != nullptr)
+		{
+			SensitivityX = saveSlot->SensetiveX;
+			SensitivityY = saveSlot->SensetiveY;
+		}
+		else
+		{
+			SensitivityX = 1.f;
+			SensitivityY = 1.f;
+		}
+	}
 }
 
 void APawnController::SetupInputComponent()
@@ -48,12 +65,12 @@ void APawnController::SetupInputComponent()
 	
 	if (InputComponent != nullptr)
 	{
-		InputComponent->BindAxis("LookUp", this, &APawnController::AddPitchInput);
-		InputComponent->BindAxis("LookRight", this, &APawnController::AddYawInput);
-		InputComponent->BindAction("CreateWidget",IE_Pressed, this, &APawnController::EnableTabMenu);
+		InputComponent->BindAxis("LookUp", this, &APawnController::AxisAddPithInput);
+		InputComponent->BindAxis("LookRight", this, &APawnController::AxisAddYawInput);
+		InputComponent->BindAction("CreateWidget", IE_Pressed, this, &APawnController::EnableTabMenu);
 		InputComponent->BindAction("CreateWidget", IE_Released, this, &APawnController::DisableTabMenu);
 		InputComponent->BindAction("SwitchChat", IE_Pressed, this, &APawnController::ActivateChatWidget);
-		InputComponent->BindAction("Escape", IE_Pressed, this, &APawnController::DeactivateChatWidget);
+		InputComponent->BindAction("Escape", IE_Pressed, this, &APawnController::OnEscape);
 	}
 }
 
@@ -65,31 +82,71 @@ void APawnController::Respawn()
 	}
 }
 
+void APawnController::AxisAddPithInput(float Axis)
+{
+	AddPitchInput(Axis * SensitivityX);
+}
+
+void APawnController::AxisAddYawInput(float Axis)
+{
+	AddYawInput(Axis * SensitivityY);
+}
+
 void APawnController::TimerRespawn(float Time)
 {
 	RespawnTime.Invalidate();
 	GetWorldTimerManager().SetTimer(RespawnTime, this, &APawnController::Respawn, Time);
 }
 
-void APawnController::SetInputOnUI(bool isEnable, UWidget* widget)
+void APawnController::SetInputOnUI(bool isEnable, UWidget* widgetFocus)
 {
-	if (isEnable)
+	if (isEnable && widgetFocus != nullptr)
 	{
 		bShowMouseCursor = true;
-		FInputModeUIOnly InputMode;
-		InputMode.SetWidgetToFocus(widget->TakeWidget());
-		InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+		FInputModeGameAndUI InputMode;
+		InputMode.SetWidgetToFocus(widgetFocus->TakeWidget());
+		InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::LockOnCapture);
+		InputMode.SetHideCursorDuringCapture(false);
+		SetIgnoreLookInput(true);
 
 		SetInputMode(InputMode);
 	}
 	else
 	{
 		bShowMouseCursor = false;
-		
+		SetIgnoreLookInput(false);
+
 		FInputModeGameOnly InputMode;
 		SetInputMode(InputMode);
 	}
 }
+
+void APawnController::SetBlockInput(bool isBlock)
+{
+	if (isBlock)
+	{
+		isEnableInput = false;
+		SetIgnoreLookInput(true);
+		SetIgnoreMoveInput(true);
+		ABaseTank* pawn = Cast<ABaseTank>(GetPawn());
+		if (pawn != nullptr)
+		{
+			pawn->DisableInput(this);
+		}
+	}
+	else
+	{
+		isEnableInput = true;
+		SetIgnoreLookInput(false);
+		SetIgnoreMoveInput(false);
+		ABaseTank* pawn = Cast<ABaseTank>(GetPawn());
+		if (pawn != nullptr)
+		{
+			pawn->EnableInput(this);
+		}
+	}
+}
+
 
 void APawnController::SetSpawnPawn_Implementation(TSubclassOf<class APawn> pawn)
 {
@@ -98,6 +155,8 @@ void APawnController::SetSpawnPawn_Implementation(TSubclassOf<class APawn> pawn)
 
 void APawnController::EnableTabMenu()
 {
+	if (!isEnableInput)
+		return;
 	ABaseHUD* HUD = GetHUD<ABaseHUD>();
 	if (HUD != nullptr && !HasAuthority())
 	{
@@ -109,6 +168,8 @@ void APawnController::EnableTabMenu()
 
 void APawnController::DisableTabMenu()
 {
+	if (!isEnableInput)
+		return;
 	ABaseHUD* HUD = GetHUD<ABaseHUD>();
 	if (HUD != nullptr && !HasAuthority())
 	{
@@ -120,6 +181,8 @@ void APawnController::DisableTabMenu()
 
 void APawnController::ActivateChatWidget()
 {
+	if (!isEnableInput)
+		return;
 	ABaseHUD* HUD = GetHUD<ABaseHUD>();
 	if (HUD != nullptr)
 	{
@@ -132,6 +195,8 @@ void APawnController::ActivateChatWidget()
 
 void APawnController::DeactivateChatWidget()
 {
+	if (!isEnableInput)
+		return;
 	ABaseHUD* HUD = GetHUD<ABaseHUD>();
 	if (HUD != nullptr)
 	{
@@ -162,8 +227,73 @@ void APawnController::RoundEndedOnClient()
 
 void APawnController::RoundStarted()
 {
+	/**/
 }
 
+void APawnController::OnEscape()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Escape"));
+	ABaseHUD* HUD = GetHUD<ABaseHUD>();
+	if (HUD != nullptr)
+	{
+		if (HUD->isActivateChat())
+		{
+			DeactivateChatWidget();
+		}
+		else
+		{
+			if (HUD->IsActivatePauseMenu())
+			{
+				HUD->TogglePauseMenu(false);
+				SetBlockInput(false);
+			}
+			else
+			{
+				HUD->TogglePauseMenu(true);
+				SetBlockInput(true);
+			}
+		}
+	}
+}
+
+void APawnController::SetInputMode(const FInputModeDataBase& InData)
+{
+	if (ABaseHUD* HUD = GetHUD<ABaseHUD>())
+	{
+		if (HUD->IsActivatePauseMenu())
+		{
+			return;
+		}
+	}
+	APlayerController::SetInputMode(InData);
+
+}
+
+void APawnController::OnPossess(APawn* pawn)
+{
+	APlayerController::OnPossess(pawn);
+	ABaseHUD* HUD = GetHUD<ABaseHUD>();
+	if (HUD != nullptr)
+	{
+		if (HUD->IsActivatePauseMenu())
+		{
+			SetBlockInput(false);
+		}
+	}
+
+}
+
+void APawnController::OnPossessClient_Implementation(APawn* ptrPawn)
+{
+	ABaseHUD* HUD = GetHUD<ABaseHUD>();
+	if (HUD != nullptr)
+	{
+		if (HUD->IsActivatePauseMenu())
+		{
+			SetBlockInput(false);
+		}
+	}
+}
 
 void APawnController::SendMessege_OnServer_Implementation(const FText& messege)
 {

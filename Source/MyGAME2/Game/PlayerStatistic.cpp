@@ -7,6 +7,9 @@
 #include <MyGAME2/Widgets/PlayerStat.h>
 #include <MyGAME2/Game/BaseHUD.h>
 #include <MyGAME2/Widgets/StatisticsMenu.h>
+#include <Kismet/GameplayStatics.h>
+#include "Save/BaseSaveGame.h"
+#include "BaseGameInstance.h"
 
 
 APlayerStatistic::APlayerStatistic()
@@ -27,8 +30,23 @@ void APlayerStatistic::BeginPlay()
 	{
 		SetReplicates(true);
 	}
+	if (GetPlayerController() != nullptr)
+	{
+		UBaseSaveGame* SaveClass = Cast<UBaseSaveGame>(UGameplayStatics::LoadGameFromSlot(CastChecked<UBaseGameInstance>(UGameplayStatics::GetGameInstance(this))->SaveSlotOptions, 0));
+
+		if (SaveClass != nullptr)
+		{
+			SendNicknameServer(SaveClass->Nickname);
+		}
+	}
 
 }
+
+void APlayerStatistic::SendNicknameServer_Implementation(const FText& Nickname)
+{
+	SetPlayerName(Nickname.ToString());
+}
+
 void APlayerStatistic::SwitchWidgetNames()
 {
 	if (isAlive)
@@ -47,6 +65,8 @@ void APlayerStatistic::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 
 	DOREPLIFETIME(APlayerStatistic, isAlive);
 }
+
+
 
 
 

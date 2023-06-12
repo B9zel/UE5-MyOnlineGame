@@ -34,7 +34,11 @@ public:
 
 	void ToggleAim(bool isShow);
 
+	void TogglePauseMenu(bool isShow);
+
 	bool isActivateChat();
+
+	bool IsActivatePauseMenu();
 
 	UFUNCTION()
 	void OnSpawnTankPawn(TSubclassOf<UW_SuperPower> Widget);
@@ -78,6 +82,8 @@ public:
 		TSubclassOf<class UW_Chat> ChatWidgetClass;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TSubclassOf<class UW_Aim> AimWidgetClass;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TSubclassOf<class UW_PauseMenu> PauseMenuWidgetClass;
 	UPROPERTY()
 		TSubclassOf<class UW_SuperPower> superskillWidgetClass;
 	
@@ -87,13 +93,16 @@ private:
 	class UGame_Interface* m_HUDWidget;
 	class UW_Spectator* m_SpectatorWidget;
 	class UW_PreRound* m_PreRoundWidget;
-	      UW_ResultsEndRound* m_EndRoundWidget;
+	class UW_ResultsEndRound* m_EndRoundWidget;
 	class UW_Chat* m_ChatWidget;
-	class UW_SuperPower* m_superskillWidget;
+	UW_SuperPower* m_superskillWidget;
 	class UW_Aim* m_aimWidget;
+	class UW_PauseMenu* m_PauseMenuWidget;
 private:
 
 	void CreateChat();
 
-	
+private:
+
+	bool isActivatePauseMenu;
 };

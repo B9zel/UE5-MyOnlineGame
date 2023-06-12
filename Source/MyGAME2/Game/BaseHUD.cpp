@@ -15,6 +15,7 @@
 #include "../BaseTank.h"
 #include "../PawnController.h"
 #include "../Widgets/EndRound/W_EndRoundMapVote.h"
+#include "../Widgets/Ganeral/PauseMenu/W_PauseMenu.h"
 
 
 ABaseHUD::~ABaseHUD()
@@ -25,6 +26,10 @@ ABaseHUD::~ABaseHUD()
 	m_ChatWidget = nullptr;
 	m_PreRoundWidget = nullptr;
 	m_SpectatorWidget = nullptr;
+	m_superskillWidget = nullptr;
+	m_aimWidget = nullptr;
+
+	isActivatePauseMenu = false;
 }
 
 void ABaseHUD::BeginPlay()
@@ -71,7 +76,7 @@ void ABaseHUD::ToggleHUD(bool isShow)
 
 void ABaseHUD::ToggleTab(bool isShow)
 {
-	if (Cast<ABaseGameState>(UGameplayStatics::GetGameState(this))->RoundInProgress == E_GameState::Game)
+	if (Cast<ABaseGameState>(UGameplayStatics::GetGameState(this))->RoundInProgress == E_GameState::Game && !isActivatePauseMenu)
 	{
 		if (isShow)
 		{
@@ -117,6 +122,7 @@ void ABaseHUD::ToggleSpectatorHUD(bool isShow)
 
 void ABaseHUD::TogglePreRound(bool isShow)
 {
+	
 	if (isShow)
 	{
 		if (m_PreRoundWidget == nullptr)
@@ -134,7 +140,15 @@ void ABaseHUD::TogglePreRound(bool isShow)
 			m_PreRoundWidget->RemoveFromParent();
 			m_PreRoundWidget = nullptr;
 		}
-		GetOwner<APawnController>()->SetInputOnUI(false);
+		if (!IsActivatePauseMenu())
+		{
+			GetOwner<APawnController>()->SetInputOnUI(false);
+		}
+		else
+		{
+			GetOwner<APawnController>()->SetBlockInput(true);
+		}
+		
 	}
 }
 
@@ -162,16 +176,33 @@ void ABaseHUD::ToggleEndRound(bool isShow)
 
 void ABaseHUD::ToggleChat(bool isActivate)
 {
-	if (isActivate)
+	if (!isActivatePauseMenu)
 	{
-		m_ChatWidget->ActivateChat();
-	}
-	else
-	{
-		m_ChatWidget->DeactivateChat();
-
-		FInputModeGameOnly inputMode;
-		GetOwningPlayerController()->SetInputMode(inputMode);
+		if (isActivate)
+		{
+			m_ChatWidget->ActivateChat();
+		}
+		else
+		{
+			m_ChatWidget->DeactivateChat();
+			switch (Cast<ABaseGameState>(UGameplayStatics::GetGameState(this))->RoundInProgress)
+			{
+			case E_GameState::PreStart:
+				GetOwner<APawnController>()->SetInputOnUI(true,m_PreRoundWidget);
+				break;
+			case E_GameState::Game:
+				GetOwner<APawnController>()->SetInputOnUI(false);
+				break;
+			case E_GameState::EndGame:
+				GetOwner<APawnController>()->SetInputOnUI(true, m_EndRoundWidget);
+				break;
+			default:
+				break;
+			}
+		
+			/*FInputModeGameOnly inputMode;
+			GetOwningPlayerController()->SetInputMode(inputMode);*/
+		}
 	}
 }
 
@@ -220,6 +251,33 @@ void ABaseHUD::ToggleAim(bool isShow)
 	{
 		m_aimWidget->RemoveFromParent();
 		m_aimWidget = nullptr;
+	}
+}
+
+void ABaseHUD::TogglePauseMenu(bool isShow)
+{
+	if (isShow)
+	{
+		if (m_PauseMenuWidget == nullptr)
+		{
+			m_PauseMenuWidget = CreateWidget<UW_PauseMenu>(GetOwningPlayerController(), PauseMenuWidgetClass);
+		}
+		m_PauseMenuWidget->AddToViewport(2);
+		isActivatePauseMenu = true;
+		GetOwner<APawnController>()->SetInputOnUI(true,m_PauseMenuWidget);
+	}
+	else 
+	{
+		if (m_PauseMenuWidget != nullptr)
+		{
+			m_PauseMenuWidget->RemoveFromParent();
+			m_PauseMenuWidget = nullptr;
+			isActivatePauseMenu = false;
+		}
+		if (Cast<ABaseGameState>(UGameplayStatics::GetGameState(this))->RoundInProgress == E_GameState::Game)
+		{
+			GetOwner<APawnController>()->SetInputOnUI(false);
+		}
 	}
 }
 
@@ -297,6 +355,11 @@ void ABaseHUD::CreateChat()
 bool ABaseHUD::isActivateChat()
 {
 	return m_ChatWidget->isActivate;
+}
+
+bool ABaseHUD::IsActivatePauseMenu()
+{
+	return m_PauseMenuWidget == nullptr ? false : m_PauseMenuWidget->isActive;
 }
 
 void ABaseHUD::OnSpawnTankPawn(TSubclassOf<UW_SuperPower> Widget)

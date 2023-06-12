@@ -21,6 +21,8 @@ protected:
 	IOnlineSessionPtr SessionInterface;
 	TSharedPtr<FOnlineSessionSearch> SessionSearch;
 	
+public:
+	FString SaveSlotOptions;
 	
 public:
 

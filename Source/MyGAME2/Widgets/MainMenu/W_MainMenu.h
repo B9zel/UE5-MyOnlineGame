@@ -22,8 +22,9 @@ protected:
 	class UButton* B_Quit;
 	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
 	class UWidgetSwitcher* SW_Switch;
-	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
-		class UWidgetSwitcher* SW_FindSession;
+	UPROPERTY(meta = (BindWidget))
+	class UW_MainMenuOption* W_Options;
+	
 	/*UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
 	class UVerticalBox* VB_SwitchListSessions;*/
 
@@ -31,12 +32,13 @@ protected:
 	UFUNCTION()
 	virtual void NativeConstruct() override;
 	UFUNCTION()
+	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
+	UFUNCTION()
 	virtual void ClickFindServer();
 	UFUNCTION()
 	virtual void ClickOptions();
 	UFUNCTION()
 	virtual void ClickQuit();
-public:
-	void SwitchFindWidget(int Switch);
+
 
 };

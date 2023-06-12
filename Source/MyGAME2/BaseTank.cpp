@@ -30,7 +30,7 @@ ABaseTank::ABaseTank()
 
 	Towermesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Towermesh"));
 	Towermesh->SetupAttachment(Mesh);
-
+	
 	spring_arm = CreateDefaultSubobject<USpringArmComponent>(TEXT("springarm"));
 	spring_arm->SetupAttachment(Mesh);
 

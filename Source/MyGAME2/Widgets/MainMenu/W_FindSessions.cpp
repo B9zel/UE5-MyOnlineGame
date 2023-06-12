@@ -34,7 +34,7 @@ void UW_FindSessions::ClickRefreshSessions()
 	if (!IsFindSessions)
 	{
 		IsFindSessions = true;
-		Cast<UW_MainMenu>(GetParent()->GetOuter()->GetOuter())->SwitchFindWidget(1);
+	//	Cast<UW_MainMenu>(GetParent()->GetOuter()->GetOuter())->SwitchFindWidget(1);
 
 		TArray<FOnlineSessionSearchResult> Sessions;
 		Sessions = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(this))->findSession(GetOwningPlayer(),CB_LAN->IsChecked());
@@ -49,7 +49,7 @@ void UW_FindSessions::ClickRefreshSessions()
 		}
 
 
-		Cast<UW_MainMenu>(GetParent()->GetOuter()->GetOuter())->SwitchFindWidget(0);
+	//	Cast<UW_MainMenu>(GetParent()->GetOuter()->GetOuter())->SwitchFindWidget(0);
 		IsFindSessions = false;
 	}
 }

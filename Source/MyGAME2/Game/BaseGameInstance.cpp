@@ -16,6 +16,7 @@ UBaseGameInstance::UBaseGameInstance()
 	{
 		SessionInterface = SubSystem->GetSessionInterface();
 	}
+	SaveSlotOptions = "Options";
 }
 
 void UBaseGameInstance::joinSession(FOnlineSessionSearchResult& Session, APlayerController* controller)
