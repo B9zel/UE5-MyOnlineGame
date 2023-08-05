@@ -18,9 +18,7 @@ public:
 
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
-	float SensetiveX;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float SensetiveY;
+	FVector2D Sensetive;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FText Nickname;
 };

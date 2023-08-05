@@ -6,8 +6,10 @@
 #include <Components/SceneComponent.h>
 #include <GameFramework/ProjectileMovementComponent.h>
 #include <Kismet/GameplayStatics.h>
-#include <GameFramework/Controller.h>
+//#include <Kismet/MathLibriary.h>
 #include <MyGAME2/PawnController.h>
+#include <NiagaraFunctionLibrary.h>
+#include <NiagaraSystem.h>
 #include <Net/UnrealNetwork.h>
 #include <MyGAME2/HealthStat.h>
 #include "bullet.h"
@@ -25,6 +27,7 @@ ABaseTank::ABaseTank()
 	
 	PrimaryActorTick.bCanEverTick = true;
 	
+
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	Mesh->SetupAttachment(RootComponent);
 
@@ -73,7 +76,7 @@ void ABaseTank::BeginPlay()
 			HUD->superskillWidgetClass = struction.superSkillWidgetClass;
 		}
 	}
-	
+	D_SpawnTankPawn.Broadcast(this);
 }
 
 
@@ -141,14 +144,14 @@ void ABaseTank::ClientRotateTower()
 		target = GetControlRotation().Yaw - Mesh->GetComponentRotation().Yaw;
 		if (target > 180)
 			target -= 360;
+		
 		RotateTower_OnServer(target);
 	}
 }
 
 void ABaseTank::RotateTower_OnServer_Implementation(float Target)
-{
-	float math = InterpTo(Towermesh->GetRelativeRotation().Yaw, Target, GetWorld()->GetDeltaSeconds(), Towerrotation_speed);
-	Towermesh->SetRelativeRotation(FRotator(0.0f, FMath::Clamp(math, -120.0f, 120.0f), 0.0f));
+{	
+	Towermesh->SetRelativeRotation(FRotator(0.0f, FMath::Clamp(InterpTo(Towermesh->GetRelativeRotation().Yaw, Target, GetWorld()->GetDeltaSeconds(), Towerrotation_speed), -120.0f, 120.0f), 0.0f));
 }
 
 void ABaseTank::EnableAim()
@@ -160,7 +163,6 @@ void ABaseTank::EnableAim()
 	if (HUD != nullptr)
 	{
 		HUD->ToggleAim(true);
-		//HUD->ToggleSuperPower(false);
 	}
 }
 
@@ -173,20 +175,18 @@ void ABaseTank::DisableAim()
 	if (HUD != nullptr)
 	{
 		HUD->ToggleAim(false);
-	//	HUD->ToggleSuperPower(true);
 	}
 }
 
 void ABaseTank::Shoot_OnServer_Implementation()
 {
-	if (struction.objctBullet != nullptr && !isReload)
+	if (struction.objectBullet != nullptr && !isReload)
 	{
 		isReload = true;
 		FActorSpawnParameters spawnParametars;
 		spawnParametars.Owner = this;
-		spawnParametars.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::DontSpawnIfColliding;
-
-		Abullet* Ref_Bullet = GetWorld()->SpawnActor<Abullet>(struction.objctBullet, FTransform(bscene->GetComponentRotation(), bscene->GetComponentLocation(), FVector(1.0f, 1.0f, 1.0f)), spawnParametars);
+		
+		Abullet* Ref_Bullet = GetWorld()->SpawnActor<Abullet>(struction.objectBullet, FTransform(bscene->GetComponentRotation(), bscene->GetComponentLocation(), FVector(1.0f, 1.0f, 1.0f)), spawnParametars);
 		if (Ref_Bullet != nullptr)
 		{
 			Shoot_Multicast();
@@ -198,17 +198,21 @@ void ABaseTank::Shoot_OnServer_Implementation()
 
 void ABaseTank::Shoot_Multicast_Implementation()
 {	
-	if (!IsAim && !HasAuthority())
+	if (!HasAuthority())
 	{
-		//Spawn Explosion 
-		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), struction.Explosion, FTransform(bscene->GetComponentRotation(), bscene->GetComponentLocation(), FVector(0.6f, 0.6f, 0.6f)));
+		if (!IsAim)
+		{
+			//Spawn Explosion 
+			UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), struction.ExplosionShoot, bscene->GetComponentLocation(), bscene->GetComponentRotation(), FVector(0.6f, 0.6f, 0.6f));
+		}
+
+		//Start Widget Timer
+		//if (Main_Widget != nullptr)
+		//	Main_Widget->ReloadStats->Construct_Widget();
+		D_ReloadStart.Broadcast(TimeReload,0.1f,0.1f);
+		//Spawn Sound
+		UGameplayStatics::SpawnSoundAttached(struction.Shoot_sound, bscene);
 	}
-	//Start Widget Timer
-	if(Main_Widget != nullptr)
-		Main_Widget->ReloadStats->Construct_Widget();
-	//Spawn Sound
-	UGameplayStatics::SpawnSoundAttached(struction.Shoot_sound, bscene);
-	
 }
 
 void ABaseTank::RecharchShoot()
@@ -219,11 +223,12 @@ void ABaseTank::RecharchShoot()
 
 void ABaseTank::Widget_ReloadShoot_Implementation()
 {
-	if (Main_Widget != nullptr)
+	/*if (Main_Widget != nullptr)
 	{
 		if (Main_Widget->ReloadStats != nullptr)
 			Main_Widget->ReloadStats->FinishTimer();
-	}
+	}*/
+	D_ReloadEnd.Broadcast();
 }
 
 void ABaseTank::VisualDeadMulticast_Implementation()
@@ -234,8 +239,9 @@ void ABaseTank::VisualDeadMulticast_Implementation()
 		Towermesh->SetCollisionEnabled(ECollisionEnabled::Type::PhysicsOnly);
 		Towermesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldStatic, ECollisionResponse::ECR_Block);
 		
-		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), struction.Explosion, FTransform(Towermesh->GetComponentRotation(), Towermesh->GetComponentLocation(), FVector(2.0f, 2.0f, 2.0f)));
-
+		//Spaen Niagara
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), struction.ExplosionDeath, Towermesh->GetComponentLocation(), Towermesh->GetComponentRotation(), FVector(1));
+		
 		Towermesh->SetSimulatePhysics(true);
 		Towermesh->AddImpulse(FVector(FMath::FRandRange(HP_Component->Impulse * -1, HP_Component->Impulse), FMath::FRandRange(HP_Component->Impulse * -1, HP_Component->Impulse), HP_Component->Impulse));
 	}
@@ -310,18 +316,23 @@ float ABaseTank::InterpTo(float Current, float Target, float DeltaTime, float sp
 		return Current;
 	
 	float DeltaSpeed = speed * DeltaTime;
-	if (Current > Target - 4  && Current < Target + 4)
+	
+	if (Current > Target - 4.f  && Current < Target + 4.f)
 	{
 		return Current + FMath::Clamp<float>(DeltaSpeed, 0, 1) * (Target - Current);
 	}
 	else
 	{
+	//UE_LOG(LogTemp, Warning, TEXT("Target: %f"), Target);
 		if (Current < Target)
-			Current += DeltaSpeed;
-		else if (Current > Target)
-			Current -= DeltaSpeed;
+		{
+			return Current + DeltaSpeed;
+		}	
+		else 
+		{
+			return Current - DeltaSpeed;
+		}
 	}
-	return Current;
 }
 
 //TSubclassOf<UW_SuperPower> ABaseTank::GetSuperSkillWidget()

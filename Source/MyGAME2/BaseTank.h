@@ -7,7 +7,9 @@
 #include "BaseTank.generated.h"
 
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDelegateSpawn, TSubclassOf<UW_SuperPower>,Widget);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDelegateSpawn, APawn*,p_Pawn);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FDelegateThreeParam, float, Time, float, Rate, float, Step);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDelegateZeroParam);
 
 USTRUCT(BlueprintType)
 struct FReferenceOnElement
@@ -18,10 +20,12 @@ struct FReferenceOnElement
 public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		TSubclassOf<class Abullet> objctBullet;
+		TSubclassOf<class Abullet> objectBullet;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		class UParticleSystem* Explosion;
+		class UNiagaraSystem* ExplosionShoot;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		class UNiagaraSystem* ExplosionDeath;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		class USoundBase* Shoot_sound;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -73,9 +77,9 @@ public:
 
 	class ABase_GameMode* GameMode;
 
-	
-
 	FDelegateSpawn D_SpawnTankPawn;
+	FDelegateZeroParam D_ReloadEnd;
+	FDelegateThreeParam D_ReloadStart;
 
 protected:
 	// Called when the game starts or when spawned
@@ -152,7 +156,7 @@ protected:
 		void Widget_ReloadShoot();
 
 	UFUNCTION(BlueprintCallable)
-		float InterpTo(float Current, float Target, float DeltaTime, float Speed);
+	static float InterpTo(float Current, float Target, float DeltaTime, float Speed);
 	//UFUNCTION(Client, Unreliable)
 	//	TSubclassOf<class UW_SuperPower> GetSuperSkillWidget();
 public:

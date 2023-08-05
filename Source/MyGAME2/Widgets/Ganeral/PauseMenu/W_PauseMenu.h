@@ -6,9 +6,9 @@
 #include "Blueprint/UserWidget.h"
 #include "W_PauseMenu.generated.h"
 
-/**
- * 
- */
+
+
+
 UCLASS()
 class MYGAME2_API UW_PauseMenu : public UUserWidget
 {
@@ -21,7 +21,10 @@ protected:
 	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
 		class UButton* B_Quit;
 	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
+		class UButton* B_Play;
+	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
 		class UWidgetSwitcher* SW_Switch;
+public:
 	UPROPERTY(meta = (BindWidget))
 		class UW_MainMenuOption* W_Options;
 
@@ -34,6 +37,7 @@ protected:
 
 	virtual void NativeDestruct() override;
 
+	virtual FReply NativeOnKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent) override;
 	UFUNCTION()
 		virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 	UFUNCTION()
@@ -42,6 +46,9 @@ protected:
 		virtual void ClickOptions();
 	UFUNCTION()
 		virtual void ClickQuitInMenu();
+	UFUNCTION()
+		virtual void ClickPlay();
+
 public:
 
 	bool isActive;

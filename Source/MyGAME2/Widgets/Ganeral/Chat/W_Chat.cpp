@@ -13,6 +13,7 @@
 
 
 
+
 bool UW_Chat::Initialize()
 {
 	Super::Initialize();
@@ -48,7 +49,8 @@ void UW_Chat::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
 	Super::NativeTick(MyGeometry, InDeltaTime);
 	
-	SB_scrolMessage->SetScrollOffset(SB_scrolMessage->GetScrollOffset() + (20 * InDeltaTime));
+	if (SB_scrolMessage != nullptr)
+		SB_scrolMessage->SetScrollOffset(SB_scrolMessage->GetScrollOffset() + (20 * InDeltaTime));
 }
 
 void UW_Chat::TakeMessage(FText message, APlayerState* player)
@@ -76,8 +78,8 @@ void UW_Chat::ActivateChat()
 		GetWorld()->GetTimerManager().ClearTimer(sleepingTimer);
 	}
 
-	SetVisibility(ESlateVisibility::Visible);
-	InputMessage->SetVisibility(ESlateVisibility::Visible);
+	//SetVisibility(ESlateVisibility::Visible);
+	//InputMessage->SetVisibility(ESlateVisibility::Visible);
 	InputMessage->GetTB_InputMessage()->SetKeyboardFocus();
 
 	B_Chat->SetBrushColor(FLinearColor(0.f, 0.f, 0.f, 0.8f));

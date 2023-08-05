@@ -19,3 +19,9 @@ UVerticalBox* UW_TeamStatisticsMenu::GetPlayerList(APlayerState* PlayerState)
 		return VB_Player;
 	}
 }
+
+void UW_TeamStatisticsMenu::UpdatePlayerList()
+{
+	VB_PlayerOwn->ClearChildren();
+	UStatisticsMenu::UpdatePlayerList();
+}

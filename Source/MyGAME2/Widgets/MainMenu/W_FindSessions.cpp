@@ -61,3 +61,8 @@ void UW_FindSessions::ClickConnectToIP()
 		Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(this))->joinSession(ED_InoutIP->GetText().ToString(), GetOwningPlayer());
 	}
 }
+
+UButton* UW_FindSessions::GetButtonConnectToIP()
+{
+	return B_ConnectToIP;
+}

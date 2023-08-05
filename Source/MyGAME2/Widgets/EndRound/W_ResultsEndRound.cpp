@@ -10,6 +10,8 @@
 #include <Kismet/GameplayStatics.h>
 #include <MyGAME2/Game/BaseGameState.h>
 #include "W_EndRoundMapVote.h"
+#include <Kismet/KismetInputLibrary.h>
+#include "../../PawnController.h"
 
 
 
@@ -50,4 +52,16 @@ void UW_ResultsEndRound::InitializeTextResult()
 		T_Winner->SetColorAndOpacity(FSlateColor(color));
 	}
 
+}
+
+FReply UW_ResultsEndRound::NativeOnKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent)
+{
+	UUserWidget::NativeOnKeyDown(InGeometry, InKeyEvent);
+
+	if (UKismetInputLibrary::EqualEqual_KeyKey(InKeyEvent.GetKey(), FKey(FName("Escape"))))
+	{
+		GetOwningPlayer<APawnController>()->SwitchPauseMenu(true);
+	}
+
+	return FReply::Handled();
 }

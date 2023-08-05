@@ -26,6 +26,8 @@ protected:
 	void RoundEndedOnClient();
 	UFUNCTION()
 	void RoundStarted();
+	UFUNCTION()
+	void PreRoundStart();
 
 	void EnableTabMenu();
 
@@ -36,6 +38,13 @@ protected:
 	void DeactivateChatWidget();
 
 	void Respawn();
+
+	void SetBlockInputOnOwningPawn(bool isBlock);
+
+	void UpdateSensetivity();
+	UFUNCTION()
+	void BindSensetivity(FVector2D Sensetivity);
+
 	UFUNCTION()
 	void AxisAddPithInput(float Axis);
 	UFUNCTION()
@@ -44,19 +53,21 @@ protected:
 	UFUNCTION()
 		void OnEscape();
 
-	virtual void SetInputMode(const FInputModeDataBase& InData) override;
-
 	virtual void OnPossess(APawn* pawn) override;
+
 	UFUNCTION(Client, Unreliable)
-	void OnPossessClient(APawn* ptrPawn);
+		void OnClientPossess(APawn* p_pawn);
+	
+	UFUNCTION()
+	void OnSpawnBaseTank();
+	UFUNCTION()
+	void OnSpawnSpectator();
+
 protected:
 		
-	float SensitivityX;
-	float SensitivityY;
+	FVector2D Sensitivity;
 
-	
-
-	bool isEnableInput;
+	class ABaseHUD* HUD;
 public:
 
 	UFUNCTION()
@@ -67,14 +78,14 @@ public:
 	void SendMessege_OnServer(const FText& messege);
 	UFUNCTION(Server, Unreliable)
 	void SetSelectedMap(int MapIndex);
+	UFUNCTION()
+	void SwitchPauseMenu(bool isEnable);
 
 	UFUNCTION()
 	void SetInputOnUI(bool isEnable,UWidget* widget = nullptr);
 	UFUNCTION(Server, Unreliable)
 	void SetSpawnPawn(TSubclassOf<class APawn> spawnPawn);
 
-	void SetBlockInput(bool isBlock);
-	
 public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

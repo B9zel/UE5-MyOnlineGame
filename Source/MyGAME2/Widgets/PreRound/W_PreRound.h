@@ -17,4 +17,12 @@ class MYGAME2_API UW_PreRound : public UUserWidget
 public:
 	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
 	class UW_SelectionPawn* W_SelectionPawn;
+
+protected:
+
+	virtual void NativeConstruct() override;
+	virtual void NativeOnFocusLost(const FFocusEvent& InFocusEvent) override;
+	virtual void NativeOnFocusChanging(const FWeakWidgetPath& PreviousFocusPath, const FWidgetPath& NewWidgetPath, const FFocusEvent& InFocusEvent) override;
+	
+	virtual FReply NativeOnKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent) override;
 };

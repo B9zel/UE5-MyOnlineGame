@@ -11,6 +11,8 @@
 #include "../../Pawns/Stels_Tank.h"
 
 
+
+
 void UW_PawnInfo::SetSwitchInfo(E_AllPawns E_pawm)
 {
 	switch (E_pawm)
@@ -42,14 +44,23 @@ void UW_PawnInfo::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	PawnsInfo.Add(E_AllPawns::LightTank, FText::FromString(GetLightTankInfo()));
-	PawnsInfo.Add(E_AllPawns::HeavyTank, FText::FromString(GetHeavyTankInfo()));
-	PawnsInfo.Add(E_AllPawns::MediumTank, FText::FromString(GetMediumTankInfo()));
-	PawnsInfo.Add(E_AllPawns::StelsTank, FText::FromString(GetStelsTankInfo()));
-
+	PawnsInfo.Add(E_AllPawns::LightTank, GetLightTankInfo());
+	PawnsInfo.Add(E_AllPawns::HeavyTank, GetHeavyTankInfo());
+	PawnsInfo.Add(E_AllPawns::MediumTank, GetMediumTankInfo());
+	PawnsInfo.Add(E_AllPawns::StelsTank, GetStelsTankInfo());
 }
 
-FString UW_PawnInfo::GetLightTankInfo()
+bool UW_PawnInfo::Initialize()
+{
+	Super::Initialize();
+
+	
+	//FText lightTank = *PawnsInfo.Find(E_AllPawns::LightTank);
+	//FText TestHUDDisplay = NSLOCTEXT("Namespace", "key", TEXT("%s", PawnsInfo.FindRef(E_AllPawns::LightTank)),);
+	return true;
+}
+
+FText UW_PawnInfo::GetLightTankInfo()
 {
 	FString Info;
 	ALight_Tank* pawn = GetWorld()->SpawnActor<ALight_Tank>(ALight_Tank::StaticClass(), FVector(0, 0, -500),FRotator(0,0,0));
@@ -70,10 +81,10 @@ FString UW_PawnInfo::GetLightTankInfo()
 		pawn->Destroy();
 	}
 	
-	return Info;
+	return FText::FromString(Info);
 }
 
-FString UW_PawnInfo::GetMediumTankInfo()
+FText UW_PawnInfo::GetMediumTankInfo()
 {
 	FString Info;
 	AMedium_Tank* pawn = GetWorld()->SpawnActor<AMedium_Tank>(AMedium_Tank::StaticClass(), FVector(0, 0, -500), FRotator(0, 0, 0));
@@ -93,10 +104,10 @@ FString UW_PawnInfo::GetMediumTankInfo()
 
 		pawn->Destroy();
 	}
-	return Info;
+	return FText::FromString(Info);
 }
 
-FString UW_PawnInfo::GetStelsTankInfo()
+FText UW_PawnInfo::GetStelsTankInfo()
 {
 	FString Info;
 	AStels_Tank* pawn = GetWorld()->SpawnActor<AStels_Tank>(AStels_Tank::StaticClass(), FVector(0, 0, -500), FRotator(0, 0, 0));
@@ -116,10 +127,10 @@ FString UW_PawnInfo::GetStelsTankInfo()
 
 		pawn->Destroy();
 	}
-	return Info;
+	return FText::FromString(Info);
 }
 
-FString UW_PawnInfo::GetHeavyTankInfo()
+FText UW_PawnInfo::GetHeavyTankInfo()
 {
 	FString Info;
 	AHeavyTank* pawn = GetWorld()->SpawnActor<AHeavyTank>(AHeavyTank::StaticClass(), FVector(0, 0, -500), FRotator(0, 0, 0));
@@ -139,5 +150,5 @@ FString UW_PawnInfo::GetHeavyTankInfo()
 
 		pawn->Destroy();
 	}
-	return Info;
+	return FText::FromString(Info);
 }

@@ -6,17 +6,26 @@
 #include <OnlineSessionSettings.h>
 #include <Kismet/GameplayStatics.h>
 #include <Templates/SharedPointer.h>
+#include "../Enums/E_PlayerSpace.h"
+#include "Save/BaseSaveGame.h"
 
 
 UBaseGameInstance::UBaseGameInstance()
 {
-	IOnlineSubsystem* SubSystem = IOnlineSubsystem::Get();
+	SaveSlotOptions = "Options";
+	PlayerSpace = E_PlayerSpace::inMainSpace;
+}
 
+void UBaseGameInstance::Init()
+{
+	Super::Init();
+
+	IOnlineSubsystem* SubSystem = IOnlineSubsystem::Get();
 	if (SubSystem != nullptr)
 	{
 		SessionInterface = SubSystem->GetSessionInterface();
 	}
-	SaveSlotOptions = "Options";
+	SaveObject = Cast<UBaseSaveGame>(UGameplayStatics::CreateSaveGameObject(UBaseSaveGame::StaticClass()));
 }
 
 void UBaseGameInstance::joinSession(FOnlineSessionSearchResult& Session, APlayerController* controller)
@@ -46,4 +55,24 @@ TArray<FOnlineSessionSearchResult> UBaseGameInstance::findSession(APlayerControl
 	SessionInterface->FindSessions(controller->GetUniqueID(), SessionSearch.ToSharedRef());
 
 	return SessionSearch->SearchResults;
+}
+
+UBaseSaveGame* UBaseGameInstance::GetLoadFromOptionsSlot(int UserIndex)
+{
+	return Cast<UBaseSaveGame>(UGameplayStatics::LoadGameFromSlot(SaveSlotOptions, UserIndex));
+}
+
+UBaseSaveGame* UBaseGameInstance::GetSaveObject() const
+{
+	return SaveObject;
+}
+
+FString UBaseGameInstance::GetNameSlotOptions() const
+{
+	return SaveSlotOptions;
+}
+
+void UBaseGameInstance::SaveObjectToSlot(UBaseSaveGame* object, int UserIndex)
+{
+	UGameplayStatics::SaveGameToSlot(object, GetNameSlotOptions(),UserIndex);
 }

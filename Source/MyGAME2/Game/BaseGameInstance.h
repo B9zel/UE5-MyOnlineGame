@@ -18,15 +18,28 @@ class MYGAME2_API UBaseGameInstance : public UGameInstance
 protected:
 	UBaseGameInstance();
 
-	IOnlineSessionPtr SessionInterface;
-	TSharedPtr<FOnlineSessionSearch> SessionSearch;
-	
-public:
-	FString SaveSlotOptions;
-	
+	virtual void Init() override;
 public:
 
 	virtual void joinSession(FOnlineSessionSearchResult& Session, APlayerController* controller);
 	void joinSession(FString IP, APlayerController* controller);
 	virtual TArray<FOnlineSessionSearchResult> findSession(APlayerController* controller,bool LAN);
+
+	class UBaseSaveGame* GetLoadFromOptionsSlot(int UserIndex = 0);
+	class UBaseSaveGame* GetSaveObject() const;
+	FString GetNameSlotOptions() const;
+	void SaveObjectToSlot(UBaseSaveGame* object, int UserIndex = 0);
+
+protected:
+	IOnlineSessionPtr SessionInterface;
+	TSharedPtr<FOnlineSessionSearch> SessionSearch;
+
+	class UBaseSaveGame* SaveObject;
+	FString SaveSlotOptions;
+public:
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TEnumAsByte<enum E_PlayerSpace> PlayerSpace;
+	
+
 };

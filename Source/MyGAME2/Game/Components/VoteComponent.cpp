@@ -33,7 +33,7 @@ void UVoteComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	UE_LOG(LogTemp, Error, TEXT("Event tick Active"));
+	UE_LOG(LogTemp, Warning, TEXT("Tick"));
 	voteMapTime--;
 	if (voteMapTime <= 0)
 	{

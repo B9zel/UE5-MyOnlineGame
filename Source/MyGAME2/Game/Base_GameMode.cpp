@@ -36,7 +36,7 @@ void ABase_GameMode::Pawn_Dead_Implementation(APlayerController* DeadPlayer, APl
 	
 	if (AutoRespawn)
 	{
-		Cast<APawnController>(DeadPlayer)->TimerRespawn(5.0f);
+		Cast<APawnController>(DeadPlayer)->TimerRespawn(20.0f);
 	}
 }
 
@@ -52,6 +52,7 @@ void ABase_GameMode::SpawnSpectator(class APlayerController* Player, class APlay
 		SpawnActor->FollowPawn = Cast<ABaseTank>(DeadInstigator->GetPawn());
 	}
 	Player->Possess(SpawnActor);
+	DSpawnSpectator.Broadcast();
 }
 
 void ABase_GameMode::StartRound_Implementation()
@@ -62,7 +63,7 @@ void ABase_GameMode::StartRound_Implementation()
 	for (auto& el : Game_State->PlayerArray)
 	{
 		Controller = Cast<APawnController>(el.Get()->GetOwner());
-		Spawn_Player(Controller, Controller->Spawn_Pawn);
+		IsValid(Spawn_Player(Controller, Controller->Spawn_Pawn)) ? DSpawnTank.Broadcast() : nullptr;
 	}
 	RoundStart.Broadcast();
 }

@@ -8,6 +8,7 @@
 
 //UDELIGATE();
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTestDelegate);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDispatchOneParam,ABaseTank*, Pawn);
  
 UCLASS()
 class MYGAME2_API ABase_GameMode : public AGameModeBase
@@ -37,6 +38,11 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 		FTestDelegate RoundEnded;
+	UPROPERTY(BlueprintAssignable)
+		FTestDelegate DSpawnSpectator;
+	UPROPERTY(BlueprintAssignable, BlueprintCallable)
+		FTestDelegate DSpawnTank;
+	
 
 public:
 

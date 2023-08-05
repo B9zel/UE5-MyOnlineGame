@@ -3,6 +3,8 @@
 
 #include "PArticleAndSound.h"
 #include <particles/ParticleSystemComponent.h>
+//#include <NiagaraComponent.h>
+#include <NiagaraComponent.h>
 #include <Components/AudioComponent.h>
 
 // Sets default values
@@ -11,8 +13,12 @@ APArticleAndSound::APArticleAndSound()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 
-	ParticleComponent = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Partical system"));
-	ParticleComponent->SetupAttachment(RootComponent);
+	///ParticleComponent = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Partical system"));
+	//ParticleComponent->SetupAttachment(RootComponent);
+
+	NiagaraComponent = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Niagara system"));
+	NiagaraComponent->SetupAttachment(RootComponent);
+
 
 	AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio Component"));
 	AudioComponent->SetupAttachment(RootComponent);

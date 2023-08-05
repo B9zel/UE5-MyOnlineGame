@@ -17,6 +17,9 @@
 #include "Game/BaseGameInstance.h"
 #include "Game/Save/BaseSaveGame.h"
 #include "BaseTank.h"
+#include "Game/PlayerStatistic.h"
+#include "Widgets/MainMenu/W_MainMenuOption.h"
+#include "Widgets/Ganeral/PauseMenu/W_PauseMenu.h"
 
 
 
@@ -24,7 +27,6 @@
 
 APawnController::APawnController()
 {
-	isEnableInput = true;
 }
 
 void APawnController::BeginPlay()
@@ -36,26 +38,25 @@ void APawnController::BeginPlay()
 	{
 		Game_State->RoundEnded.AddDynamic(this, &APawnController::RoundEndedOnClient);
 		Game_State->RoundStarted.AddDynamic(this, &APawnController::RoundStarted);
+		Game_State->PreRoundStarted.AddDynamic(this, &APawnController::PreRoundStart);
+		if (!HasAuthority())
+		{
+			Game_State->DSpawnSpectator.AddDynamic(this, &APawnController::OnSpawnSpectator);
+			Game_State->DSpawnTank.AddDynamic(this, &APawnController::OnSpawnBaseTank);
+		}
 		
 	}
+	
 	if (HasAuthority())
 	{
 		Cast<ABase_GameMode>(UGameplayStatics::GetGameMode(this))->RoundEnded.AddDynamic(this, &APawnController::RoundEndedInRespawnOnServer);
-		SetReplicates(true);
+		SetReplicates(true);		
 	}
 	else
 	{
-		UBaseSaveGame* saveSlot = Cast<UBaseSaveGame>(UGameplayStatics::LoadGameFromSlot(CastChecked<UBaseGameInstance>(UGameplayStatics::GetGameInstance(this))->SaveSlotOptions, 0));
-		if (saveSlot != nullptr)
-		{
-			SensitivityX = saveSlot->SensetiveX;
-			SensitivityY = saveSlot->SensetiveY;
-		}
-		else
-		{
-			SensitivityX = 1.f;
-			SensitivityY = 1.f;
-		}
+		HUD = GetHUD<ABaseHUD>();
+		
+		UpdateSensetivity();
 	}
 }
 
@@ -74,6 +75,26 @@ void APawnController::SetupInputComponent()
 	}
 }
 
+
+void APawnController::OnPossess(APawn* pawn)
+{
+	APlayerController::OnPossess(pawn);
+
+	OnClientPossess(pawn);
+}
+
+void APawnController::OnSpawnBaseTank()
+{
+}
+
+void APawnController::OnSpawnSpectator()
+{
+}
+
+void APawnController::OnClientPossess_Implementation(APawn* pawn)
+{
+}
+
 void APawnController::Respawn()
 {
 	if (Spawn_Pawn.GetDefaultObject() != nullptr)
@@ -84,12 +105,12 @@ void APawnController::Respawn()
 
 void APawnController::AxisAddPithInput(float Axis)
 {
-	AddPitchInput(Axis * SensitivityX);
+	AddPitchInput(Axis * Sensitivity.Y);
 }
 
 void APawnController::AxisAddYawInput(float Axis)
 {
-	AddYawInput(Axis * SensitivityY);
+	AddYawInput(Axis * Sensitivity.X);
 }
 
 void APawnController::TimerRespawn(float Time)
@@ -103,48 +124,54 @@ void APawnController::SetInputOnUI(bool isEnable, UWidget* widgetFocus)
 	if (isEnable && widgetFocus != nullptr)
 	{
 		bShowMouseCursor = true;
-		FInputModeGameAndUI InputMode;
+		FInputModeUIOnly InputMode;
 		InputMode.SetWidgetToFocus(widgetFocus->TakeWidget());
-		InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::LockOnCapture);
-		InputMode.SetHideCursorDuringCapture(false);
-		SetIgnoreLookInput(true);
-
-		SetInputMode(InputMode);
+		InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+		
+		SetInputMode(InputMode); 
 	}
 	else
 	{
 		bShowMouseCursor = false;
-		SetIgnoreLookInput(false);
 
 		FInputModeGameOnly InputMode;
+		InputMode.SetConsumeCaptureMouseDown(true);
 		SetInputMode(InputMode);
 	}
 }
 
-void APawnController::SetBlockInput(bool isBlock)
+void APawnController::SetBlockInputOnOwningPawn(bool isBlock)
 {
+	APawn* pawn = GetPawn();
 	if (isBlock)
 	{
-		isEnableInput = false;
-		SetIgnoreLookInput(true);
-		SetIgnoreMoveInput(true);
-		ABaseTank* pawn = Cast<ABaseTank>(GetPawn());
 		if (pawn != nullptr)
-		{
 			pawn->DisableInput(this);
-		}
 	}
 	else
 	{
-		isEnableInput = true;
-		SetIgnoreLookInput(false);
-		SetIgnoreMoveInput(false);
-		ABaseTank* pawn = Cast<ABaseTank>(GetPawn());
 		if (pawn != nullptr)
-		{
 			pawn->EnableInput(this);
-		}
 	}
+}
+
+void APawnController::UpdateSensetivity()
+{
+	UBaseSaveGame* saveSlot = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(this))->GetLoadFromOptionsSlot();
+	if (saveSlot != nullptr)
+	{
+		Sensitivity = saveSlot->Sensetive;
+	}
+	else
+	{
+		Sensitivity.X = 1.f;
+		Sensitivity.Y = 1.f;
+	}
+}
+
+void APawnController::BindSensetivity(FVector2D Sensetivity)
+{
+	this->Sensitivity = Sensetivity;
 }
 
 
@@ -154,10 +181,7 @@ void APawnController::SetSpawnPawn_Implementation(TSubclassOf<class APawn> pawn)
 }
 
 void APawnController::EnableTabMenu()
-{
-	if (!isEnableInput)
-		return;
-	ABaseHUD* HUD = GetHUD<ABaseHUD>();
+{	
 	if (HUD != nullptr && !HasAuthority())
 	{
 		HUD->ToggleTab(true);
@@ -167,10 +191,7 @@ void APawnController::EnableTabMenu()
 }
 
 void APawnController::DisableTabMenu()
-{
-	if (!isEnableInput)
-		return;
-	ABaseHUD* HUD = GetHUD<ABaseHUD>();
+{	
 	if (HUD != nullptr && !HasAuthority())
 	{
 		HUD->ToggleTab(false);
@@ -181,9 +202,6 @@ void APawnController::DisableTabMenu()
 
 void APawnController::ActivateChatWidget()
 {
-	if (!isEnableInput)
-		return;
-	ABaseHUD* HUD = GetHUD<ABaseHUD>();
 	if (HUD != nullptr)
 	{
 		if (!HUD->isActivateChat())
@@ -194,10 +212,7 @@ void APawnController::ActivateChatWidget()
 }
 
 void APawnController::DeactivateChatWidget()
-{
-	if (!isEnableInput)
-		return;
-	ABaseHUD* HUD = GetHUD<ABaseHUD>();
+{	
 	if (HUD != nullptr)
 	{
 		if (HUD->isActivateChat())
@@ -206,7 +221,6 @@ void APawnController::DeactivateChatWidget()
 		}
 	}
 }
-
 
 void APawnController::RoundEndedInRespawnOnServer()
 {
@@ -221,19 +235,18 @@ void APawnController::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutL
 
 void APawnController::RoundEndedOnClient()
 {
-
-	//DisableInput(this);
 }
 
 void APawnController::RoundStarted()
 {
-	/**/
+}
+
+void APawnController::PreRoundStart()
+{
 }
 
 void APawnController::OnEscape()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Escape"));
-	ABaseHUD* HUD = GetHUD<ABaseHUD>();
 	if (HUD != nullptr)
 	{
 		if (HUD->isActivateChat())
@@ -242,58 +255,30 @@ void APawnController::OnEscape()
 		}
 		else
 		{
-			if (HUD->IsActivatePauseMenu())
-			{
-				HUD->TogglePauseMenu(false);
-				SetBlockInput(false);
-			}
-			else
-			{
-				HUD->TogglePauseMenu(true);
-				SetBlockInput(true);
-			}
+			SwitchPauseMenu(!HUD->IsActivatePauseMenu());
 		}
 	}
 }
 
-void APawnController::SetInputMode(const FInputModeDataBase& InData)
-{
-	if (ABaseHUD* HUD = GetHUD<ABaseHUD>())
-	{
-		if (HUD->IsActivatePauseMenu())
-		{
-			return;
-		}
-	}
-	APlayerController::SetInputMode(InData);
 
-}
-
-void APawnController::OnPossess(APawn* pawn)
+void APawnController::SwitchPauseMenu(bool isEnable)
 {
-	APlayerController::OnPossess(pawn);
-	ABaseHUD* HUD = GetHUD<ABaseHUD>();
 	if (HUD != nullptr)
 	{
-		if (HUD->IsActivatePauseMenu())
+		if (isEnable)
 		{
-			SetBlockInput(false);
+			UW_PauseMenu* Widget = HUD->TogglePauseMenu(true);
+			if (Widget != nullptr)
+				if (!Widget->W_Options->D_OptionSensetivity.Contains(this, "BindSensetivity"))
+					Widget->W_Options->D_OptionSensetivity.AddDynamic(this, &APawnController::BindSensetivity);
 		}
-	}
-
-}
-
-void APawnController::OnPossessClient_Implementation(APawn* ptrPawn)
-{
-	ABaseHUD* HUD = GetHUD<ABaseHUD>();
-	if (HUD != nullptr)
-	{
-		if (HUD->IsActivatePauseMenu())
+		else
 		{
-			SetBlockInput(false);
+			HUD->TogglePauseMenu(false);
 		}
 	}
 }
+
 
 void APawnController::SendMessege_OnServer_Implementation(const FText& messege)
 {

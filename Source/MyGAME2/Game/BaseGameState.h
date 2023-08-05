@@ -8,6 +8,7 @@
 
 //UDELEGATE(BlueprintAuthorityOnly)
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDelegate);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDelegateOneParam,ABaseTank*,Pawn);
 
 UCLASS()
 class MYGAME2_API ABaseGameState : public AGameStateBase
@@ -29,7 +30,12 @@ public:
 		FDelegate RoundEnded;
 	UPROPERTY(BlueprintAssignable)
 		FDelegate RoundStarted;
-	
+	UPROPERTY(BlueprintAssignable)
+		FDelegate PreRoundStarted;
+	UPROPERTY(BlueprintAssignable)
+		FDelegate DSpawnSpectator;
+	UPROPERTY(BlueprintAssignable)
+		FDelegate DSpawnTank;
 
 	UPROPERTY(ReplicatedUsing = OnRep_RoundInProgress,BlueprintReadWrite)
 		TEnumAsByte<enum E_GameState> RoundInProgress;
@@ -54,6 +60,12 @@ protected:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	UFUNCTION()
 	void OpenNexpMap(FName MapName);
+	UFUNCTION()
+	void SpawnSpectatorOnServer();
+	UFUNCTION(NetMulticast, Unreliable)
+	void SpawnSpectatorMulticast();
+	UFUNCTION(NetMulticast, Unreliable)
+	void SpawnTankMulticast();
 
 public:
 

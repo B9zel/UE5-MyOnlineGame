@@ -14,7 +14,6 @@
 
 APlayerStatistic::APlayerStatistic()
 {
-	
 	Kills = 0;
 
 	Deaths = 0;
@@ -30,9 +29,9 @@ void APlayerStatistic::BeginPlay()
 	{
 		SetReplicates(true);
 	}
-	if (GetPlayerController() != nullptr)
+	else if (GetPlayerController() != nullptr)
 	{
-		UBaseSaveGame* SaveClass = Cast<UBaseSaveGame>(UGameplayStatics::LoadGameFromSlot(CastChecked<UBaseGameInstance>(UGameplayStatics::GetGameInstance(this))->SaveSlotOptions, 0));
+		const UBaseSaveGame* SaveClass = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(this))->GetLoadFromOptionsSlot();
 
 		if (SaveClass != nullptr)
 		{
@@ -65,8 +64,6 @@ void APlayerStatistic::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 
 	DOREPLIFETIME(APlayerStatistic, isAlive);
 }
-
-
 
 
 

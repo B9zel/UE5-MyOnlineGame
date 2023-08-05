@@ -16,8 +16,8 @@ ABaseGameState::ABaseGameState()
 	this->PrimaryActorTick.TickInterval = 1.0f;
 
 	chatComponent = CreateDefaultSubobject<UChatComponent>(TEXT("Chat Component"));
-
 	voteComponent = CreateDefaultSubobject<UVoteComponent>(TEXT("Vote Component"));
+
 	RoundInProgress = E_GameState::PreStart;
 	playerInSession = 2;
 	
@@ -36,10 +36,12 @@ void ABaseGameState::BeginPlay()
 		if (GameMode != nullptr)
 		{
 			GameMode->RoundEnded.AddDynamic(this, &ABaseGameState::OnRoundEnded);
-			
+			GameMode->DSpawnSpectator.AddDynamic(this, &ABaseGameState::SpawnSpectatorOnServer);
+			GameMode->DSpawnTank.AddDynamic(this, &ABaseGameState::SpawnTankMulticast);
 			//GameMode->RoundStart.AddDynamic(this, &ABaseGameState::OnRoundStarted);
 		}
 	}
+	
 }
 
 void ABaseGameState::Tick(float DeltaTime)
@@ -106,6 +108,7 @@ void ABaseGameState::OnRep_RoundInProgress()
 	switch (RoundInProgress)
 	{
 	case E_GameState::PreStart:
+		PreRoundStarted.Broadcast();
 		break;
 	case E_GameState::Game:
 		RoundStarted.Broadcast();
@@ -122,6 +125,18 @@ void ABaseGameState::OnRoundStarted()
 {
 }
 
+void ABaseGameState::SpawnSpectatorOnServer()
+{
+	SpawnSpectatorMulticast();
+}
+void ABaseGameState::SpawnTankMulticast_Implementation()
+{
+	DSpawnTank.Broadcast();
+}
+void ABaseGameState::SpawnSpectatorMulticast_Implementation()
+{
+	DSpawnSpectator.Broadcast();
+}
 
 void ABaseGameState::OnRoundEnded()
 {
@@ -144,6 +159,7 @@ void ABaseGameState::OpenNexpMap(FName MapName)
 {
 	UKismetSystemLibrary::ExecuteConsoleCommand(this, FString("ServerTraver ") + MapName.ToString());
 }
+
 
 FTimespan ABaseGameState::GetRoundTime()
 {

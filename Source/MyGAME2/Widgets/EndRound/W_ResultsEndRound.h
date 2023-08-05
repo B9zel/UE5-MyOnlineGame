@@ -23,11 +23,13 @@ protected:
 public:
 	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
 		 class UW_EndRoundMapVote* EndRoundMap;
-private:
+protected:
 
 	virtual void NativeConstruct() override;
 
 	virtual void InitializeTabResults();
 
 	virtual void InitializeTextResult();
+
+	virtual FReply NativeOnKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent) override;
 };

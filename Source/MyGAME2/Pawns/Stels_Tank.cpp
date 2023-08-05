@@ -20,7 +20,7 @@ AStels_Tank::AStels_Tank()
 
 	Speed = 250.0f;
 
-	Rotation_speed = 80.0f;
+	Rotation_speed = 60.0f;
 
 	Towerrotation_speed = 80.0f;
 

@@ -32,4 +32,6 @@ protected:
 	virtual void NativeConstruct() override;
 	UFUNCTION()
 	virtual void OnSelectedPawn(E_AllPawns pawn);
+
+	
 };

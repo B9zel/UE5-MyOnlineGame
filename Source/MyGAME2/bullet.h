@@ -16,21 +16,20 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	class UBoxComponent* Box_collision;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UStaticMeshComponent* Mesh;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UProjectileMovementComponent* ProjectileMovement;
+
+
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		UParticleSystem* iscra;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float TimeDestroy;
-	/*UPROPERTY(EditAnywhere, BlueprintReadOnly)
-		FVector DestroyLocation;*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float Damage;
+	
 
 protected:
 	
@@ -46,6 +45,8 @@ public:
 	void HitOverlap(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
 	void Destroyer();
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
-	void ShowDamgeOnServer(const float& ShowDamage,const FVector& DestroyLocation);
+	UFUNCTION(Server, Unreliable) //BlueprintImplementableEvent, BlueprintCallable
+	void ShowWidgetDamgeOnServer(const float ShowDamage,const FVector DestroyLocation);
+	UFUNCTION(Client,Unreliable)
+	void ShowWidgetDamgeOnClient(const float ShowDamage, const FVector DestroyLocation);
 };

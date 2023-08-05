@@ -4,8 +4,10 @@
 #include <Components/StaticMeshComponent.h>
 #include <GameFramework/ProjectileMovementComponent.h>
 #include <Kismet/GameplayStatics.h>
-#include <MyGAME2/HealthStat.h>
+#include "Game/BaseGameState.h"
+#include "HealthStat.h"
 #include "BaseTank.h"
+#include "Game/BaseHUD.h"
 
 
 Abullet::Abullet()
@@ -38,10 +40,10 @@ void Abullet::BeginPlay()
 		SetReplicateMovement(true);
 
 		Damage = Cast<ABaseTank>(GetOwner())->GetDamage();
+
+		FTimerHandle handle;
+		GetWorldTimerManager().SetTimer(handle, this, &Abullet::Destroyer, TimeDestroy, false);
 	}
-	
-	FTimerHandle handle;
-	GetWorldTimerManager().SetTimer(handle, this, &Abullet::Destroyer, TimeDestroy, false);
 }
 
 void Abullet::Tick(float DeltaTime)
@@ -53,6 +55,7 @@ void Abullet::Destroyer()
 {
 	Destroy();
 }
+
 
 void Abullet::BaginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
@@ -69,7 +72,7 @@ void Abullet::BaginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Oth
 			{
 				TSubclassOf<UDamageType> typeDamage;
 				UGameplayStatics::ApplyDamage(pawn, Damage, GetOwner()->GetInstigatorController(), this, typeDamage);
-				ShowDamgeOnServer(Damage, GetActorLocation());
+				ShowWidgetDamgeOnClient(Damage, GetActorLocation());
 			}
 			else
 			{
@@ -77,7 +80,6 @@ void Abullet::BaginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Oth
 			}
 			Destroy();
 		}
-
 	}
 	else
 	{
@@ -87,6 +89,26 @@ void Abullet::BaginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Oth
 
 void Abullet::HitOverlap(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	//For collision with walls
-	Destroy();
+	Destroy();	//For collision with walls
+}
+
+
+void Abullet::ShowWidgetDamgeOnServer_Implementation(const float ShowDamage, const FVector DestroyLocation)
+{
+	ShowWidgetDamgeOnClient(ShowDamage, DestroyLocation);
+}
+
+void Abullet::ShowWidgetDamgeOnClient_Implementation(const float ShowDamage, const FVector DestroyLocation)
+{
+	if (GetOwner() != nullptr)
+	{
+		if (GetOwner()->GetOwner() != nullptr)
+		{
+			ABaseHUD* HUD = GetOwner()->GetOwner<APlayerController>()->GetHUD<ABaseHUD>();
+			if (HUD != nullptr)
+			{
+				HUD->ToggleTakeDamage(true, ShowDamage, GetActorLocation());
+			}
+		}
+	}
 }

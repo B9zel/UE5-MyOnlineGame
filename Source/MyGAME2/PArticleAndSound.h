@@ -15,9 +15,10 @@ public:
 	// Sets default values for this actor's properties
 	APArticleAndSound();
 
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	//UParticleSystemComponent* ParticleComponent;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UParticleSystemComponent* ParticleComponent;
-
+	class UNiagaraComponent* NiagaraComponent;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UAudioComponent* AudioComponent;
 

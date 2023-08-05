@@ -20,25 +20,26 @@ public:
 
 	virtual void Construct();
 
-	void Construct_Widget();
-
-	void StartTimer();
+	void Construct_Widget(float Time, float Rate,float Step);
+	void DestructWidget();
+private:
+	void StartTimer(float Rate);
 
 	void FinishTimer();
 	UFUNCTION()
 	void Timer();
 
+public:
 	UPROPERTY(meta = (BindWidget))
 		class UTextBlock* Text;
 
 	UPROPERTY(meta = (BindWidget))
 		class UTextBlock* SecondsText;
 	
-	float Seconds;
-
-	FTimerHandle handle;
-
-	class APawnController* OwnerController;
+private:
+	float m_Time;
+	float m_Step;
+	FTimerHandle m_handle;
 
 	class ABaseTank* owner;
 };

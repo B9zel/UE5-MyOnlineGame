@@ -9,7 +9,17 @@
 #include <Kismet/KismetSystemLibrary.h>
 #include "../../Game/BaseGameInstance.h"
 #include "W_MainMenuOption.h"
+#include "W_FindSessions.h"
 
+
+bool UW_MainMenu::Initialize()
+{
+	Super::Initialize();
+
+	W_Options->D_ChangeNickName.AddDynamic(this, &UW_MainMenu::OnChangeNickName);
+
+	return true;
+}
 
 void UW_MainMenu::NativeConstruct()
 {
@@ -18,18 +28,21 @@ void UW_MainMenu::NativeConstruct()
 	B_FindServer->OnClicked.AddDynamic(this, &UW_MainMenu::ClickFindServer);
 	B_Options->OnClicked.AddDynamic(this, &UW_MainMenu::ClickOptions);
 	B_Quit->OnClicked.AddDynamic(this, &UW_MainMenu::ClickQuit);
-
-
-	switch (SW_Switch->ActiveWidgetIndex)
+	
+	switch (SW_Switch->GetActiveWidgetIndex())
 	{
 	case 0:
+	{
 		B_Options->SetIsEnabled(true);
 		B_FindServer->SetIsEnabled(false);
 		break;
+	}
 	case 1:
+	{
 		B_Options->SetIsEnabled(false);
 		B_FindServer->SetIsEnabled(true);
 		break;
+	}
 	default:
 		break;
 	}
@@ -61,5 +74,13 @@ void UW_MainMenu::ClickOptions()
 void UW_MainMenu::ClickQuit()
 {
 	UKismetSystemLibrary::QuitGame(this, GetOwningPlayer(), EQuitPreference::Type::Quit, false);
+}
+
+void UW_MainMenu::OnChangeNickName(FText NickName)
+{
+	if (NickName.IsEmpty())
+		W_FindSession->GetButtonConnectToIP()->SetIsEnabled(false);
+	else
+		W_FindSession->GetButtonConnectToIP()->SetIsEnabled(true);
 }
 

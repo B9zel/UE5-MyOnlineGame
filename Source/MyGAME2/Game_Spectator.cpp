@@ -38,7 +38,7 @@ void AGame_Spectator::BeginPlay()
 	Super::BeginPlay();
 	
 	FTimerHandle handle;
-	GetWorldTimerManager().SetTimer(handle, this, &AGame_Spectator::SpeedUpSpectator, 1.5f, false);
+	GetWorldTimerManager().SetTimer(handle, this, &AGame_Spectator::SpeedUpSpectator, 1.5, false);
 }
 
 void AGame_Spectator::SpeedUpSpectator()

@@ -40,4 +40,9 @@ private:
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TSubclassOf<class UW_SlotSession> SlotSession;
+
+public:
+
+	 UButton* GetButtonConnectToIP();
+
 };

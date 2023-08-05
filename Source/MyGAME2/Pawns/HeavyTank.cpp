@@ -77,6 +77,7 @@ void AHeavyTank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 void AHeavyTank::Shoot_Server_Implementation()
 {
 	ABaseTank::Shoot_OnServer();
+
 	if (isSuper_Power)
 	{
 		DisableSuperPower_OnServer();

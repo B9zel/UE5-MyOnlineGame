@@ -21,5 +21,5 @@ public:
 public:
 
 	virtual UVerticalBox* GetPlayerList(APlayerState* PlayerState) override;
-	
+	virtual void UpdatePlayerList() override;
 };

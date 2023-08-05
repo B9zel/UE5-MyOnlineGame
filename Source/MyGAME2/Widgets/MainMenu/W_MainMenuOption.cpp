@@ -11,9 +11,10 @@
 #include <Kismet/GameplayStatics.h>
 #include <Kismet/KismetTextLibrary.h>
 #include <Kismet/GameplayStatics.h>
-#include "../../Game/Save/BaseSaveGame.h"
 #include "../../Game/BaseGameInstance.h"
+#include "../../Game/Save/BaseSaveGame.h"
 #include "../../PawnController.h"
+#include "../../Enums/E_PlayerSpace.h"
 
 
 
@@ -23,13 +24,12 @@ bool UW_MainMenuOption::Initialize()
 {
 	Super::Initialize();
 
-	SensetivityX = 1.f;
-	SensetivityY = 1.f;
+	Sensetivity.X = 1.f;
+	Sensetivity.Y = 1.f;
 
-
+	
 	return true;
 }
-
 
 
 void UW_MainMenuOption::NativeConstruct()
@@ -71,14 +71,12 @@ void UW_MainMenuOption::NativeConstruct()
 	T_PercentResolutionScale->SynchronizeProperties();
 	T_PercentSensetivityX->SynchronizeProperties();
 	T_PercentSensetivityY->SynchronizeProperties();
-
-	SaveObject = Cast<UBaseSaveGame>(UGameplayStatics::CreateSaveGameObject(UBaseSaveGame::StaticClass()));
-
-	if (IsValid(Cast<APawnController>(GetOwningPlayer())))
+	
+	if (Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(this))->PlayerSpace == E_PlayerSpace::inGame)
 	{
-		ET_Nickname->SetIsEnabled(false); //Disable input, if the player is not playing now
+		ET_Nickname->SetIsEnabled(false); //Disable input, if the player is playing now
 	}
-
+	D_ChangeNickName.Broadcast(Nickname);
 }
 
 void UW_MainMenuOption::UpdateInfo()
@@ -205,21 +203,18 @@ void UW_MainMenuOption::UpdatePostProcessingQuality()
 
 void UW_MainMenuOption::UpdateSensetivity()
 {
-	UBaseSaveGame* SaveClass = Cast<UBaseSaveGame>(UGameplayStatics::LoadGameFromSlot(CastChecked<UBaseGameInstance>(UGameplayStatics::GetGameInstance(this))->SaveSlotOptions, 0));
-
+	UBaseSaveGame* SaveClass = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(this))->GetLoadFromOptionsSlot();
 	if (SaveClass != nullptr)
 	{
-		SensetivityX = SaveClass->SensetiveX;
-		SensetivityY = SaveClass->SensetiveY;
+		Sensetivity = FMath::Clamp(SaveClass->Sensetive, 1, S_SensetiveX->GetMaxValue());
 	}
-	S_SensetiveX->SetValue(SensetivityX);
-	S_SensetiveY->SetValue(SensetivityY);
+	S_SensetiveX->SetValue(Sensetivity.X);
+	S_SensetiveY->SetValue(Sensetivity.Y);
 }
 
 void UW_MainMenuOption::UpdateNickname()
 {
-	UBaseSaveGame* SaveClass = Cast<UBaseSaveGame>(UGameplayStatics::LoadGameFromSlot(CastChecked<UBaseGameInstance>(UGameplayStatics::GetGameInstance(this))->SaveSlotOptions, 0));
-	
+	UBaseSaveGame* SaveClass = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(this))->GetLoadFromOptionsSlot();
 	if (SaveClass != nullptr)
 	{
 		Nickname = SaveClass->Nickname;
@@ -234,12 +229,12 @@ FText UW_MainMenuOption::OnBindPercentResolutionScale()
 
 FText UW_MainMenuOption::OnBindPercentSensetivityX()
 {
-	return FText::FromString(UKismetTextLibrary::Conv_TextToString(UKismetTextLibrary::Conv_FloatToText(SensetivityX, ERoundingMode::HalfToEven, false, true, 1, 324, 1, 1)) + "%");
+	return FText::FromString(UKismetTextLibrary::Conv_TextToString(UKismetTextLibrary::Conv_FloatToText(Sensetivity.X, ERoundingMode::HalfToEven, false, true, 1, 324, 1, 1)) + "%");
 }
 
 FText UW_MainMenuOption::OnBindPercentSensetivityY()
 {
-	return FText::FromString(UKismetTextLibrary::Conv_TextToString(UKismetTextLibrary::Conv_FloatToText(SensetivityY, ERoundingMode::HalfToEven, false, true, 1, 324, 1, 1)) + "%");
+	return FText::FromString(UKismetTextLibrary::Conv_TextToString(UKismetTextLibrary::Conv_FloatToText(Sensetivity.Y, ERoundingMode::HalfToEven, false, true, 1, 324, 1, 1)) + "%");
 }
 
 void UW_MainMenuOption::OnClickWindowedButton()
@@ -273,17 +268,26 @@ void UW_MainMenuOption::OnClickApplyButton()
 {
 	UserSettings->ApplySettings(true);
 	
-	if (SaveObject != nullptr)
+	UBaseSaveGame* SaveObject = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(this))->GetSaveObject();
+	UBaseSaveGame* SaveSlot = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(this))->GetLoadFromOptionsSlot();
+	if (SaveSlot != nullptr)
 	{
-		if (SaveObject->SensetiveX != SensetivityX || SaveObject->SensetiveY != SensetivityY)
+		if (SaveSlot->Sensetive != Sensetivity || SaveSlot->Nickname.ToString() != Nickname.ToString())
 		{
-			SaveObject->SensetiveX = SensetivityX;
-			SaveObject->SensetiveY = SensetivityY;
-			SaveObject->Nickname = Nickname;
+			SaveToObjectSensetivity(SaveObject, SaveSlot->Sensetive, Sensetivity);
+			SaveToObjectNickname(SaveObject, SaveSlot->Nickname, Nickname);
 
-			UGameplayStatics::AsyncSaveGameToSlot(SaveObject, Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(this))->SaveSlotOptions, 0);
+			Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(this))->SaveObjectToSlot(SaveObject);
 		}
 	}
+	else
+	{
+		SaveToObjectSensetivity(SaveObject, FVector2D(0), Sensetivity);
+		SaveToObjectNickname(SaveObject, FText::FromString(""), Nickname);
+	
+		Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(this))->SaveObjectToSlot(SaveObject);
+	}
+	
 }
 
 
@@ -375,15 +379,46 @@ void UW_MainMenuOption::OnChangeValue(float Value)
 
 void UW_MainMenuOption::OnSensetivityXChanges(float Value)
 {
-	SensetivityX = Value;
+	Sensetivity.X = Value;
 }
 
 void UW_MainMenuOption::OnSensetivityYChanges(float Value)
 {
-	SensetivityY = Value;
+	Sensetivity.Y = Value;
 }
 
 void UW_MainMenuOption::OnCommitedText(const FText& Text, ETextCommit::Type CommitMethod)
 {
 	Nickname = Text;
+}
+
+void UW_MainMenuOption::SaveToObjectSensetivity(class UBaseSaveGame* const SaveObject, const FVector2D SavedSensetivityInSlot, const FVector2D Sens)
+{
+	if (SavedSensetivityInSlot != Sens)
+	{
+		SaveObject->Sensetive = Sens;
+		D_OptionSensetivity.Broadcast(Sens);
+	}
+	else
+	{
+		SaveObject->Sensetive = SavedSensetivityInSlot;
+	}
+}
+
+void UW_MainMenuOption::SaveToObjectNickname(UBaseSaveGame* const SaveObject, const FText SavedNickInSlot, const FText Nick)
+{
+	FText s = Nick;
+	UE_LOG(LogTemp, Warning, TEXT("%s"), *s.ToString());
+	if (UKismetTextLibrary::NotEqual_TextText(SavedNickInSlot, Nick))
+	{
+		if (!Nick.IsEmpty())
+		{
+			SaveObject->Nickname = Nick;
+		}
+	}
+	else
+	{
+		SaveObject->Nickname = SavedNickInSlot;
+	}
+	D_ChangeNickName.Broadcast(Nick);
 }

@@ -6,7 +6,8 @@
 #include "Blueprint/UserWidget.h"
 #include "W_MainMenuOption.generated.h"
 
-
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDispatchOptionOneParam, FVector2D, sensitivity);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDispathOptionOneParamFText, FText, NickName);
 
 UCLASS()
 class MYGAME2_API UW_MainMenuOption : public UUserWidget
@@ -60,7 +61,9 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 	class UEditableTextBox* ET_Nickname;
 
-
+public:
+	FDispatchOptionOneParam D_OptionSensetivity;
+	FDispathOptionOneParamFText D_ChangeNickName;
 protected:
 
 
@@ -135,15 +138,14 @@ protected:
 	UFUNCTION()
 	virtual void OnCommitedText(const FText& Text, ETextCommit::Type CommitMethod);
 
+	void SaveToObjectSensetivity(class UBaseSaveGame* const SaveObject, const FVector2D SavedSensetivityInSlot,const FVector2D Sens);
+	void SaveToObjectNickname(class UBaseSaveGame* const SaveObject, const FText SavedNickInSlot, const FText Nickname);
+
 private:
 
 	class UGameUserSettings* UserSettings;
 
-	float SensetivityX;
-	float SensetivityY;
+	FVector2D Sensetivity;
 
-	class UBaseSaveGame* SaveObject;
 	FText Nickname;
-
-
 };

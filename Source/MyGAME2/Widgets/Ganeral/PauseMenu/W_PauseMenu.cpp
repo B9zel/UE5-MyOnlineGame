@@ -7,7 +7,10 @@
 #include <Components/Widget.h>
 #include <Kismet/KismetSystemLibrary.h>
 #include <Kismet/GameplayStatics.h>
+#include <Kismet/KismetInputLibrary.h>
 #include "../../../Game/BaseGameInstance.h"
+#include "../../../PawnController.h"
+#include "../../../Game/BaseHUD.h"
 
 
 
@@ -20,22 +23,29 @@ void UW_PauseMenu::NativeConstruct()
 	B_FindServer->OnClicked.AddDynamic(this, &UW_PauseMenu::ClickFindServer);
 	B_Options->OnClicked.AddDynamic(this, &UW_PauseMenu::ClickOptions);
 	B_Quit->OnClicked.AddDynamic(this, &UW_PauseMenu::ClickQuitInMenu);
+	B_Play->OnClicked.AddDynamic(this, &UW_PauseMenu::ClickPlay);
 
 
-	switch (SW_Switch->ActiveWidgetIndex)
+	switch (SW_Switch->GetActiveWidgetIndex())
 	{
 	case 0:
+	{
 		B_Options->SetIsEnabled(true);
 		B_FindServer->SetIsEnabled(false);
 		break;
+	}
 	case 1:
+	{
 		B_Options->SetIsEnabled(false);
 		B_FindServer->SetIsEnabled(true);
 		break;
+	}
 	default:
 		break;
 	}
 	isActive = true;
+
+	SetKeyboardFocus();
 }
 
 void UW_PauseMenu::NativeDestruct()
@@ -45,6 +55,18 @@ void UW_PauseMenu::NativeDestruct()
 	isActive = false;
 }
 
+
+FReply UW_PauseMenu::NativeOnKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent)
+{
+	UUserWidget::NativeOnKeyDown(InGeometry, InKeyEvent);
+
+	if (UKismetInputLibrary::EqualEqual_KeyKey(InKeyEvent.GetKey(), FKey(FName("Escape"))))
+	{
+		ClickPlay();
+	}
+	
+	return FReply::Handled();
+}
 
 void UW_PauseMenu::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
@@ -71,5 +93,10 @@ void UW_PauseMenu::ClickOptions()
 void UW_PauseMenu::ClickQuitInMenu()
 {
 	Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(this))->joinSession(FString("MainLevel"), GetOwningPlayer());
+}
+
+void UW_PauseMenu::ClickPlay()
+{
+	GetOwningPlayer<APawnController>()->SwitchPauseMenu(false);
 }
 

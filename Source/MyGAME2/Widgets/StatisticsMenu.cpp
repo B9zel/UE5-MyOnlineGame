@@ -32,6 +32,7 @@ UVerticalBox* UStatisticsMenu::GetPlayerList(APlayerState* PlayerStat)
 
 void UStatisticsMenu::UpdatePlayerList()
 {
+	VB_Player->ClearChildren();
 	for (auto& el : Game_State->PlayerArray)
 	{
 		UPlayerStat* widget = CreateWidget<UPlayerStat>(GetOwningPlayer(), UserWidget);

@@ -18,25 +18,30 @@ class MYGAME2_API UW_PawnInfo : public UUserWidget
 public:
 	//UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
 	//class UWidgetSwitcher* WS_Info;
+	
 	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
 	class UTextBlock* InfoForPawn;
+	UPROPERTY(BlueprintReadWrite,EditAnywhere)
+	FText h = FText::FromString("Hello");
+	
+	UPROPERTY(BlueprintReadWrite)
+	TMap<TEnumAsByte<E_AllPawns>, FText> PawnsInfo;
 
 public:
 	UFUNCTION(BlueprintCallable)
 	void SetSwitchInfo(E_AllPawns E_pawm);
-private:
 
-	TMap<E_AllPawns, FText> PawnsInfo;
 
 protected:
 
 	virtual void NativeConstruct() override;
-
-private:
-
-
-	FString GetLightTankInfo();
-	FString GetMediumTankInfo();
-	FString GetStelsTankInfo();
-	FString GetHeavyTankInfo();
+	virtual bool Initialize() override;
+	UFUNCTION()
+	FText GetLightTankInfo();
+	UFUNCTION()
+	FText GetMediumTankInfo();
+	UFUNCTION()
+	FText GetStelsTankInfo();
+	UFUNCTION()
+	FText GetHeavyTankInfo();
 };

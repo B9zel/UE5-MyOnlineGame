@@ -24,11 +24,15 @@ protected:
 	class UWidgetSwitcher* SW_Switch;
 	UPROPERTY(meta = (BindWidget))
 	class UW_MainMenuOption* W_Options;
+	UPROPERTY(meta = (BindWidget))
+	class UW_FindSessions* W_FindSession;
 	
 	/*UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
 	class UVerticalBox* VB_SwitchListSessions;*/
 
 protected:
+
+	virtual bool Initialize() override;
 	UFUNCTION()
 	virtual void NativeConstruct() override;
 	UFUNCTION()
@@ -40,5 +44,6 @@ protected:
 	UFUNCTION()
 	virtual void ClickQuit();
 
-
+	UFUNCTION()
+	virtual void OnChangeNickName(FText NickName);
 };
