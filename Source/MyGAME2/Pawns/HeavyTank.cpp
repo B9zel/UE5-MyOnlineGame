@@ -55,7 +55,7 @@ void AHeavyTank::BeginPlay()
 		SetReplicates(true);
 		SetReplicateMovement(true);
 
-		GameMode = Get_GameMode(this);
+		
 	}
 }
 
@@ -119,19 +119,28 @@ void AHeavyTank::DisableSuperPower_OnServer()
 
 void AHeavyTank::ToggleActivateSuperSkillWidget_Implementation(bool isActivate)
 {
+	if (HUD == nullptr)
+	{
+		HUD = GetController<APlayerController>() != nullptr ? GetController<APlayerController>()->GetHUD<ABaseHUD>() : nullptr;
+	}
+
 	if (isActivate)
 	{
-		GetController<APlayerController>()->GetHUD<ABaseHUD>()->ActivateSuperSkillWidget(true);
+		HUD->ActivateSuperSkillWidget(true);
 	}
 	else
 	{
-		GetController<APlayerController>()->GetHUD<ABaseHUD>()->ActivateSuperSkillWidget(false);
+		HUD->ActivateSuperSkillWidget(false);
 	}
 }
 
 void AHeavyTank::OnReloadSuperSkillWidget_Implementation()
 {
-	ABaseHUD* HUD = GetController<APlayerController>()->GetHUD<ABaseHUD>();
+	if (HUD == nullptr)
+	{
+		HUD = GetController<APlayerController>() != nullptr ? GetController<APlayerController>()->GetHUD<ABaseHUD>() : nullptr;
+	}
+	
 	HUD->ActivateSuperSkillWidget(false);
 	HUD->ReloadSuperSkillWidget(TimeReload_SuperPower);
 }

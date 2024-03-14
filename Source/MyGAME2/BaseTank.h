@@ -59,10 +59,9 @@ public:
 		class UCameraComponent* camera;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		class UProjectileMovementComponent* projectile;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		class USceneComponent* bscene;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		class UAudioComponent* AudioShoot;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 		class UHealthStat* HP_Component;
@@ -71,11 +70,14 @@ public:
 		class UCameraComponent* SecondCamera;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		class UNiagaraComponent* N_ExplosionShoot;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		FReferenceOnElement struction;
 
 	class UGame_Interface* Main_Widget;
 
-	class ABase_GameMode* GameMode;
+	
 
 	FDelegateSpawn D_SpawnTankPawn;
 	FDelegateZeroParam D_ReloadEnd;
@@ -84,6 +86,8 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 	virtual void Tick(float DeltaTime) override;
 
@@ -115,13 +119,17 @@ protected:
 
 	float TimeDestroy;
 
+	class ABaseHUD* HUD;
+
+	class ABase_GameMode* gameMode;
 private:
 
 	float target;
 
 	virtual void PossessedBy(AController* Controller) override;
-		
 	
+	
+
 protected:
 	
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -163,7 +171,7 @@ public:
 	
 	void Destroy();
 
-	ABase_GameMode* Get_GameMode(class AActor* Object);
+	ABase_GameMode* GetGameMode();
 
 	UFUNCTION(BlueprintCallable)
 		float GetDamage();

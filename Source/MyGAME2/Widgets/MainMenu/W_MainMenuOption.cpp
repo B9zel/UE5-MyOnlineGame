@@ -10,7 +10,9 @@
 #include <Kismet/KismetStringLibrary.h>
 #include <Kismet/GameplayStatics.h>
 #include <Kismet/KismetTextLibrary.h>
+#include <Kismet/KismetInternationalizationLibrary.h>
 #include <Kismet/GameplayStatics.h>
+#include "W_BindKeyOptions.h"
 #include "../../Game/BaseGameInstance.h"
 #include "../../Game/Save/BaseSaveGame.h"
 #include "../../PawnController.h"
@@ -27,7 +29,12 @@ bool UW_MainMenuOption::Initialize()
 	Sensetivity.X = 1.f;
 	Sensetivity.Y = 1.f;
 
+	CB_SwitchLanguage->AddOption(TextLanguageEnglish.ToString());
+	CB_SwitchLanguage->AddOption(TextLanguageRussian.ToString());
+
+
 	
+
 	return true;
 }
 
@@ -56,6 +63,7 @@ void UW_MainMenuOption::NativeConstruct()
 	CB_Texture->OnSelectionChanged.AddDynamic(this, &UW_MainMenuOption::OnSelectTexture);
 	CB_ViewDistance->OnSelectionChanged.AddDynamic(this, &UW_MainMenuOption::OnSelectViewDistance);
 	CB_VisualEffect->OnSelectionChanged.AddDynamic(this, &UW_MainMenuOption::OnSelectVisualEffect);
+	CB_SwitchLanguage->OnSelectionChanged.AddDynamic(this, &UW_MainMenuOption::OnSelectSwitchLanguage);
 
 	S_ResolutionScale->OnValueChanged.AddDynamic(this, &UW_MainMenuOption::OnChangeValue);
 	S_SensetiveX->OnValueChanged.AddDynamic(this, &UW_MainMenuOption::OnSensetivityXChanges);
@@ -72,6 +80,17 @@ void UW_MainMenuOption::NativeConstruct()
 	T_PercentSensetivityX->SynchronizeProperties();
 	T_PercentSensetivityY->SynchronizeProperties();
 	
+
+	int i = 0;
+	for (auto& el : UKismetInternationalizationLibrary::GetLocalizedCultures())
+	{
+		if (el == UKismetInternationalizationLibrary::GetCurrentLanguage())
+			CB_SwitchLanguage->SetSelectedIndex(i);
+
+		++i;
+	}
+
+
 	if (Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(this))->PlayerSpace == E_PlayerSpace::inGame)
 	{
 		ET_Nickname->SetIsEnabled(false); //Disable input, if the player is playing now
@@ -206,7 +225,7 @@ void UW_MainMenuOption::UpdateSensetivity()
 	UBaseSaveGame* SaveClass = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(this))->GetLoadFromOptionsSlot();
 	if (SaveClass != nullptr)
 	{
-		Sensetivity = FMath::Clamp(SaveClass->Sensetive, 1, S_SensetiveX->GetMaxValue());
+		Sensetivity = FMath::Clamp(SaveClass->Sensetive, FVector2D(1.0,1.0), FVector2D(S_SensetiveX->GetMaxValue(), S_SensetiveY->GetMaxValue()));
 	}
 	S_SensetiveX->SetValue(Sensetivity.X);
 	S_SensetiveY->SetValue(Sensetivity.Y);
@@ -266,28 +285,24 @@ void UW_MainMenuOption::OnClickAutoButton()
 
 void UW_MainMenuOption::OnClickApplyButton()
 {
-	UserSettings->ApplySettings(true);
 	
 	UBaseSaveGame* SaveObject = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(this))->GetSaveObject();
 	UBaseSaveGame* SaveSlot = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(this))->GetLoadFromOptionsSlot();
-	if (SaveSlot != nullptr)
+	if (SaveObject != nullptr)
 	{
-		if (SaveSlot->Sensetive != Sensetivity || SaveSlot->Nickname.ToString() != Nickname.ToString())
+		if (SaveSlot != nullptr)
 		{
 			SaveToObjectSensetivity(SaveObject, SaveSlot->Sensetive, Sensetivity);
 			SaveToObjectNickname(SaveObject, SaveSlot->Nickname, Nickname);
-
-			Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(this))->SaveObjectToSlot(SaveObject);
 		}
-	}
-	else
-	{
-		SaveToObjectSensetivity(SaveObject, FVector2D(0), Sensetivity);
-		SaveToObjectNickname(SaveObject, FText::FromString(""), Nickname);
-	
+		else
+		{
+			SaveToObjectSensetivity(SaveObject, FVector2D(0), Sensetivity);
+			SaveToObjectNickname(SaveObject, FText::FromString(""), Nickname);			
+		}
 		Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(this))->SaveObjectToSlot(SaveObject);
 	}
-	
+	UserSettings->ApplySettings(true);
 }
 
 
@@ -369,6 +384,29 @@ void UW_MainMenuOption::OnSelectPostProcessing(FString SelectedItem, ESelectInfo
 	if (SelectionType == ESelectInfo::OnMouseClick)
 	{
 		UserSettings->SetPostProcessingQuality(CB_PostProcessing->FindOptionIndex(SelectedItem));
+	}
+}
+
+void UW_MainMenuOption::OnSelectSwitchLanguage(FString SelectedItem, ESelectInfo::Type SelectionType)
+{
+	if (ESelectInfo::Type::OnMouseClick == SelectionType)
+	{
+		
+		int i = 0;
+		for (auto & el : UKismetInternationalizationLibrary::GetLocalizedCultures())
+		{
+			if (i == CB_SwitchLanguage->FindOptionIndex(SelectedItem))
+			{
+				UKismetInternationalizationLibrary::SetCurrentCulture(el, true);
+				break;
+			}
+
+			++i;
+		}
+		CB_SwitchLanguage->ClearOptions();
+		CB_SwitchLanguage->AddOption(TextLanguageEnglish.ToString());
+		CB_SwitchLanguage->AddOption(TextLanguageRussian.ToString());
+		CB_SwitchLanguage->SetSelectedIndex(i);
 	}
 }
 

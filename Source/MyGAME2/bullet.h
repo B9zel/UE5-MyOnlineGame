@@ -24,7 +24,7 @@ public:
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		UParticleSystem* iscra;
+		class UNiagaraSystem* iscra;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float TimeDestroy;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

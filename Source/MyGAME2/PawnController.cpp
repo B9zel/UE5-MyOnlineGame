@@ -24,7 +24,6 @@
 
 
 
-
 APawnController::APawnController()
 {
 }
@@ -123,7 +122,7 @@ void APawnController::SetInputOnUI(bool isEnable, UWidget* widgetFocus)
 {
 	if (isEnable && widgetFocus != nullptr)
 	{
-		bShowMouseCursor = true;
+		SetShowMouseCursor(true);
 		FInputModeUIOnly InputMode;
 		InputMode.SetWidgetToFocus(widgetFocus->TakeWidget());
 		InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
@@ -132,7 +131,7 @@ void APawnController::SetInputOnUI(bool isEnable, UWidget* widgetFocus)
 	}
 	else
 	{
-		bShowMouseCursor = false;
+		SetShowMouseCursor(false);
 
 		FInputModeGameOnly InputMode;
 		InputMode.SetConsumeCaptureMouseDown(true);

@@ -15,7 +15,9 @@ struct FST_MapInfo : public FTableRowBase
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		FName NameMap;
+		FText NameMap;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FText ShowNameMap;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		UTexture2D* Icon;
 	

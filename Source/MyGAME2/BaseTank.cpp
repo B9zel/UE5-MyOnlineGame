@@ -6,16 +6,18 @@
 #include <Components/SceneComponent.h>
 #include <GameFramework/ProjectileMovementComponent.h>
 #include <Kismet/GameplayStatics.h>
-//#include <Kismet/MathLibriary.h>
-#include <MyGAME2/PawnController.h>
+#include <Components/AudioComponent.h>
 #include <NiagaraFunctionLibrary.h>
 #include <NiagaraSystem.h>
+#include <NiagaraComponent.h>
 #include <Net/UnrealNetwork.h>
-#include <MyGAME2/HealthStat.h>
+#include "HealthStat.h"
 #include "bullet.h"
 #include "Widget_Reload.h"
 #include "Game_Interface.h"
-#include <MyGAME2/Game/Base_GameMode.h>
+//#include <GameFramework/GameModeBase.h>
+#include "Game/Base_GameMode.h"
+#include "PawnController.h"
 #include "Game/PlayerStatistic.h"
 #include "Widgets/InGame/W_SuperPower.h"
 #include "Game/BaseHUD.h"
@@ -44,6 +46,14 @@ ABaseTank::ABaseTank()
 	bscene = CreateDefaultSubobject<USceneComponent>(TEXT("BScene"));
 	bscene->SetupAttachment(Towermesh);
 
+	AudioShoot = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio Shoot"));
+	AudioShoot->SetupAttachment(bscene);
+	AudioShoot->SetAutoActivate(false);
+	
+		//N_ExplosionShoot->SetupAttachment(Towermesh);
+	//N_ExplosionShoot->SetAutoActivate(false);
+	
+
 	SecondCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("Second Camera"));
 	SecondCamera->SetupAttachment(Towermesh);
 	SecondCamera->bAutoActivate = false;
@@ -51,8 +61,6 @@ ABaseTank::ABaseTank()
 
 	HP_Component = CreateDefaultSubobject<UHealthStat>(TEXT("HealthStat"));
 
-	projectile = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Projectile Movement"));
-	
 }
 
 void ABaseTank::PossessedBy(AController* controller)
@@ -70,13 +78,34 @@ void ABaseTank::BeginPlay()
 	
 	if (!HasAuthority())
 	{
-		ABaseHUD* HUD = GetController<APlayerController>() != nullptr ? GetController<APlayerController>()->GetHUD<ABaseHUD>() : nullptr;
+		N_ExplosionShoot = UNiagaraFunctionLibrary::SpawnSystemAttached(struction.ExplosionShoot, bscene, TEXT("Niagara"), FVector(0.f), FRotator(0.f), EAttachLocation::Type::KeepRelativeOffset, false,false);
+		HUD = GetController<APlayerController>() != nullptr ? GetController<APlayerController>()->GetHUD<ABaseHUD>() : nullptr;
 		if (HUD != nullptr)
 		{
 			HUD->superskillWidgetClass = struction.superSkillWidgetClass;
+			HUD->CreateAimWidget();
 		}
 	}
+	else
+	{
+		gameMode = Cast<ABase_GameMode>(UGameplayStatics::GetGameMode(this));
+	}
 	D_SpawnTankPawn.Broadcast(this);
+}
+
+void ABaseTank::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
+
+	if (EEndPlayReason::Type::Destroyed == EndPlayReason)
+	{
+		if (N_ExplosionShoot != nullptr)
+			N_ExplosionShoot->DestroyComponent();
+	}
+	if (HUD != nullptr)
+	{
+		HUD->RemoveAimWidget();
+	}
 }
 
 
@@ -84,8 +113,7 @@ void ABaseTank::BeginPlay()
 void ABaseTank::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-//	UE_LOG(LogTemp, Warning, TEXT("Releativ %f"), Towermesh->GetRelativeRotation().Yaw);
-//	UE_LOG(LogTemp, Warning, TEXT("Component%f"), Towermesh->GetComponentRotation().Yaw);
+
 	if (!HP_Component->IsDead && !HasAuthority())
 	{
 		ClientRotateTower();
@@ -113,10 +141,10 @@ void ABaseTank::ForwardMove_Implementation(float Axis)
 {
 	if (Controller != nullptr && Axis != 0.0f && HasAuthority())
 	{
-		FVector diracthion = GetActorForwardVector();
-		FVector locathion = GetActorLocation();
+		FVector diraction = GetActorLocation() + (GetActorForwardVector() * Axis) * (Speed * GetWorld()->GetDeltaSeconds());
+	
 		//UE_LOG(LogTemp, Warning, TEXT("%s"), *diracthion.ToString());
-		TeleportTo(locathion + diracthion * Axis * (Speed * GetWorld()->GetDeltaSeconds()), GetActorRotation());
+		TeleportTo(diraction, GetActorRotation());
 	}
 }
 
@@ -144,8 +172,8 @@ void ABaseTank::ClientRotateTower()
 		target = GetControlRotation().Yaw - Mesh->GetComponentRotation().Yaw;
 		if (target > 180)
 			target -= 360;
-		
-		RotateTower_OnServer(target);
+		if (target != Towermesh->GetRelativeRotation().Yaw)
+			RotateTower_OnServer(target);
 	}
 }
 
@@ -156,22 +184,33 @@ void ABaseTank::RotateTower_OnServer_Implementation(float Target)
 
 void ABaseTank::EnableAim()
 {
-	IsAim = true;
-	camera->Deactivate();
-	SecondCamera->Activate();
-	ABaseHUD* HUD = GetController<APlayerController>()->GetHUD<ABaseHUD>();
+	if (this->HUD == nullptr)
+	{
+		HUD = GetController<APlayerController>() != nullptr ? GetController<APlayerController>()->GetHUD<ABaseHUD>() : nullptr;
+	}
+	
+	
 	if (HUD != nullptr)
 	{
+		IsAim = true;
+		camera->Deactivate();
+		SecondCamera->Activate();
+
 		HUD->ToggleAim(true);
 	}
 }
 
 void ABaseTank::DisableAim()
 {
+	if (this->HUD == nullptr)
+	{
+		HUD = GetController<APlayerController>() != nullptr ? GetController<APlayerController>()->GetHUD<ABaseHUD>() : nullptr;
+	}
+
 	IsAim = false;
 	SecondCamera->Deactivate();
 	camera->Activate();
-	ABaseHUD* HUD = GetController<APlayerController>()->GetHUD<ABaseHUD>();
+
 	if (HUD != nullptr)
 	{
 		HUD->ToggleAim(false);
@@ -203,15 +242,14 @@ void ABaseTank::Shoot_Multicast_Implementation()
 		if (!IsAim)
 		{
 			//Spawn Explosion 
-			UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), struction.ExplosionShoot, bscene->GetComponentLocation(), bscene->GetComponentRotation(), FVector(0.6f, 0.6f, 0.6f));
+			N_ExplosionShoot->ActivateSystem(true);
 		}
 
 		//Start Widget Timer
-		//if (Main_Widget != nullptr)
-		//	Main_Widget->ReloadStats->Construct_Widget();
 		D_ReloadStart.Broadcast(TimeReload,0.1f,0.1f);
+		
 		//Spawn Sound
-		UGameplayStatics::SpawnSoundAttached(struction.Shoot_sound, bscene);
+		AudioShoot->SetActive(true, true);
 	}
 }
 
@@ -228,6 +266,8 @@ void ABaseTank::Widget_ReloadShoot_Implementation()
 		if (Main_Widget->ReloadStats != nullptr)
 			Main_Widget->ReloadStats->FinishTimer();
 	}*/
+	//AudioShoot->Deactivate();
+	
 	D_ReloadEnd.Broadcast();
 }
 
@@ -252,9 +292,9 @@ void ABaseTank::Destroy()
 	AActor::Destroy();
 }
 
-inline ABase_GameMode* ABaseTank::Get_GameMode(class AActor* Object)
+ABase_GameMode* ABaseTank::GetGameMode()
 {
-	return Cast<ABase_GameMode>(UGameplayStatics::GetGameMode(Object));
+	return this->gameMode;
 }
 
 

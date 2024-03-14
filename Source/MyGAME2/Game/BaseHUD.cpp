@@ -147,7 +147,9 @@ UW_PreRound* ABaseHUD::TogglePreRound(bool isShow)
 		}
 		m_PreRoundWidget->AddToViewport();
 
-		GetOwner<APawnController>()->SetInputOnUI(true, m_PreRoundWidget);
+		APawnController* controller = GetOwner<APawnController>();
+		if (controller != nullptr)
+			controller->SetInputOnUI(true, m_PreRoundWidget);
 	}
 	else
 	{
@@ -246,23 +248,35 @@ UW_SuperPower* ABaseHUD::ToggleSuperPower(bool isShow, bool isRemove)
 	return m_superskillWidget;
 }
 
-UW_Aim* ABaseHUD::ToggleAim(bool isShow)
+void ABaseHUD::CreateAimWidget()
+{
+	if (m_aimWidget == nullptr)
+	{
+		m_aimWidget = CreateWidget<UW_Aim>(GetOwningPlayerController(), AimWidgetClass);
+		m_aimWidget->AddToViewport(-2);
+	}
+}
+
+void ABaseHUD::RemoveAimWidget()
+{
+	if (m_aimWidget != nullptr)
+	{
+		m_aimWidget->RemoveFromParent();
+		m_aimWidget = nullptr;
+	}
+}
+
+void ABaseHUD::ToggleAim(bool isShow)
 {
 	if (isShow)
 	{
-		if (m_aimWidget == nullptr)
-		{
-			m_aimWidget = CreateWidget<UW_Aim>(GetOwningPlayerController(), AimWidgetClass);
-		}
-		if (!m_aimWidget->IsInViewport())
-			m_aimWidget->AddToViewport(-1);
+		if (m_aimWidget != nullptr)
+			m_aimWidget->SetVisibility(ESlateVisibility::Visible);
 	}
 	else if (m_aimWidget != nullptr)
 	{
-		if (m_aimWidget->IsInViewport())
-			m_aimWidget->RemoveFromParent();
+		m_aimWidget->SetVisibility(ESlateVisibility::Collapsed);
 	}
-	return m_aimWidget;
 }
 
 UW_PauseMenu* ABaseHUD::TogglePauseMenu(bool isShow)
@@ -272,8 +286,9 @@ UW_PauseMenu* ABaseHUD::TogglePauseMenu(bool isShow)
 		if (m_PauseMenuWidget == nullptr)
 		{
 			m_PauseMenuWidget = CreateWidget<UW_PauseMenu>(GetOwningPlayerController(), PauseMenuWidgetClass);
+			m_PauseMenuWidget->AddToViewport(2);
 		}
-		m_PauseMenuWidget->AddToViewport(2);
+		m_PauseMenuWidget->SetVisibility(ESlateVisibility::Visible);
 
 		GetOwner<APawnController>()->SetInputOnUI(true, m_PauseMenuWidget);
 		isActivatePauseMenu = true;
@@ -282,7 +297,7 @@ UW_PauseMenu* ABaseHUD::TogglePauseMenu(bool isShow)
 	{
 		if (m_PauseMenuWidget != nullptr)
 		{
-			m_PauseMenuWidget->RemoveFromParent();
+			m_PauseMenuWidget->SetVisibility(ESlateVisibility::Collapsed);
 
 			isActivatePauseMenu = false;
 		}

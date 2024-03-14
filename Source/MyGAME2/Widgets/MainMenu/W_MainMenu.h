@@ -13,7 +13,7 @@ UCLASS()
 class MYGAME2_API UW_MainMenu : public UUserWidget
 {
 	GENERATED_BODY()
-protected:
+public:
 	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
 	class UButton* B_FindServer;
 	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
@@ -22,7 +22,7 @@ protected:
 	class UButton* B_Quit;
 	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
 	class UWidgetSwitcher* SW_Switch;
-	UPROPERTY(meta = (BindWidget))
+	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
 	class UW_MainMenuOption* W_Options;
 	UPROPERTY(meta = (BindWidget))
 	class UW_FindSessions* W_FindSession;

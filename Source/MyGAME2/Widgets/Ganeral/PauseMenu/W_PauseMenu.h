@@ -25,7 +25,7 @@ protected:
 	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
 		class UWidgetSwitcher* SW_Switch;
 public:
-	UPROPERTY(meta = (BindWidget))
+	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
 		class UW_MainMenuOption* W_Options;
 
 	/*UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
@@ -52,5 +52,5 @@ protected:
 public:
 
 	bool isActive;
-
+	class UInputSettings* InputSettings;
 };

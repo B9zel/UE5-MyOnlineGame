@@ -56,6 +56,8 @@ void UVoteComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLi
 void UVoteComponent::StartVote()
 {
 	SetComponentTickEnabled(true);
+	PrimaryComponentTick.bCanEverTick = true;
+	
 	ChooseMatVote();
 	voteInProgress = true;
 	VoteStarted.Broadcast();
@@ -64,6 +66,7 @@ void UVoteComponent::StartVote()
 void UVoteComponent::StopVote()
 {
 	SetComponentTickEnabled(false);
+	PrimaryComponentTick.bCanEverTick = false;
 	voteInProgress = false;
 	VoteEnded.Broadcast(FName(GetMaxVoteMap()));
 }
@@ -142,7 +145,20 @@ FString UVoteComponent::GetMaxVoteMap()
 {
 	if (ArrMap.IsValidIndex(MaxVoteMap))
 	{
-		FName string = DataTable->FindRow<FST_MapInfo>(ArrMap[MaxVoteMap], "")->NameMap;
+		FText string = DataTable->FindRow<FST_MapInfo>(ArrMap[MaxVoteMap], "")->NameMap;
+		return string.ToString();
+	}
+	else
+	{
+		return FString("");
+	}
+}
+
+FString UVoteComponent::GetShowNameMapWithMaxVote()
+{
+	if (ArrMap.IsValidIndex(MaxVoteMap))
+	{
+		FText string = DataTable->FindRow<FST_MapInfo>(ArrMap[MaxVoteMap], "")->ShowNameMap;
 		return string.ToString();
 	}
 	else

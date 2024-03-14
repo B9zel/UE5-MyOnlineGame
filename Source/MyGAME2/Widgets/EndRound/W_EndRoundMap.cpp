@@ -34,7 +34,7 @@ void UW_EndRoundMap::NativeConstruct()
 	if (MapInfo != nullptr)
 	{
 		B_Icon->SetBrushFromTexture(MapInfo->Icon);
-		TB_NameMap->SetText(FText::FromName(MapInfo->NameMap));
+		TB_NameMap->SetText(MapInfo->ShowNameMap);
 	}
 	B_Select->OnClicked.AddDynamic(this, &UW_EndRoundMap::OnClickButton);
 	B_Select->SynchronizeProperties();

@@ -4,6 +4,7 @@
 #include <Components/StaticMeshComponent.h>
 #include <GameFramework/ProjectileMovementComponent.h>
 #include <Kismet/GameplayStatics.h>
+#include <NiagaraFunctionLibrary.h>
 #include "Game/BaseGameState.h"
 #include "HealthStat.h"
 #include "BaseTank.h"
@@ -76,7 +77,8 @@ void Abullet::BaginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Oth
 			}
 			else
 			{
-				UGameplayStatics::SpawnEmitterAtLocation(this->GetWorld(), iscra, FTransform(GetActorRotation(), GetActorLocation(), FVector(0.5f, 0.5f, 0.5f)));
+				UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), iscra, GetActorLocation(), GetActorRotation(), FVector(1));
+				//UGameplayStatics::SpawnEmitterAtLocation(this->);
 			}
 			Destroy();
 		}

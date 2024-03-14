@@ -8,15 +8,14 @@
 
 void UW_ChatInterface::Activate()
 {
-	SetVisibility(ESlateVisibility::Visible);
+	//SetVisibility(ESlateVisibility::Visible);
 
 	Chat->ActivateChat();
 }
 
 void UW_ChatInterface::Deactivate()
 {
-	SetVisibility(ESlateVisibility::Collapsed);
-
+	
 	Chat->DeactivateChat();
 }
 

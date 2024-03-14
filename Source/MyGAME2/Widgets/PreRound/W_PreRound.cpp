@@ -24,7 +24,7 @@ void UW_PreRound::NativeOnFocusChanging(const FWeakWidgetPath& PreviousFocusPath
 	Super::NativeOnFocusChanging(PreviousFocusPath, NewWidgetPath, InFocusEvent);
 
 	
-	if (NewWidgetPath.ContainsWidget(W_SelectionPawn->TakeWidget()))
+	if (NewWidgetPath.FindArrangedWidget(W_SelectionPawn->TakeWidget()))
 	{
 		return;
 	}

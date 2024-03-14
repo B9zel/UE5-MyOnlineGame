@@ -52,7 +52,6 @@ void ALight_Tank::BeginPlay()
 		SetReplicates(true);
 		SetReplicateMovement(true);
 
-		GameMode = Get_GameMode(this);
 	}
 }
 

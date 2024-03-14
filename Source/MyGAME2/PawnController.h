@@ -66,8 +66,8 @@ protected:
 protected:
 		
 	FVector2D Sensitivity;
-
 	class ABaseHUD* HUD;
+
 public:
 
 	UFUNCTION()

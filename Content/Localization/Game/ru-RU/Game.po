@@ -1,0 +1,1044 @@
+﻿# Game Russian (Russia) translation.
+# Fill out your copyright notice in the Description page of Project Settings.
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Game\n"
+"POT-Creation-Date: 2023-10-01 14:54\n"
+"PO-Revision-Date: 2023-10-01 14:54\n"
+"Language-Team: \n"
+"Language: ru-RU\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#. Key:	063DF03F4E5CD5A8C5DC25B22B94A51E
+#. SourceLocation:	/Game/UI/Ganeral/PauseMenu/WB_PauseMenu.WB_PauseMenu_C:WidgetTree.TextBlock_102.Text
+#: /Game/UI/Ganeral/PauseMenu/WB_PauseMenu.WB_PauseMenu_C:WidgetTree.TextBlock_102.Text
+msgctxt ",063DF03F4E5CD5A8C5DC25B22B94A51E"
+msgid "Options"
+msgstr "Настройки"
+
+#. Key:	0BC9D6C840477A2D7CA1A5AD172372BE
+#. SourceLocation:	/Game/UI/GameMenu/TabMenu/Team/WB_TeamPlayerStat.WB_TeamPlayerStat_C:WidgetTree.Kills.Text
+#: /Game/UI/GameMenu/TabMenu/Team/WB_TeamPlayerStat.WB_TeamPlayerStat_C:WidgetTree.Kills.Text
+msgctxt ",0BC9D6C840477A2D7CA1A5AD172372BE"
+msgid "Kills"
+msgstr "Убийств"
+
+#. Key:	0C4402314997EB410D33F6B0C9070270
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock_8.Text
+#: /Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock_8.Text
+msgctxt ",0C4402314997EB410D33F6B0C9070270"
+msgid "Resolution Scale"
+msgstr "Масштаб разрешения"
+
+#. Key:	0DDD4EAF49F4764C74547FB0706AA9D6
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock_5.Text
+#: /Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock_5.Text
+msgctxt ",0DDD4EAF49F4764C74547FB0706AA9D6"
+msgid "Reflection Quality"
+msgstr "Качество отражений"
+
+#. Key:	0FBF0B5143B6E08E1148A59ADBDF766F
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock_6.Text
+#: /Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock_6.Text
+msgctxt ",0FBF0B5143B6E08E1148A59ADBDF766F"
+msgid "Post Processing Quality"
+msgstr "Качество постобработки"
+
+#. Key:	120864BB492A39CD1646CDA9F811280D
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock_14.Text
+#: /Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock_14.Text
+msgctxt ",120864BB492A39CD1646CDA9F811280D"
+msgid "Bind Key"
+msgstr "Привязывание клавиши"
+
+#. Key:	139819134DB976141DED7B872630CD7C
+#. SourceLocation:	/Game/UI/MainMenu/Session/WB_FindSessions.WB_FindSessions_C:WidgetTree.ED_InoutIP.HintText
+#: /Game/UI/MainMenu/Session/WB_FindSessions.WB_FindSessions_C:WidgetTree.ED_InoutIP.HintText
+msgctxt ",139819134DB976141DED7B872630CD7C"
+msgid "Enter IP"
+msgstr "Введите IP"
+
+#. Key:	171E71D143638AEDA3AD1B860438F74C
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_DublicateKey.Default__WB_DublicateKey_C.MapAxisName(3 - Value).MapAxisName_Value
+#: /Game/UI/MainMenu/Option/WB_DublicateKey.Default__WB_DublicateKey_C.MapAxisName(3 - Value).MapAxisName_Value
+msgctxt ",171E71D143638AEDA3AD1B860438F74C"
+msgid "Forward Move"
+msgstr "Движение вперед"
+
+#. Key:	18382A4F499E17B7D0646496159703E2
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_BindKeyOptions.WB_BindKeyOptions_C:WidgetTree.TextBlock_3.Text
+#: /Game/UI/MainMenu/Option/WB_BindKeyOptions.WB_BindKeyOptions_C:WidgetTree.TextBlock_3.Text
+msgctxt ",18382A4F499E17B7D0646496159703E2"
+msgid "Chat"
+msgstr "Чат"
+
+#. Key:	184A999A4FD7277D55FD689FD9BA5C94
+#. SourceLocation:	/Game/UI/MainMenu/Session/WB_FindSessions.WB_FindSessions_C:WidgetTree.TextBlock_83.Text
+#: /Game/UI/MainMenu/Session/WB_FindSessions.WB_FindSessions_C:WidgetTree.TextBlock_83.Text
+msgctxt ",184A999A4FD7277D55FD689FD9BA5C94"
+msgid "Connect"
+msgstr "Соединить"
+
+#. Key:	198438E1404513A1360F9898E4C0B4AD
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_DublicateKey.WB_DublicateKey_C:WidgetTree.TextBlock_1.Text
+#: /Game/UI/MainMenu/Option/WB_DublicateKey.WB_DublicateKey_C:WidgetTree.TextBlock_1.Text
+msgctxt ",198438E1404513A1360F9898E4C0B4AD"
+msgid "Cancel"
+msgstr "Отмена"
+
+#. Key:	1A79328A4230B05B1A3265A4D4E3BBB9
+#. SourceLocation:	/Game/Data/Enums/E_Inputs.E_Inputs.DisplayNameMap(3 - Value).DisplayNameMap
+#: /Game/Data/Enums/E_Inputs.E_Inputs.DisplayNameMap(3 - Value).DisplayNameMap
+msgctxt ",1A79328A4230B05B1A3265A4D4E3BBB9"
+msgid "LeftMove"
+msgstr "Поворот налево"
+
+#. Key:	1AE12EC74CE9B6B019EDF5B72455A78F
+#. SourceLocation:	/Game/UI/EndRound/WB_EndRoundMap.WB_EndRoundMap_C:WidgetTree.TB_NumberVotes.Text
+#: /Game/UI/EndRound/WB_EndRoundMap.WB_EndRoundMap_C:WidgetTree.TB_NumberVotes.Text
+msgctxt ",1AE12EC74CE9B6B019EDF5B72455A78F"
+msgid "0"
+msgstr ""
+
+#. Key:	2650CA5749DE3838F01143B9CB346F4B
+#. SourceLocation:	/Game/UI/MainMenu/Session/WB_FindSessions.WB_FindSessions_C:WidgetTree.TextBlock_204.Text
+#: /Game/UI/MainMenu/Session/WB_FindSessions.WB_FindSessions_C:WidgetTree.TextBlock_204.Text
+msgctxt ",2650CA5749DE3838F01143B9CB346F4B"
+msgid "Refresh"
+msgstr "Обновить"
+
+#. Key:	2714FA194C077F71C1BBCFACAF8EABC8
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_DublicateKey.Default__WB_DublicateKey_C.MapInputName(6 - Value).MapInputName_Value
+#: /Game/UI/MainMenu/Option/WB_DublicateKey.Default__WB_DublicateKey_C.MapInputName(6 - Value).MapInputName_Value
+msgctxt ",2714FA194C077F71C1BBCFACAF8EABC8"
+msgid "Right Move"
+msgstr "Поворот направо"
+
+#. Key:	27E06788439FB224F8BCF4BEE72FF6B1
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock_7.Text
+#: /Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock_7.Text
+msgctxt ",27E06788439FB224F8BCF4BEE72FF6B1"
+msgid "Anti Aliasing Quality"
+msgstr "Качество сглаживания"
+
+#. Key:	29B4913D4E85CA8AF04DF0805BD69BDA
+#. SourceLocation:	/Game/UI/PreRound/Players/WB_PreRoundPlayers.WB_PreRoundPlayers_C:WidgetTree.TextBlock_41.Text
+#: /Game/UI/PreRound/Players/WB_PreRoundPlayers.WB_PreRoundPlayers_C:WidgetTree.TextBlock_41.Text
+msgctxt ",29B4913D4E85CA8AF04DF0805BD69BDA"
+msgid "Players"
+msgstr "Игроков"
+
+#. Key:	2A09B2BD447DA5123440A3AC8707E34F
+#. SourceLocation:	/Game/UI/GameMenu/TabMenu/DeathMatch/WB_PlayerStat_Desc.WB_PlayerStat_Desc_C:WidgetTree.Kills.Text
+#: /Game/UI/GameMenu/TabMenu/DeathMatch/WB_PlayerStat_Desc.WB_PlayerStat_Desc_C:WidgetTree.Kills.Text
+msgctxt ",2A09B2BD447DA5123440A3AC8707E34F"
+msgid "Deaths"
+msgstr "Смертей"
+
+#. Key:	2B01DE0341C8F64D6DE772A4DA2E6FC5
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock_9.Text
+#: /Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock_9.Text
+msgctxt ",2B01DE0341C8F64D6DE772A4DA2E6FC5"
+msgid "Sensitivity X"
+msgstr "Чувствительность X"
+
+#. Key:	325B5DB14458D7C2A5FF988C4F8CB915
+#. SourceLocation:	/Game/UI/MainMenu/WB_Main.WB_Main_C:WidgetTree.TextBlock_230.Text
+#: /Game/UI/MainMenu/WB_Main.WB_Main_C:WidgetTree.TextBlock_230.Text
+msgctxt ",325B5DB14458D7C2A5FF988C4F8CB915"
+msgid "Quit"
+msgstr "Выйти"
+
+#. Key:	353F2CE8478A385A485B0F8ADD3BE3E0
+#. SourceLocation:	/Game/UI/GameMenu/Spectator/WB_SpectateKillInfo.WB_SpectateKillInfo_C:WidgetTree.TextBlock_84.Text
+#: /Game/UI/GameMenu/Spectator/WB_SpectateKillInfo.WB_SpectateKillInfo_C:WidgetTree.TextBlock_84.Text
+msgctxt ",353F2CE8478A385A485B0F8ADD3BE3E0"
+msgid "Killer name"
+msgstr "Вас убил "
+
+#. Key:	366CB47A4DD16058EC2D149F418DC2DD
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock_106.Text
+#: /Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock_106.Text
+msgctxt ",366CB47A4DD16058EC2D149F418DC2DD"
+msgid "Window Mode"
+msgstr "Оконный режим"
+
+#. Key:	377F547E4816FCC8431DBA998B4EFE22
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock_15.Text
+#: /Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock_15.Text
+msgctxt ",377F547E4816FCC8431DBA998B4EFE22"
+msgid "Localizathion"
+msgstr "Локализация"
+
+#. Key:	379A226D4F6852680D3B95A3980F807D
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock_409.Text
+#: /Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock_409.Text
+msgctxt ",379A226D4F6852680D3B95A3980F807D"
+msgid "Fullscreen"
+msgstr "Полноэкранный"
+
+#. Key:	427A0FB148D4DEE73D129FAEE9D8EB72
+#. SourceLocation:	/Game/UI/GameMenu/TabMenu/Team/WB_TeamPlayerStat.WB_TeamPlayerStat_C:WidgetTree.NickName.Text
+#: /Game/UI/GameMenu/TabMenu/Team/WB_TeamPlayerStat.WB_TeamPlayerStat_C:WidgetTree.NickName.Text
+msgctxt ",427A0FB148D4DEE73D129FAEE9D8EB72"
+msgid "NickName"
+msgstr "Имя"
+
+#. Key:	436826B746BE1707C23224A55A51A07E
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_BindKeyOptions.WB_BindKeyOptions_C:WidgetTree.IKS_UseSuperPower.KeySelectionText
+#: /Game/UI/MainMenu/Option/WB_BindKeyOptions.WB_BindKeyOptions_C:WidgetTree.IKS_UseSuperPower.KeySelectionText
+msgctxt ",436826B746BE1707C23224A55A51A07E"
+msgid "Press Key"
+msgstr "Нажмите клавишу"
+
+#. Key:	47C3885048472F59FB4C5F9C14E19C7D
+#. SourceLocation:	/Game/UI/Ganeral/PauseMenu/WB_PauseMenu.WB_PauseMenu_C:WidgetTree.TextBlock_43.Text
+#: /Game/UI/Ganeral/PauseMenu/WB_PauseMenu.WB_PauseMenu_C:WidgetTree.TextBlock_43.Text
+msgctxt ",47C3885048472F59FB4C5F9C14E19C7D"
+msgid "Servers"
+msgstr "Сервера"
+
+#. Key:	47E7B7F44541B8DAC872AF8E05E33175
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_BindKeyOptions.WB_BindKeyOptions_C:WidgetTree.IKS_StatisticMenu.KeySelectionText
+#: /Game/UI/MainMenu/Option/WB_BindKeyOptions.WB_BindKeyOptions_C:WidgetTree.IKS_StatisticMenu.KeySelectionText
+msgctxt ",47E7B7F44541B8DAC872AF8E05E33175"
+msgid "Press Key"
+msgstr "Нажмите клавишу"
+
+#. Key:	481DB6F94E34AE8EBAA51E806322A392
+#. SourceLocation:	/Game/UI/EndRound/WB_PostRoundTime.WB_PostRoundTime_C:WidgetTree.T_NextMap.Text
+#: /Game/UI/EndRound/WB_PostRoundTime.WB_PostRoundTime_C:WidgetTree.T_NextMap.Text
+msgctxt ",481DB6F94E34AE8EBAA51E806322A392"
+msgid "Next map is"
+msgstr "Следующая карта "
+
+#. Key:	48559A794A34B33577FE26BCD98B38A7
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_BindKeyOptions.WB_BindKeyOptions_C:GetTextAxisKey [Script Bytecode]
+#: /Game/UI/MainMenu/Option/WB_BindKeyOptions.WB_BindKeyOptions_C:GetTextAxisKey [Script Bytecode]
+msgctxt ",48559A794A34B33577FE26BCD98B38A7"
+msgid "None"
+msgstr "Ничто"
+
+#. Key:	485A4CAD44CA57620BA433B752456E13
+#. SourceLocation:	/Game/UI/MainMenu/Session/WB_FindSessions.WB_FindSessions_C:WidgetTree.TextBlock_365.Text
+#: /Game/UI/MainMenu/Session/WB_FindSessions.WB_FindSessions_C:WidgetTree.TextBlock_365.Text
+msgctxt ",485A4CAD44CA57620BA433B752456E13"
+msgid "Min players"
+msgstr "Минимально игроков"
+
+#. Key:	48B913B14E4F7ECAF4A67BADE95611A1
+#. SourceLocation:	/Game/Data/Enums/E_Actions.E_Actions.DisplayNameMap(1 - Value).DisplayNameMap
+#: /Game/Data/Enums/E_Actions.E_Actions.DisplayNameMap(1 - Value).DisplayNameMap
+msgctxt ",48B913B14E4F7ECAF4A67BADE95611A1"
+msgid "Shoot"
+msgstr "Стрелять"
+
+#. Key:	4A034D5744D817493ECD329E90579323
+#. SourceLocation:	/Game/Data/Enums/E_Actions.E_Actions.DisplayNameMap(0 - Value).DisplayNameMap
+#: /Game/Data/Enums/E_Actions.E_Actions.DisplayNameMap(0 - Value).DisplayNameMap
+msgctxt ",4A034D5744D817493ECD329E90579323"
+msgid "Aim"
+msgstr "Прицеливание"
+
+#. Key:	4AE1AE7747EA77D446E72B8AA668F1D3
+#. SourceLocation:	/Game/Data/Enums/E_Actions.E_Actions.DisplayNameMap(2 - Value).DisplayNameMap
+#: /Game/Data/Enums/E_Actions.E_Actions.DisplayNameMap(2 - Value).DisplayNameMap
+msgctxt ",4AE1AE7747EA77D446E72B8AA668F1D3"
+msgid "Statistic Info"
+msgstr "Статистическая информация"
+
+#. Key:	4C6F4DB9435E7B0FB6A5DEAF8D8364F9
+#. SourceLocation:	/Game/UI/PreRound/SelectPawns/WB_SelectMediumTank.WB_SelectMediumTank_C:WidgetTree.TextBlock_39.Text
+#: /Game/UI/PreRound/SelectPawns/WB_SelectMediumTank.WB_SelectMediumTank_C:WidgetTree.TextBlock_39.Text
+msgctxt ",4C6F4DB9435E7B0FB6A5DEAF8D8364F9"
+msgid "Medium Tank"
+msgstr "Средний танк"
+
+#. Key:	50D9C0D74A75465A6F11418BAEB64790
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_BindKeyOptions.WB_BindKeyOptions_C:WidgetTree.TextBlock_7.Text
+#: /Game/UI/MainMenu/Option/WB_BindKeyOptions.WB_BindKeyOptions_C:WidgetTree.TextBlock_7.Text
+msgctxt ",50D9C0D74A75465A6F11418BAEB64790"
+msgid "Statistic Menu"
+msgstr "Меню статистики"
+
+#. Key:	528AFDEB49E6F2431BEEFDA8810185E7
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock_217.Text
+#: /Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock_217.Text
+msgctxt ",528AFDEB49E6F2431BEEFDA8810185E7"
+msgid "Windowed"
+msgstr "Оконный"
+
+#. Key:	5384261044171F4CFA6055851461725C
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_DublicateKey.Default__WB_DublicateKey_C.MapInputName(5 - Value).MapInputName_Value
+#: /Game/UI/MainMenu/Option/WB_DublicateKey.Default__WB_DublicateKey_C.MapInputName(5 - Value).MapInputName_Value
+msgctxt ",5384261044171F4CFA6055851461725C"
+msgid "Left Move"
+msgstr "Поворот налево"
+
+#. Key:	55AF90EC407C5AD19E4951B7D19D63A1
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock_4.Text
+#: /Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock_4.Text
+msgctxt ",55AF90EC407C5AD19E4951B7D19D63A1"
+msgid "Texture Quality"
+msgstr "Качество текстуры"
+
+#. Key:	58FAF2E845B874EF97B81DB66E37D963
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_DublicateKey.WB_DublicateKey_C:WidgetTree.TextBlock_24.Text
+#: /Game/UI/MainMenu/Option/WB_DublicateKey.WB_DublicateKey_C:WidgetTree.TextBlock_24.Text
+msgctxt ",58FAF2E845B874EF97B81DB66E37D963"
+msgid " has already been used in "
+msgstr "уже используется в"
+
+#. Key:	59EAF84B40B8E0117ED488971A5764D0
+#. SourceLocation:	/Game/UI/GameMenu/TabMenu/DeathMatch/WB_PlayerStat_Desc.WB_PlayerStat_Desc_C:WidgetTree.Deaths.Text
+#: /Game/UI/GameMenu/TabMenu/DeathMatch/WB_PlayerStat_Desc.WB_PlayerStat_Desc_C:WidgetTree.Deaths.Text
+msgctxt ",59EAF84B40B8E0117ED488971A5764D0"
+msgid "Kills"
+msgstr "Убийств"
+
+#. Key:	5B178885448EE50B4BC69D97962CCA10
+#. SourceLocation:	/Game/UI/GameMenu/TabMenu/Team/WB_TeamPoints.WB_TeamPoints_C:WidgetTree.TextBlockTeam.Text
+#: /Game/UI/GameMenu/TabMenu/Team/WB_TeamPoints.WB_TeamPoints_C:WidgetTree.TextBlockTeam.Text
+msgctxt ",5B178885448EE50B4BC69D97962CCA10"
+msgid "Team Points"
+msgstr "Командные очки"
+
+#. Key:	5DE8B8654D99327F4D6A55BE0A82E09F
+#. SourceLocation:	/Game/Data/Enums/E_Inputs.E_Inputs.DisplayNameMap(0 - Value).DisplayNameMap
+#: /Game/Data/Enums/E_Inputs.E_Inputs.DisplayNameMap(0 - Value).DisplayNameMap
+msgctxt ",5DE8B8654D99327F4D6A55BE0A82E09F"
+msgid "ForwardMove"
+msgstr "Движение вперед"
+
+#. Key:	5E7C08A34076F485B30E43873E7678D1
+#. SourceLocation:	/Game/UI/GameMenu/TabMenu/DeathMatch/WB_PlayerStat.WB_PlayerStat_C:WidgetTree.Deaths.Text
+#: /Game/UI/GameMenu/TabMenu/DeathMatch/WB_PlayerStat.WB_PlayerStat_C:WidgetTree.Deaths.Text
+msgctxt ",5E7C08A34076F485B30E43873E7678D1"
+msgid "Deaths"
+msgstr "Смертей"
+
+#. Key:	5F7CF2254232B2341838DEB8795DFE31
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_BindKeyOptions.WB_BindKeyOptions_C:WidgetTree.IKS_BackMove.KeySelectionText
+#: /Game/UI/MainMenu/Option/WB_BindKeyOptions.WB_BindKeyOptions_C:WidgetTree.IKS_BackMove.KeySelectionText
+msgctxt ",5F7CF2254232B2341838DEB8795DFE31"
+msgid "Press Key"
+msgstr "Нажмите клавишу"
+
+#. Key:	613152AE4C31FC449211ACA56B8878B0
+#. SourceLocation:	/Game/UI/GameMenu/Interface/WB_RoundTime.WB_RoundTime_C:WidgetTree.Timer.Text
+#: /Game/UI/GameMenu/Interface/WB_RoundTime.WB_RoundTime_C:WidgetTree.Timer.Text
+msgctxt ",613152AE4C31FC449211ACA56B8878B0"
+msgid "0:0"
+msgstr ""
+
+#. Key:	616C883F47CE12E3A14BCDBDFC398A58
+#. SourceLocation:	/Game/UI/MainMenu/WB_Main.WB_Main_C:WidgetTree.TextBlock_43.Text
+#: /Game/UI/MainMenu/WB_Main.WB_Main_C:WidgetTree.TextBlock_43.Text
+msgctxt ",616C883F47CE12E3A14BCDBDFC398A58"
+msgid "Servers"
+msgstr "Сервера"
+
+#. Key:	64C2D3F946164006B0F76FA47FE369AC
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock.Text
+#: /Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock.Text
+msgctxt ",64C2D3F946164006B0F76FA47FE369AC"
+msgid "Resolution"
+msgstr "Разрешение"
+
+#. Key:	665F97E34057B91EEDB2ECBE0FE05190
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_DublicateKey.Default__WB_DublicateKey_C.MapInputName(4 - Value).MapInputName_Value
+#: /Game/UI/MainMenu/Option/WB_DublicateKey.Default__WB_DublicateKey_C.MapInputName(4 - Value).MapInputName_Value
+msgctxt ",665F97E34057B91EEDB2ECBE0FE05190"
+msgid "Aiming"
+msgstr "Прицеливание"
+
+#. Key:	6781407D42D9A19726ACAA9248799077
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock_1.Text
+#: /Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock_1.Text
+msgctxt ",6781407D42D9A19726ACAA9248799077"
+msgid "View Distance Quality"
+msgstr "Расстояние прорисовки"
+
+#. Key:	68B942834BE55EC3ABED1DBC1FEFCD08
+#. SourceLocation:	/Game/UI/GameMenu/TabMenu/DeathMatch/WB_PlayerStat.WB_PlayerStat_C:WidgetTree.Kills.Text
+#: /Game/UI/GameMenu/TabMenu/DeathMatch/WB_PlayerStat.WB_PlayerStat_C:WidgetTree.Kills.Text
+msgctxt ",68B942834BE55EC3ABED1DBC1FEFCD08"
+msgid "Kills"
+msgstr "Убийств"
+
+#. Key:	6975543744E9542BB6D64F8DAB177250
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_BindKeyOptions.WB_BindKeyOptions_C:WidgetTree.IKS_RightRotation.KeySelectionText
+#: /Game/UI/MainMenu/Option/WB_BindKeyOptions.WB_BindKeyOptions_C:WidgetTree.IKS_RightRotation.KeySelectionText
+msgctxt ",6975543744E9542BB6D64F8DAB177250"
+msgid "Press Key"
+msgstr "Нажмите клавишу"
+
+#. Key:	6DA5C838446B166714F143854F537232
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.T_PercentSensetivityX.Text
+#: /Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.T_PercentSensetivityX.Text
+msgctxt ",6DA5C838446B166714F143854F537232"
+msgid "100%"
+msgstr ""
+
+#. Key:	6EB1E4AF494A4A95BFA1C3A006A470AE
+#. SourceLocation:	/Game/Data/Enums/E_Inputs.E_Inputs.DisplayNameMap(7 - Value).DisplayNameMap
+#: /Game/Data/Enums/E_Inputs.E_Inputs.DisplayNameMap(7 - Value).DisplayNameMap
+msgctxt ",6EB1E4AF494A4A95BFA1C3A006A470AE"
+msgid "UseSuperPower"
+msgstr "Использование способности"
+
+#. Key:	713536084D5008670AE9E692EB0C945E
+#. SourceLocation:	/Game/UI/MainMenu/WB_Main.WB_Main_C:WidgetTree.TextBlock_102.Text
+#: /Game/UI/MainMenu/WB_Main.WB_Main_C:WidgetTree.TextBlock_102.Text
+msgctxt ",713536084D5008670AE9E692EB0C945E"
+msgid "Options"
+msgstr "Настройки"
+
+#. Key:	7360EFF74005D2DE9D992582385F72B2
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock_10.Text
+#: /Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock_10.Text
+msgctxt ",7360EFF74005D2DE9D992582385F72B2"
+msgid "Shading Quality"
+msgstr "Качество затенения"
+
+#. Key:	75F01CF54758C6EC6D29D993D962624B
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_DublicateKey.Default__WB_DublicateKey_C.MapInputName(3 - Value).MapInputName_Value
+#: /Game/UI/MainMenu/Option/WB_DublicateKey.Default__WB_DublicateKey_C.MapInputName(3 - Value).MapInputName_Value
+msgctxt ",75F01CF54758C6EC6D29D993D962624B"
+msgid "Shoot"
+msgstr "Стрелять"
+
+#. Key:	782310424CDDE1AF4DE06CB32D032B7A
+#. SourceLocation:	/Game/UI/PreRound/Timer/WB_PreRoundTimer.WB_PreRoundTimer_C:WidgetTree.TextBlock_60.Text
+#: /Game/UI/PreRound/Timer/WB_PreRoundTimer.WB_PreRoundTimer_C:WidgetTree.TextBlock_60.Text
+msgctxt ",782310424CDDE1AF4DE06CB32D032B7A"
+msgid "Round start in"
+msgstr "Начало раунда через"
+
+#. Key:	7C9E170E4A0224010D70D2ACB48D5771
+#. SourceLocation:	/Game/UI/MainMenu/Session/WB_FindSessions.WB_FindSessions_C:WidgetTree.TextBlock_135.Text
+#: /Game/UI/MainMenu/Session/WB_FindSessions.WB_FindSessions_C:WidgetTree.TextBlock_135.Text
+msgctxt ",7C9E170E4A0224010D70D2ACB48D5771"
+msgid "LAN"
+msgstr "LAN"
+
+#. Key:	7DA692B045D673E49E6361927154B263
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock_3.Text
+#: /Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock_3.Text
+msgctxt ",7DA692B045D673E49E6361927154B263"
+msgid "Shadow Quality"
+msgstr "Качество теней"
+
+#. Key:	7E6B07F3494B93FE3C84A587E09D070E
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_DublicateKey.Default__WB_DublicateKey_C.MapInputName(1 - Value).MapInputName_Value
+#: /Game/UI/MainMenu/Option/WB_DublicateKey.Default__WB_DublicateKey_C.MapInputName(1 - Value).MapInputName_Value
+msgctxt ",7E6B07F3494B93FE3C84A587E09D070E"
+msgid "Use Super Power"
+msgstr "Использование способности"
+
+#. Key:	7E87A1994F6E6614D4B0DE95D1FB9E15
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_DublicateKey.Default__WB_DublicateKey_C.MapAxisName(0 - Value).MapAxisName_Value
+#: /Game/UI/MainMenu/Option/WB_DublicateKey.Default__WB_DublicateKey_C.MapAxisName(0 - Value).MapAxisName_Value
+msgctxt ",7E87A1994F6E6614D4B0DE95D1FB9E15"
+msgid "Left Move"
+msgstr "Поворот налево"
+
+#. Key:	7F553D754C3B6083A2E9139C9252BE66
+#. SourceLocation:	/Game/Data/Enums/E_Inputs.E_Inputs.DisplayNameMap(8 - Value).DisplayNameMap
+#: /Game/Data/Enums/E_Inputs.E_Inputs.DisplayNameMap(8 - Value).DisplayNameMap
+msgctxt ",7F553D754C3B6083A2E9139C9252BE66"
+msgid "SwitchChat"
+msgstr "Переключение чата"
+
+#. Key:	801CE77442E0759A0889C68F7C8B3F83
+#. SourceLocation:	/Game/Data/Enums/E_Inputs.E_Inputs.DisplayNameMap(5 - Value).DisplayNameMap
+#: /Game/Data/Enums/E_Inputs.E_Inputs.DisplayNameMap(5 - Value).DisplayNameMap
+msgctxt ",801CE77442E0759A0889C68F7C8B3F83"
+msgid "Shoot"
+msgstr "Стрелять"
+
+#. Key:	81FC33EF4AD7631C995466B3D82BA832
+#. SourceLocation:	/Game/UI/GameMenu/TabMenu/DeathMatch/WB_PlayerStat_Desc.WB_PlayerStat_Desc_C:WidgetTree.NickName.Text
+#: /Game/UI/GameMenu/TabMenu/DeathMatch/WB_PlayerStat_Desc.WB_PlayerStat_Desc_C:WidgetTree.NickName.Text
+msgctxt ",81FC33EF4AD7631C995466B3D82BA832"
+msgid "Name"
+msgstr "Имя"
+
+#. Key:	8374C47E495C4043B44734B72E589A64
+#. SourceLocation:	/Game/UI/PreRound/SelectPawns/WB_SelectLightTank.WB_SelectLightTank_C:WidgetTree.TextBlock_39.Text
+#: /Game/UI/PreRound/SelectPawns/WB_SelectLightTank.WB_SelectLightTank_C:WidgetTree.TextBlock_39.Text
+msgctxt ",8374C47E495C4043B44734B72E589A64"
+msgid "Light Tank"
+msgstr "Легкий танк"
+
+#. Key:	83ABFA544B4534FF1D60089F33AAEACE
+#. SourceLocation:	/Game/Data/Enums/E_Inputs.E_Inputs.DisplayNameMap(4 - Value).DisplayNameMap
+#: /Game/Data/Enums/E_Inputs.E_Inputs.DisplayNameMap(4 - Value).DisplayNameMap
+msgctxt ",83ABFA544B4534FF1D60089F33AAEACE"
+msgid "Aim"
+msgstr "Прицеливание"
+
+#. Key:	8680FBF54CCC92CE034438A4276985E0
+#. SourceLocation:	/Game/Data/Enums/E_Inputs.E_Inputs.DisplayNameMap(1 - Value).DisplayNameMap
+#: /Game/Data/Enums/E_Inputs.E_Inputs.DisplayNameMap(1 - Value).DisplayNameMap
+msgctxt ",8680FBF54CCC92CE034438A4276985E0"
+msgid "BackMove"
+msgstr "Движение назад"
+
+#. Key:	878E683C43402EF47BF461AD4559FAE8
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_DublicateKey.Default__WB_DublicateKey_C.MapAxisName(2 - Value).MapAxisName_Value
+#: /Game/UI/MainMenu/Option/WB_DublicateKey.Default__WB_DublicateKey_C.MapAxisName(2 - Value).MapAxisName_Value
+msgctxt ",878E683C43402EF47BF461AD4559FAE8"
+msgid "Back Move"
+msgstr "Движение назад"
+
+#. Key:	8A24B4474B2D1595D269B5B9FA68AE3C
+#. SourceLocation:	/Game/Data/Enums/E_Axis.E_Axis.DisplayNameMap(1 - Value).DisplayNameMap
+#: /Game/Data/Enums/E_Axis.E_Axis.DisplayNameMap(1 - Value).DisplayNameMap
+msgctxt ",8A24B4474B2D1595D269B5B9FA68AE3C"
+msgid "BackMove"
+msgstr "Движение назад"
+
+#. Key:	8AD355304BE81E70F81E3383C708D3E4
+#. SourceLocation:	/Game/Data/Enums/E_Inputs.E_Inputs.DisplayNameMap(6 - Value).DisplayNameMap
+#: /Game/Data/Enums/E_Inputs.E_Inputs.DisplayNameMap(6 - Value).DisplayNameMap
+msgctxt ",8AD355304BE81E70F81E3383C708D3E4"
+msgid "Statistic Info"
+msgstr "Статистическая информация"
+
+#. Key:	8B6EE2934C14FABEEC7CCCAD58EC4212
+#. SourceLocation:	/Game/UI/MainMenu/Session/WB_FindSession_info.WB_FindSession_info_C:WidgetTree.TextBlock_102.Text
+#: /Game/UI/MainMenu/Session/WB_FindSession_info.WB_FindSession_info_C:WidgetTree.TextBlock_102.Text
+msgctxt ",8B6EE2934C14FABEEC7CCCAD58EC4212"
+msgid "Players"
+msgstr "Игроков"
+
+#. Key:	8C514EB3487EC8B65C035D9519801A89
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock_138.Text
+#: /Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock_138.Text
+msgctxt ",8C514EB3487EC8B65C035D9519801A89"
+msgid "Apply"
+msgstr "Применить"
+
+#. Key:	8D0E17FD445DB57B2A2B23B86170F799
+#. SourceLocation:	/Game/UI/GameMenu/TabMenu/Team/WB_TeamPlayerStat.WB_TeamPlayerStat_C:WidgetTree.Deaths.Text
+#: /Game/UI/GameMenu/TabMenu/Team/WB_TeamPlayerStat.WB_TeamPlayerStat_C:WidgetTree.Deaths.Text
+msgctxt ",8D0E17FD445DB57B2A2B23B86170F799"
+msgid "Deaths"
+msgstr "Смертей"
+
+#. Key:	9383D63841836665A3AF138E9F49AB49
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_BindKeyOptions.WB_BindKeyOptions_C:WidgetTree.IKS_Chat.KeySelectionText
+#: /Game/UI/MainMenu/Option/WB_BindKeyOptions.WB_BindKeyOptions_C:WidgetTree.IKS_Chat.KeySelectionText
+msgctxt ",9383D63841836665A3AF138E9F49AB49"
+msgid "Press Key"
+msgstr "Нажмите клавишу"
+
+#. Key:	94137E4E456410FAA83E36AE8D668F7E
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_DublicateKey.Default__WB_DublicateKey_C.MapInputName(0 - Value).MapInputName_Value
+#: /Game/UI/MainMenu/Option/WB_DublicateKey.Default__WB_DublicateKey_C.MapInputName(0 - Value).MapInputName_Value
+msgctxt ",94137E4E456410FAA83E36AE8D668F7E"
+msgid "Chat"
+msgstr "Чат"
+
+#. Key:	96F9AF2C4223B82725E6FDA56E6CD145
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_DublicateKey.Default__WB_DublicateKey_C.MapInputName(2 - Value).MapInputName_Value
+#: /Game/UI/MainMenu/Option/WB_DublicateKey.Default__WB_DublicateKey_C.MapInputName(2 - Value).MapInputName_Value
+msgctxt ",96F9AF2C4223B82725E6FDA56E6CD145"
+msgid "Statistic Menu"
+msgstr "Меню статистики"
+
+#. Key:	9B7656C748DECD2681648F877FBDCF7C
+#. SourceLocation:	/Game/UI/MainMenu/Session/WB_FindSessions.WB_FindSessions_C:WidgetTree.TextBlock_458.Text
+#: /Game/UI/MainMenu/Session/WB_FindSessions.WB_FindSessions_C:WidgetTree.TextBlock_458.Text
+msgctxt ",9B7656C748DECD2681648F877FBDCF7C"
+msgid "Server list"
+msgstr "Список серверов"
+
+#. Key:	9D321B82483590BCCB4B7A8E5AA49064
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock_128.Text
+#: /Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock_128.Text
+msgctxt ",9D321B82483590BCCB4B7A8E5AA49064"
+msgid " Graphics"
+msgstr "Графика"
+
+#. Key:	9D68C5F24E31E93539FAF6A6862C14AA
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_DublicateKey.WB_DublicateKey_C:WidgetTree.TextBlock_737.Text
+#: /Game/UI/MainMenu/Option/WB_DublicateKey.WB_DublicateKey_C:WidgetTree.TextBlock_737.Text
+msgctxt ",9D68C5F24E31E93539FAF6A6862C14AA"
+msgid "This change will unbind the other key"
+msgstr "Это изменение отменит привязку другой клавиши"
+
+#. Key:	A923337C48F8E72161AD849F4CB8301F
+#. SourceLocation:	/Game/Data/Enums/E_Inputs.E_Inputs.DisplayNameMap(2 - Value).DisplayNameMap
+#: /Game/Data/Enums/E_Inputs.E_Inputs.DisplayNameMap(2 - Value).DisplayNameMap
+msgctxt ",A923337C48F8E72161AD849F4CB8301F"
+msgid "RightMove"
+msgstr "Поворот направо"
+
+#. Key:	ABF30B6A433D857F85AFEE9506F956F8
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_BindKeyOptions.WB_BindKeyOptions_C:WidgetTree.IKS_Shoot.KeySelectionText
+#: /Game/UI/MainMenu/Option/WB_BindKeyOptions.WB_BindKeyOptions_C:WidgetTree.IKS_Shoot.KeySelectionText
+msgctxt ",ABF30B6A433D857F85AFEE9506F956F8"
+msgid "Press Key"
+msgstr "Нажмите клавишу"
+
+#. Key:	AC25268E411CC64A9BD22EB8A4729307
+#. SourceLocation:	/Game/UI/GameMenu/TabMenu/DeathMatch/WB_PlayerStat.WB_PlayerStat_C:WidgetTree.NickName.Text
+#: /Game/UI/GameMenu/TabMenu/DeathMatch/WB_PlayerStat.WB_PlayerStat_C:WidgetTree.NickName.Text
+msgctxt ",AC25268E411CC64A9BD22EB8A4729307"
+msgid "NickName"
+msgstr "Имя"
+
+#. Key:	AF82A225451250093BEB1090B126FC30
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock_2.Text
+#: /Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock_2.Text
+msgctxt ",AF82A225451250093BEB1090B126FC30"
+msgid "Visual Effects Quality"
+msgstr "Качество визуальных эффектов"
+
+#. Key:	B0952C6B472C85A8784BE1A01EB20675
+#. SourceLocation:	/Game/UI/Ganeral/Chat/WB_ChatMessage.WB_ChatMessage_C:WidgetTree.T_Time.Text
+#: /Game/UI/Ganeral/Chat/WB_ChatMessage.WB_ChatMessage_C:WidgetTree.T_Time.Text
+msgctxt ",B0952C6B472C85A8784BE1A01EB20675"
+msgid "Time"
+msgstr "Время"
+
+#. Key:	B529079F40B4FE4680682286CFD8A786
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_DublicateKey.Default__WB_DublicateKey_C.MapInputName(7 - Value).MapInputName_Value
+#: /Game/UI/MainMenu/Option/WB_DublicateKey.Default__WB_DublicateKey_C.MapInputName(7 - Value).MapInputName_Value
+msgctxt ",B529079F40B4FE4680682286CFD8A786"
+msgid "Back Move"
+msgstr "Движение назад"
+
+#. Key:	B597AE124C2DA85B22E62ABE47AB0092
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_BindKeyOptions.WB_BindKeyOptions_C:WidgetTree.IKS_Aiming.KeySelectionText
+#: /Game/UI/MainMenu/Option/WB_BindKeyOptions.WB_BindKeyOptions_C:WidgetTree.IKS_Aiming.KeySelectionText
+msgctxt ",B597AE124C2DA85B22E62ABE47AB0092"
+msgid "Press Key"
+msgstr "Нажмите клавишу"
+
+#. Key:	B86F474D41952F6EAEE5E0BE02313E27
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_BindKeyOptions.WB_BindKeyOptions_C:WidgetTree.TextBlock.Text
+#: /Game/UI/MainMenu/Option/WB_BindKeyOptions.WB_BindKeyOptions_C:WidgetTree.TextBlock.Text
+msgctxt ",B86F474D41952F6EAEE5E0BE02313E27"
+msgid "Back Move"
+msgstr "Движение назад"
+
+#. Key:	B92566E94D92DA7A843656A2BD3BFCDA
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_BindKeyOptions.WB_BindKeyOptions_C:WidgetTree.TextBlock_6.Text
+#: /Game/UI/MainMenu/Option/WB_BindKeyOptions.WB_BindKeyOptions_C:WidgetTree.TextBlock_6.Text
+msgctxt ",B92566E94D92DA7A843656A2BD3BFCDA"
+msgid "Aiming"
+msgstr "Прицеливание"
+
+#. Key:	BA2CA7AE4588CA2BE13E8F897FA0FAD3
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock_13.Text
+#: /Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock_13.Text
+msgctxt ",BA2CA7AE4588CA2BE13E8F897FA0FAD3"
+msgid "Auto"
+msgstr "Авто"
+
+#. Key:	BB704BE644604AC6BB5A4E8B57F5A1D9
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_BindKeyOptions.WB_BindKeyOptions_C:WidgetTree.TextBlock_2.Text
+#: /Game/UI/MainMenu/Option/WB_BindKeyOptions.WB_BindKeyOptions_C:WidgetTree.TextBlock_2.Text
+msgctxt ",BB704BE644604AC6BB5A4E8B57F5A1D9"
+msgid "Left Rotation"
+msgstr "Поворот налево"
+
+#. Key:	BFE4291D48EA56B47785B2BE38653039
+#. SourceLocation:	/Game/UI/PreRound/SelectPawns/WB_SelectHeavyTank.WB_SelectHeavyTank_C:WidgetTree.TextBlock_39.Text
+#: /Game/UI/PreRound/SelectPawns/WB_SelectHeavyTank.WB_SelectHeavyTank_C:WidgetTree.TextBlock_39.Text
+msgctxt ",BFE4291D48EA56B47785B2BE38653039"
+msgid "Heavy Tank"
+msgstr "Тяжелый танк"
+
+#. Key:	C3C88BF74CF1E1DF44E8B99FD5048524
+#. SourceLocation:	/Game/UI/Ganeral/PauseMenu/WB_PauseMenu.WB_PauseMenu_C:WidgetTree.TextBlock_230.Text
+#: /Game/UI/Ganeral/PauseMenu/WB_PauseMenu.WB_PauseMenu_C:WidgetTree.TextBlock_230.Text
+msgctxt ",C3C88BF74CF1E1DF44E8B99FD5048524"
+msgid "Quit menu"
+msgstr "Выйти в меню"
+
+#. Key:	C473933D477390FB82AA0187C34E2B16
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_BindKeyOptions.WB_BindKeyOptions_C:WidgetTree.TextBlock_4.Text
+#: /Game/UI/MainMenu/Option/WB_BindKeyOptions.WB_BindKeyOptions_C:WidgetTree.TextBlock_4.Text
+msgctxt ",C473933D477390FB82AA0187C34E2B16"
+msgid "Use Super Power"
+msgstr "Использование способности"
+
+#. Key:	C4D176824E8BCEF45C67D3A1946BC086
+#. SourceLocation:	/Game/UI/Ganeral/Chat/WB_ChatInputMessage.WB_ChatInputMessage_C:WidgetTree.m_TB_inputMessage.HintText
+#: /Game/UI/Ganeral/Chat/WB_ChatInputMessage.WB_ChatInputMessage_C:WidgetTree.m_TB_inputMessage.HintText
+msgctxt ",C4D176824E8BCEF45C67D3A1946BC086"
+msgid "Enter Message"
+msgstr "Введите сообщение"
+
+#. Key:	C4DF82FC41C5544761869683429E441D
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_BindKeyOptions.WB_BindKeyOptions_C:WidgetTree.IKS_LeftRotation.KeySelectionText
+#: /Game/UI/MainMenu/Option/WB_BindKeyOptions.WB_BindKeyOptions_C:WidgetTree.IKS_LeftRotation.KeySelectionText
+msgctxt ",C4DF82FC41C5544761869683429E441D"
+msgid "Press Key"
+msgstr "Нажмите клавишу"
+
+#. Key:	C65D05F4480427FDE550C7B52245899A
+#. SourceLocation:	/Game/UI/GameMenu/Game/WB_Reload.WB_Reload_C:WidgetTree.Text.Text
+#: /Game/UI/GameMenu/Game/WB_Reload.WB_Reload_C:WidgetTree.Text.Text
+msgctxt ",C65D05F4480427FDE550C7B52245899A"
+msgid "Reload:"
+msgstr "Перезарядка: "
+
+#. Key:	C718EA7B490CE4E71AC81BAC77EA34DA
+#. SourceLocation:	/Game/UI/Ganeral/Chat/WB_ChatInputMessage.WB_ChatInputMessage_C:WidgetTree.TextBlock_108.Text
+#: /Game/UI/Ganeral/Chat/WB_ChatInputMessage.WB_ChatInputMessage_C:WidgetTree.TextBlock_108.Text
+msgctxt ",C718EA7B490CE4E71AC81BAC77EA34DA"
+msgid "Send"
+msgstr "Отправить"
+
+#. Key:	CADB9FB64C393B594E469EACDBE69741
+#. SourceLocation:	/Game/UI/Ganeral/PauseMenu/WB_PauseMenu.WB_PauseMenu_C:WidgetTree.TextBlock.Text
+#: /Game/UI/Ganeral/PauseMenu/WB_PauseMenu.WB_PauseMenu_C:WidgetTree.TextBlock.Text
+msgctxt ",CADB9FB64C393B594E469EACDBE69741"
+msgid "Play"
+msgstr "Играть"
+
+#. Key:	CCCCEA91455E83FAD4669F80E0F1C134
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_BindKeyOptions.WB_BindKeyOptions_C:WidgetTree.IKS_ForwardMove.KeySelectionText
+#: /Game/UI/MainMenu/Option/WB_BindKeyOptions.WB_BindKeyOptions_C:WidgetTree.IKS_ForwardMove.KeySelectionText
+msgctxt ",CCCCEA91455E83FAD4669F80E0F1C134"
+msgid "Press Key"
+msgstr "Нажмите клавишу"
+
+#. Key:	D0B4F4E845E52798194A4CA42517A2CC
+#. SourceLocation:	/Game/UI/EndRound/WB_EndRoundMap.WB_EndRoundMap_C:WidgetTree.TB_NameMap.Text
+#: /Game/UI/EndRound/WB_EndRoundMap.WB_EndRoundMap_C:WidgetTree.TB_NameMap.Text
+msgctxt ",D0B4F4E845E52798194A4CA42517A2CC"
+msgid "Number of vote"
+msgstr "Количество голосов"
+
+#. Key:	D140D7AB47BD94906249E485EAF1EBED
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock_311.Text
+#: /Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock_311.Text
+msgctxt ",D140D7AB47BD94906249E485EAF1EBED"
+msgid "Windowed Fullscreen"
+msgstr "Оконный полноэкранный"
+
+#. Key:	D244EB8B41128F80CE3AE49612ACBDBE
+#. SourceLocation:	/Game/UI/EndRound/WB_PostRoundTime.WB_PostRoundTime_C:WidgetTree.Timer.Text
+#: /Game/UI/EndRound/WB_PostRoundTime.WB_PostRoundTime_C:WidgetTree.Timer.Text
+msgctxt ",D244EB8B41128F80CE3AE49612ACBDBE"
+msgid "0:0"
+msgstr ""
+
+#. Key:	DA1FADD0441E10D8FDB435829199B3E6
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock_12.Text
+#: /Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock_12.Text
+msgctxt ",DA1FADD0441E10D8FDB435829199B3E6"
+msgid "Mouse"
+msgstr "Мышь"
+
+#. Key:	DA643ACF43F5790A5A41ACA17FE1B67D
+#. SourceLocation:	/Game/UI/Ganeral/Chat/WB_ChatMessage.WB_ChatMessage_C:WidgetTree.T_PlayerName.Text
+#: /Game/UI/Ganeral/Chat/WB_ChatMessage.WB_ChatMessage_C:WidgetTree.T_PlayerName.Text
+msgctxt ",DA643ACF43F5790A5A41ACA17FE1B67D"
+msgid "player name"
+msgstr "Имя игрока"
+
+#. Key:	DA984D7743059242C8A6AA9E795298D6
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_DublicateKey.Default__WB_DublicateKey_C.MapInputName(8 - Value).MapInputName_Value
+#: /Game/UI/MainMenu/Option/WB_DublicateKey.Default__WB_DublicateKey_C.MapInputName(8 - Value).MapInputName_Value
+msgctxt ",DA984D7743059242C8A6AA9E795298D6"
+msgid "Forward Move"
+msgstr "Движение вперед"
+
+#. Key:	E963650A45B450FA35FD549B0FBEAE6E
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock_207.Text
+#: /Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock_207.Text
+msgctxt ",E963650A45B450FA35FD549B0FBEAE6E"
+msgid "Reset"
+msgstr "Сбросить"
+
+#. Key:	EA9EEBB64E2D51CC0F1A038342A74547
+#. SourceLocation:	/Game/Data/Enums/E_Axis.E_Axis.DisplayNameMap(3 - Value).DisplayNameMap
+#: /Game/Data/Enums/E_Axis.E_Axis.DisplayNameMap(3 - Value).DisplayNameMap
+msgctxt ",EA9EEBB64E2D51CC0F1A038342A74547"
+msgid "LeftMove"
+msgstr "Поворот налево"
+
+#. Key:	EAAAC23642721590C774ACAC22ED45D0
+#. SourceLocation:	/Game/UI/MainMenu/Session/WB_FindSession_info.WB_FindSession_info_C:WidgetTree.TextBlock_100.Text
+#: /Game/UI/MainMenu/Session/WB_FindSession_info.WB_FindSession_info_C:WidgetTree.TextBlock_100.Text
+msgctxt ",EAAAC23642721590C774ACAC22ED45D0"
+msgid "Name sessions"
+msgstr "Название сессий"
+
+#. Key:	EC7AFCE04E749460C42CB5A990F4C90B
+#. SourceLocation:	/Game/Data/Enums/E_Actions.E_Actions.DisplayNameMap(3 - Value).DisplayNameMap
+#: /Game/Data/Enums/E_Actions.E_Actions.DisplayNameMap(3 - Value).DisplayNameMap
+msgctxt ",EC7AFCE04E749460C42CB5A990F4C90B"
+msgid "UseSuperPower"
+msgstr "Использование способности"
+
+#. Key:	ECF41FB3468DE82B1E26219FBDC92090
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_BindKeyOptions.WB_BindKeyOptions_C:WidgetTree.TextBlock_5.Text
+#: /Game/UI/MainMenu/Option/WB_BindKeyOptions.WB_BindKeyOptions_C:WidgetTree.TextBlock_5.Text
+msgctxt ",ECF41FB3468DE82B1E26219FBDC92090"
+msgid "Shoot"
+msgstr "Стрелять"
+
+#. Key:	ED7815724B56027A7450C48BA7618BBF
+#. SourceLocation:	/Game/Data/Enums/E_Axis.E_Axis.DisplayNameMap(2 - Value).DisplayNameMap
+#: /Game/Data/Enums/E_Axis.E_Axis.DisplayNameMap(2 - Value).DisplayNameMap
+msgctxt ",ED7815724B56027A7450C48BA7618BBF"
+msgid "RightMove"
+msgstr "Поворот направо"
+
+#. Key:	EE7E1A534A5267FDE9C78E88DEE73A25
+#. SourceLocation:	/Game/UI/GameMenu/Interface/WB_RoundTime.WB_RoundTime_C:WidgetTree.TextBlock_60.Text
+#: /Game/UI/GameMenu/Interface/WB_RoundTime.WB_RoundTime_C:WidgetTree.TextBlock_60.Text
+msgctxt ",EE7E1A534A5267FDE9C78E88DEE73A25"
+msgid "Round Time"
+msgstr "Время раунда"
+
+#. Key:	EF70788645170D2E0E28928D3E8FE09B
+#. SourceLocation:	/Game/UI/MainMenu/Session/WB_FindSession_info.WB_FindSession_info_C:WidgetTree.TextBlock_103.Text
+#: /Game/UI/MainMenu/Session/WB_FindSession_info.WB_FindSession_info_C:WidgetTree.TextBlock_103.Text
+msgctxt ",EF70788645170D2E0E28928D3E8FE09B"
+msgid "Ping"
+msgstr "Пинг"
+
+#. Key:	F054ABE3467522F2D4627A802C4AAD57
+#. SourceLocation:	/Game/UI/PreRound/SelectPawns/WB_SelectStelsTank.WB_SelectStelsTank_C:WidgetTree.TextBlock_39.Text
+#: /Game/UI/PreRound/SelectPawns/WB_SelectStelsTank.WB_SelectStelsTank_C:WidgetTree.TextBlock_39.Text
+msgctxt ",F054ABE3467522F2D4627A802C4AAD57"
+msgid "Stealth Tank"
+msgstr "Стелс танк"
+
+#. Key:	F0CB492F44D1CE82EE835A8F497E232C
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_BindKeyOptions.WB_BindKeyOptions_C:WidgetTree.TextBlock_1.Text
+#: /Game/UI/MainMenu/Option/WB_BindKeyOptions.WB_BindKeyOptions_C:WidgetTree.TextBlock_1.Text
+msgctxt ",F0CB492F44D1CE82EE835A8F497E232C"
+msgid "Right Rotation"
+msgstr "Поворот направо"
+
+#. Key:	F138E726403567B6B25F83BB1BEC9F60
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.ET_Nickname.HintText
+#: /Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.ET_Nickname.HintText
+msgctxt ",F138E726403567B6B25F83BB1BEC9F60"
+msgid "Name "
+msgstr "Имя"
+
+#. Key:	F4EBD27742436BF3AE12429C0034FA03
+#. SourceLocation:	/Game/UI/PreRound/Players/WB_PreRoundPlayer.WB_PreRoundPlayer_C:WidgetTree.PlayerName.Text
+#: /Game/UI/PreRound/Players/WB_PreRoundPlayer.WB_PreRoundPlayer_C:WidgetTree.PlayerName.Text
+msgctxt ",F4EBD27742436BF3AE12429C0034FA03"
+msgid "Player Name"
+msgstr "Имя игрока"
+
+#. Key:	F6D9D3CC4BF90A7464B68BA06A726E30
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_DublicateKey.WB_DublicateKey_C:WidgetTree.TextBlock_0.Text
+#: /Game/UI/MainMenu/Option/WB_DublicateKey.WB_DublicateKey_C:WidgetTree.TextBlock_0.Text
+msgctxt ",F6D9D3CC4BF90A7464B68BA06A726E30"
+msgid "Apply"
+msgstr "Применить"
+
+#. Key:	F7326AB0448E5E9AA261A5926DCAB8E7
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_BindKeyOptions.WB_BindKeyOptions_C:WidgetTree.TextBlock_78.Text
+#: /Game/UI/MainMenu/Option/WB_BindKeyOptions.WB_BindKeyOptions_C:WidgetTree.TextBlock_78.Text
+msgctxt ",F7326AB0448E5E9AA261A5926DCAB8E7"
+msgid "Forward Move"
+msgstr "Движение вперед"
+
+#. Key:	F79725C94BB1A0531B977B96C53CE340
+#. SourceLocation:	/Game/UI/MainMenu/Session/WB_FindSessions.WB_FindSessions_C:WidgetTree.EditableTextBox_136.HintText
+#: /Game/UI/MainMenu/Session/WB_FindSessions.WB_FindSessions_C:WidgetTree.EditableTextBox_136.HintText
+msgctxt ",F79725C94BB1A0531B977B96C53CE340"
+msgid "Enter "
+msgstr "Ввод"
+
+#. Key:	F847855D45FCD9BCBD4ADB8C1C4E95F9
+#. SourceLocation:	/Game/Data/Enums/E_Actions.E_Actions.DisplayNameMap(4 - Value).DisplayNameMap
+#: /Game/Data/Enums/E_Actions.E_Actions.DisplayNameMap(4 - Value).DisplayNameMap
+msgctxt ",F847855D45FCD9BCBD4ADB8C1C4E95F9"
+msgid "SwitchChat"
+msgstr "Переключение чата"
+
+#. Key:	F9FA538946D7F68EB48E2EB3F6575165
+#. SourceLocation:	/Game/Data/Enums/E_Axis.E_Axis.DisplayNameMap(0 - Value).DisplayNameMap
+#: /Game/Data/Enums/E_Axis.E_Axis.DisplayNameMap(0 - Value).DisplayNameMap
+msgctxt ",F9FA538946D7F68EB48E2EB3F6575165"
+msgid "ForwardMove"
+msgstr "Движение вперед"
+
+#. Key:	FA43E6424705167BB29D808BBF502B49
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock_11.Text
+#: /Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock_11.Text
+msgctxt ",FA43E6424705167BB29D808BBF502B49"
+msgid "Sensitivity Y"
+msgstr "Чувствительность Y"
+
+#. Key:	FB03A558479124040345858708DC6F7A
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_DublicateKey.Default__WB_DublicateKey_C.MapAxisName(1 - Value).MapAxisName_Value
+#: /Game/UI/MainMenu/Option/WB_DublicateKey.Default__WB_DublicateKey_C.MapAxisName(1 - Value).MapAxisName_Value
+msgctxt ",FB03A558479124040345858708DC6F7A"
+msgid "Right Move"
+msgstr "Поворот направо"
+
+#. Key:	FD4C137C4370F2A158DB7DBA870A3E4A
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock_204.Text
+#: /Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock_204.Text
+msgctxt ",FD4C137C4370F2A158DB7DBA870A3E4A"
+msgid "Nickname"
+msgstr "Имя"
+
+#. Key:	FFA09DAB4C3D897BD2CC40B754B1BC8F
+#. SourceLocation:	/Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock_16.Text
+#: /Game/UI/MainMenu/Option/WB_MainMenuOptions.WB_MainMenuOptions_C:WidgetTree.TextBlock_16.Text
+msgctxt ",FFA09DAB4C3D897BD2CC40B754B1BC8F"
+msgid "Language"
+msgstr "Язык"
+
+#. Key:	K_English
+#. SourceLocation:	Source/MyGAME2/Widgets/MainMenu/W_MainMenuOption.h(70)
+#: Source/MyGAME2/Widgets/MainMenu/W_MainMenuOption.h(70)
+msgctxt "MainMenuOption,K_English"
+msgid "English"
+msgstr "Английский"
+
+#. Key:	K_Russian
+#. SourceLocation:	Source/MyGAME2/Widgets/MainMenu/W_MainMenuOption.h(72)
+#: Source/MyGAME2/Widgets/MainMenu/W_MainMenuOption.h(72)
+msgctxt "MainMenuOption,K_Russian"
+msgid "Russian"
+msgstr "Русский"
+
+#. Key:	K_NextMap
+#. SourceLocation:	Source/MyGAME2/Widgets/EndRound/W_PostRoundTime.h(31)
+#: Source/MyGAME2/Widgets/EndRound/W_PostRoundTime.h(31)
+msgctxt "PostRound,K_NextMap"
+msgid "Next map is "
+msgstr "Следующая карта "
+
+#. Key:	K_Damage
+#. SourceLocation:	Source/MyGAME2/Widgets/PreRound/W_PawnInfo.h(48)
+#: Source/MyGAME2/Widgets/PreRound/W_PawnInfo.h(48)
+msgctxt "PreRound,K_Damage"
+msgid "Damage: "
+msgstr "Урон: "
+
+#. Key:	K_HeavyTank
+#. SourceLocation:	Source/MyGAME2/Widgets/PreRound/W_PawnInfo.h(30)
+#: Source/MyGAME2/Widgets/PreRound/W_PawnInfo.h(30)
+msgctxt "PreRound,K_HeavyTank"
+msgid "Heavy tank"
+msgstr "Тяжелый танк"
+
+#. Key:	K_HP
+#. SourceLocation:	Source/MyGAME2/Widgets/PreRound/W_PawnInfo.h(50)
+#: Source/MyGAME2/Widgets/PreRound/W_PawnInfo.h(50)
+msgctxt "PreRound,K_HP"
+msgid "Health points(HP): "
+msgstr "Очков здоровья(HP): "
+
+#. Key:	K_LightTank
+#. SourceLocation:	Source/MyGAME2/Widgets/PreRound/W_PawnInfo.h(32)
+#: Source/MyGAME2/Widgets/PreRound/W_PawnInfo.h(32)
+msgctxt "PreRound,K_LightTank"
+msgid "Light tank"
+msgstr "Легкий танк"
+
+#. Key:	K_MediumTank
+#. SourceLocation:	Source/MyGAME2/Widgets/PreRound/W_PawnInfo.h(34)
+#: Source/MyGAME2/Widgets/PreRound/W_PawnInfo.h(34)
+msgctxt "PreRound,K_MediumTank"
+msgid "Medium tank"
+msgstr "Средний танк"
+
+#. Key:	K_RotationSpeed
+#. SourceLocation:	Source/MyGAME2/Widgets/PreRound/W_PawnInfo.h(43)
+#: Source/MyGAME2/Widgets/PreRound/W_PawnInfo.h(43)
+msgctxt "PreRound,K_RotationSpeed"
+msgid "Rotation speed: "
+msgstr "Скорость поворота:  "
+
+#. Key:	K_Seconds
+#. SourceLocation:	Source/MyGAME2/Widgets/PreRound/W_PawnInfo.h(69)
+#: Source/MyGAME2/Widgets/PreRound/W_PawnInfo.h(69)
+msgctxt "PreRound,K_Seconds"
+msgid " seconds"
+msgstr " секунд"
+
+#. Key:	K_SkillHeavyTank
+#. SourceLocation:	Source/MyGAME2/Widgets/PreRound/W_PawnInfo.h(58)
+#: Source/MyGAME2/Widgets/PreRound/W_PawnInfo.h(58)
+msgctxt "PreRound,K_SkillHeavyTank"
+msgid "Skill: Next attack with up damage"
+msgstr "Способность: Следующая атака с увеличенным уроном"
+
+#. Key:	K_SkillLightTank
+#. SourceLocation:	Source/MyGAME2/Widgets/PreRound/W_PawnInfo.h(56)
+#: Source/MyGAME2/Widgets/PreRound/W_PawnInfo.h(56)
+msgctxt "PreRound,K_SkillLightTank"
+msgid "Skill: Up tank speed"
+msgstr "Способность: Увеличение скорости танка"
+
+#. Key:	K_SkillMediumTank
+#. SourceLocation:	Source/MyGAME2/Widgets/PreRound/W_PawnInfo.h(60)
+#: Source/MyGAME2/Widgets/PreRound/W_PawnInfo.h(60)
+msgctxt "PreRound,K_SkillMediumTank"
+msgid "Skill: Immunity to attacks"
+msgstr "Способность: Иммунитет к атакам"
+
+#. Key:	K_SkillStealthTank
+#. SourceLocation:	Source/MyGAME2/Widgets/PreRound/W_PawnInfo.h(62)
+#: Source/MyGAME2/Widgets/PreRound/W_PawnInfo.h(62)
+msgctxt "PreRound,K_SkillStealthTank"
+msgid "Skill: Invisibility"
+msgstr "Способность: Невидимость"
+
+#. Key:	K_SkillTimeReload
+#. SourceLocation:	Source/MyGAME2/Widgets/PreRound/W_PawnInfo.h(65)
+#: Source/MyGAME2/Widgets/PreRound/W_PawnInfo.h(65)
+msgctxt "PreRound,K_SkillTimeReload"
+msgid "Skill time reload: "
+msgstr "Время перезарядки способности: "
+
+#. Key:	K_SkillTimeUse
+#. SourceLocation:	Source/MyGAME2/Widgets/PreRound/W_PawnInfo.h(67)
+#: Source/MyGAME2/Widgets/PreRound/W_PawnInfo.h(67)
+msgctxt "PreRound,K_SkillTimeUse"
+msgid "Skill time use: "
+msgstr "Время использования способности:  "
+
+#. Key:	K_Speed
+#. SourceLocation:	Source/MyGAME2/Widgets/PreRound/W_PawnInfo.h(40)
+#: Source/MyGAME2/Widgets/PreRound/W_PawnInfo.h(40)
+msgctxt "PreRound,K_Speed"
+msgid "Speed: "
+msgstr "Скорость: "
+
+#. Key:	K_StealthTank
+#. SourceLocation:	Source/MyGAME2/Widgets/PreRound/W_PawnInfo.h(36)
+#: Source/MyGAME2/Widgets/PreRound/W_PawnInfo.h(36)
+msgctxt "PreRound,K_StealthTank"
+msgid "Stealth tank"
+msgstr "Стелс танк"
+
+#. Key:	K_TimeReload
+#. SourceLocation:	Source/MyGAME2/Widgets/PreRound/W_PawnInfo.h(53)
+#: Source/MyGAME2/Widgets/PreRound/W_PawnInfo.h(53)
+msgctxt "PreRound,K_TimeReload"
+msgid "Time reload: "
+msgstr "Время перезарядки: "
+
+#. Key:	K_TowerRotationSpeed
+#. SourceLocation:	Source/MyGAME2/Widgets/PreRound/W_PawnInfo.h(45)
+#: Source/MyGAME2/Widgets/PreRound/W_PawnInfo.h(45)
+msgctxt "PreRound,K_TowerRotationSpeed"
+msgid "Tower rotation speed: "
+msgstr "Скрость вращения башни: "
+

@@ -32,11 +32,11 @@ FText UW_PostRoundTime::UpdateNextMap()
 {
 	if (Game_State != nullptr)
 	{
-		return FText::FromString(FString("Next map is ") + Game_State->voteComponent->GetMaxVoteMap());
+		return FText::FromString(TextNextMap.ToString() + Game_State->voteComponent->GetShowNameMapWithMaxVote());
 	}
 	else
 	{
-		return FText::FromString(FString("Next map is ") + FString(""));
+		return FText::FromString(TextNextMap.ToString() + FString(""));
 
 	}
 }

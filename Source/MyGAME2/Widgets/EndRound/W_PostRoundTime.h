@@ -25,5 +25,9 @@ protected:
 protected:
 	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
 	UTextBlock* T_NextMap;
+
+public:
+	UPROPERTY(EditAnywhere,BlueprintReadOnly)
+	FText TextNextMap = NSLOCTEXT("PostRound", "K_NextMap", "Next map is ");
 	
 };

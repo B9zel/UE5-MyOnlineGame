@@ -45,6 +45,8 @@ protected:
 		class UComboBoxString* CB_AntiAliasing;
 	UPROPERTY(meta = (BindWidget))
 		class UComboBoxString* CB_PostProcessing;
+	UPROPERTY(meta = (BindWidget))
+		class UComboBoxString* CB_SwitchLanguage;
 
 	UPROPERTY(meta = (BindWidget))
 		class USlider* S_ResolutionScale;
@@ -60,6 +62,14 @@ protected:
 		class UTextBlock* T_PercentSensetivityY;
 	UPROPERTY(meta = (BindWidget))
 	class UEditableTextBox* ET_Nickname;
+public:
+	UPROPERTY(meta = (BindWidget),BlueprintReadWrite)
+	class UW_BindKeyOptions* W_KeyOptions;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+	FText TextLanguageEnglish = NSLOCTEXT("MainMenuOption", "K_English", "English");
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+	FText TextLanguageRussian = NSLOCTEXT("MainMenuOption", "K_Russian", "Russian");
 
 public:
 	FDispatchOptionOneParam D_OptionSensetivity;
@@ -128,6 +138,8 @@ protected:
 		virtual void OnSelectReflection(FString SelectedItem, ESelectInfo::Type SelectionType);
 	UFUNCTION()
 		virtual void OnSelectPostProcessing(FString SelectedItem, ESelectInfo::Type SelectionType);
+	UFUNCTION()
+		virtual void OnSelectSwitchLanguage(FString SelectedItem, ESelectInfo::Type SelectionType);
 
 	UFUNCTION()
 		virtual void OnChangeValue(float Value);

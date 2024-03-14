@@ -28,11 +28,15 @@ public:
 
 	class UW_ResultsEndRound* ToggleEndRound(bool isShow);
 
+	void CreateAimWidget();
+
+	void RemoveAimWidget();
+
 	void ToggleChat(bool isActivate);
 
 	class UW_SuperPower* ToggleSuperPower(bool isShow, bool isRemove = false);
 
-	class UW_Aim* ToggleAim(bool isShow);
+	void ToggleAim(bool isShow);
 
 	class UW_PauseMenu* TogglePauseMenu(bool isShow);
 

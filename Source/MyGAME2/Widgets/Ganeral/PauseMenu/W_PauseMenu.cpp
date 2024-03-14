@@ -7,6 +7,7 @@
 #include <Components/Widget.h>
 #include <Kismet/KismetSystemLibrary.h>
 #include <Kismet/GameplayStatics.h>
+#include <GameFramework/InputSettings.h>
 #include <Kismet/KismetInputLibrary.h>
 #include "../../../Game/BaseGameInstance.h"
 #include "../../../PawnController.h"
@@ -46,6 +47,8 @@ void UW_PauseMenu::NativeConstruct()
 	isActive = true;
 
 	SetKeyboardFocus();
+
+	InputSettings = UInputSettings::GetInputSettings();
 }
 
 void UW_PauseMenu::NativeDestruct()
@@ -60,10 +63,18 @@ FReply UW_PauseMenu::NativeOnKeyDown(const FGeometry& InGeometry, const FKeyEven
 {
 	UUserWidget::NativeOnKeyDown(InGeometry, InKeyEvent);
 
-	if (UKismetInputLibrary::EqualEqual_KeyKey(InKeyEvent.GetKey(), FKey(FName("Escape"))))
+	TArray<FInputActionKeyMapping> ArrAction;
+	
+	InputSettings->GetActionMappingByName(FName("Escape"), ArrAction);
+
+	for (auto& el : ArrAction)
 	{
-		ClickPlay();
+		if (UKismetInputLibrary::EqualEqual_KeyKey(InKeyEvent.GetKey(), el.Key))
+		{
+			ClickPlay();
+		}
 	}
+	
 	
 	return FReply::Handled();
 }

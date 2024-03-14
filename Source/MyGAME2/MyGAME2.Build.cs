@@ -8,7 +8,7 @@ public class MyGAME2 : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "UMG","OnlineSubsystem", "SlateCore", "OnlineSubsystemUtils","Niagara" }); //,"OnlineSubsystemEOS"
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "UMG", "Niagara","OnlineSubsystem", "SlateCore", "OnlineSubsystemUtils" }); //,"OnlineSubsystemEOS"
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 

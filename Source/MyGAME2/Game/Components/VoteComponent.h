@@ -29,6 +29,7 @@ public:
 
 	void SetVote(APlayerState* player, int MapIndex);
 	FString GetMaxVoteMap();
+	FString GetShowNameMapWithMaxVote();
 
 	int GetMapVote(int MapIndex);
 protected:

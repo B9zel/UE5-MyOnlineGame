@@ -7,7 +7,7 @@
 #include "BaseTank.h"
 #include "Widget_HP.h"
 #include "Game_Interface.h"
-#include <MyGAME2/Game/Base_GameMode.h>
+#include "Game/Base_GameMode.h"
 #include "PawnController.h"
 #include <MyGAME2/Game/BaseHUD.h>
 #include "Game/PlayerStatistic.h"
@@ -52,13 +52,13 @@ void UHealthStat::OnPlayerTakeAnyDamage(AActor* DamagedActor, float damage, cons
 {
 	if (IsDead)
 		return;
-	if (owner->GameMode->ShouldDamagePlayer(Cast<APlayerController>(owner->GetController()), Cast<APlayerController>(InstigatedBy)))
+	if (owner->GetGameMode()->ShouldDamagePlayer(Cast<APlayerController>(owner->GetController()), Cast<APlayerController>(InstigatedBy)))
 	{
 		Courrent_HP -= FMath::Clamp(damage, 0.0f, Max_HP);
 
 		if (Courrent_HP <= 0.0f && !IsDead)
 		{
-			owner->GameMode->Pawn_Dead(Cast<APlayerController>(owner->GetController()), Cast<APlayerController>(InstigatedBy));
+			owner->GetGameMode()->Pawn_Dead(Cast<APlayerController>(owner->GetController()), Cast<APlayerController>(InstigatedBy));
 
 			FTimerHandle handle;
 			GetWorld()->GetTimerManager().SetTimer(handle, Cast<ABaseTank>(GetOwner()), &ABaseTank::Destroy, owner->GetTimeDestroy(), false);

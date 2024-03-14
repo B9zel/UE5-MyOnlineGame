@@ -18,6 +18,7 @@ bool UW_Chat::Initialize()
 {
 	Super::Initialize();
 
+	isActivate = false;
 	ABaseGameState* State = Cast<ABaseGameState>(UGameplayStatics::GetGameState(this));
 	if (State != nullptr)
 	{
@@ -34,7 +35,7 @@ void UW_Chat::NativeConstruct()
 
 	activityTime = 5.0f;
 
-	isActivate = false;
+	
 	ABaseGameState* gameState = Cast<ABaseGameState>(UGameplayStatics::GetGameState(this));
 	if (gameState != nullptr)
 	{
@@ -49,8 +50,7 @@ void UW_Chat::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
 	Super::NativeTick(MyGeometry, InDeltaTime);
 	
-	if (SB_scrolMessage != nullptr)
-		SB_scrolMessage->SetScrollOffset(SB_scrolMessage->GetScrollOffset() + (20 * InDeltaTime));
+	SB_scrolMessage->SetScrollOffset(SB_scrolMessage->GetScrollOffset() + (20 * InDeltaTime));
 }
 
 void UW_Chat::TakeMessage(FText message, APlayerState* player)
@@ -78,8 +78,8 @@ void UW_Chat::ActivateChat()
 		GetWorld()->GetTimerManager().ClearTimer(sleepingTimer);
 	}
 
-	//SetVisibility(ESlateVisibility::Visible);
-	//InputMessage->SetVisibility(ESlateVisibility::Visible);
+	SetVisibility(ESlateVisibility::Visible);
+	InputMessage->SetVisibility(ESlateVisibility::Visible);
 	InputMessage->GetTB_InputMessage()->SetKeyboardFocus();
 
 	B_Chat->SetBrushColor(FLinearColor(0.f, 0.f, 0.f, 0.8f));
@@ -108,6 +108,7 @@ void UW_Chat::SetTimerActivity(float inRate)
 	{
 		GetWorld()->GetTimerManager().ClearTimer(sleepingTimer);
 	}
+	
 	GetWorld()->GetTimerManager().SetTimer(sleepingTimer, this, &UW_Chat::ActivateSleepingChat, inRate, false);
 }
 

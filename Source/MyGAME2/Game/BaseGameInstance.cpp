@@ -25,7 +25,6 @@ void UBaseGameInstance::Init()
 	{
 		SessionInterface = SubSystem->GetSessionInterface();
 	}
-	SaveObject = Cast<UBaseSaveGame>(UGameplayStatics::CreateSaveGameObject(UBaseSaveGame::StaticClass()));
 }
 
 void UBaseGameInstance::joinSession(FOnlineSessionSearchResult& Session, APlayerController* controller)
@@ -38,7 +37,6 @@ void UBaseGameInstance::joinSession(FOnlineSessionSearchResult& Session, APlayer
 			SessionInterface->GetResolvedConnectString(FName(Session.Session.GetSessionIdStr()), JoinAdress);
 			controller->ClientTravel(JoinAdress, TRAVEL_Absolute);
 		}
-		
 	}
 }
 
@@ -64,7 +62,7 @@ UBaseSaveGame* UBaseGameInstance::GetLoadFromOptionsSlot(int UserIndex)
 
 UBaseSaveGame* UBaseGameInstance::GetSaveObject() const
 {
-	return SaveObject;
+	return Cast<UBaseSaveGame>(UGameplayStatics::CreateSaveGameObject(UBaseSaveGame::StaticClass()));
 }
 
 FString UBaseGameInstance::GetNameSlotOptions() const
