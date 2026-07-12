@@ -19,19 +19,19 @@ void UW_TeamResultsEndRound::InitializeTextResult()
 	
 	if (isWinTeamA && GetOwningPlayer()->GetPlayerState<APlayerStatisticTeam>()->Team == E_Team::Team_A)
 	{
-		T_Winner->SetText(FText::FromString("Victory"));
+		T_Winner->SetText(VictoryText);
 		FLinearColor color = FLinearColor(0.f, 0.f, 1.f, 1.f); // Blue color
 		T_Winner->SetColorAndOpacity(FSlateColor(color));
 	}
 	else if (!isWinTeamA && GetOwningPlayer()->GetPlayerState<APlayerStatisticTeam>()->Team == E_Team::Team_B)
 	{
-		T_Winner->SetText(FText::FromString("Victory"));
+		T_Winner->SetText(VictoryText);
 		FLinearColor color = FLinearColor(0.f, 0.f, 1.f, 1.f); // Blue color
 		T_Winner->SetColorAndOpacity(FSlateColor(color));
 	}
 	else
 	{
-		T_Winner->SetText(FText::FromString("Defeat"));
+		T_Winner->SetText(DefeatText);
 		FLinearColor color = FLinearColor(1.f, 0.f, 0.f, 1.f); // Red color
 		T_Winner->SetColorAndOpacity(FSlateColor(color));
 	}

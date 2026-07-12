@@ -7,6 +7,8 @@
 #include "Light_Tank.generated.h"
 
 
+class ULightTankConfigDataAsset;
+
 
 UCLASS()
 class MYGAME2_API ALight_Tank : public ABaseTank
@@ -17,9 +19,7 @@ public:
 
 	ALight_Tank();
 
-	virtual void BeginPlay() override;
-
-	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent);
+public:
 
 	UFUNCTION(Server, Unreliable)
 	void EnableSuperPower_OnServer();
@@ -31,11 +31,25 @@ public:
 	void DisableSuperPower_OnClient();
 
 	void Disable_isSuperPower();
+
+protected:
+
+	virtual void BeginPlay() override;
+	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent);
+	virtual void InitializeProperties() override;
+
+protected:
+
+	UPROPERTY(EditAnywhere)
+	ULightTankConfigDataAsset* TankConfig;
+
 private:
 
+	float Super_rotationSpeed;
+	float Super_TowerRotation_Speed;
 	float Super_speed;
 
-	float Super_rotationSpeed;
-
-	float Super_TowerRotation_Speed;
+	float DefaultSpeed;
+	float DefaultRotationSpeed;
+	float DefaultTowerRotationSpeed;
 };

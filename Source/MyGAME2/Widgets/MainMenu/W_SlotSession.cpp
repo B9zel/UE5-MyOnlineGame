@@ -13,20 +13,28 @@
 
 
 
+
 void UW_SlotSession::NativeConstruct()
 {
 	Super::NativeConstruct();
-	
+
+	TB_serverName->SetText(FText::FromString(SessionInfo->Session.OwningUserName));
+	TB_Ping->SetText(FText::FromString(FString::FromInt(SessionInfo->PingInMs)));
+	const FString NumPlayers = FString::FromInt(SessionInfo->Session.SessionSettings.NumPublicConnections - SessionInfo->Session.NumOpenPublicConnections);
+	const FString NumMaxPlayers = FString::FromInt(SessionInfo->Session.SessionSettings.NumPublicConnections);
+	TB_players->SetText(FText::FromString(NumPlayers + "/" + NumMaxPlayers));
+
+
+	B_Session->OnPressed.AddDynamic(this, &UW_SlotSession::OnPressesSession);
 }
 
-FReply UW_SlotSession::NativeOnMouseButtonDoubleClick(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+void UW_SlotSession::OnPressesSession()
 {
-	FKey key = "Left Mouse Button";
-	
-	if (InMouseEvent.IsMouseButtonDown(key))
-	{
-		Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(this))->joinSession(*SessionInfo, GetOwningPlayer());
-	}
-	
-	return FReply::Handled();
+	Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(this))->joinSession(*SessionInfo, GetOwningPlayer());
+}
+
+
+void UW_SlotSession::SetSessionSearchInfo(FOnlineSessionSearchResult* SessionSearchInfo)
+{
+	SessionInfo = SessionSearchInfo;
 }

@@ -20,8 +20,6 @@ ABaseGameState::ABaseGameState()
 
 	RoundInProgress = E_GameState::PreStart;
 	playerInSession = 2;
-	
-
 }
 
 void ABaseGameState::BeginPlay()
@@ -157,7 +155,12 @@ void ABaseGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLi
 
 void ABaseGameState::OpenNexpMap(FName MapName)
 {
-	UKismetSystemLibrary::ExecuteConsoleCommand(this, FString("ServerTraver ") + MapName.ToString());
+	if (GameMode)
+	{
+		UE_LOG(LogTemp, Display, TEXT("URL: %s"), *MapName.ToString());
+		GameMode->TravelLevel(MapName.ToString());
+	}
+	//UKismetSystemLibrary::ExecuteConsoleCommand(this, FString("ServerTraver ") + MapName.ToString());
 }
 
 

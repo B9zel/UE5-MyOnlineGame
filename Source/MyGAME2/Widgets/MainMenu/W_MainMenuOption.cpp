@@ -33,7 +33,7 @@ bool UW_MainMenuOption::Initialize()
 	CB_SwitchLanguage->AddOption(TextLanguageRussian.ToString());
 
 
-	
+
 
 	return true;
 }
@@ -44,7 +44,7 @@ void UW_MainMenuOption::NativeConstruct()
 	Super::NativeConstruct();
 
 	UserSettings = UGameUserSettings::GetGameUserSettings();
-	
+
 
 	B_Windowed->OnClicked.AddDynamic(this, &UW_MainMenuOption::OnClickWindowedButton);
 	B_BorderlessWindow->OnClicked.AddDynamic(this, &UW_MainMenuOption::OnClickBorderlessWindowButton);
@@ -79,7 +79,7 @@ void UW_MainMenuOption::NativeConstruct()
 	T_PercentResolutionScale->SynchronizeProperties();
 	T_PercentSensetivityX->SynchronizeProperties();
 	T_PercentSensetivityY->SynchronizeProperties();
-	
+
 
 	int i = 0;
 	for (auto& el : UKismetInternationalizationLibrary::GetLocalizedCultures())
@@ -155,7 +155,7 @@ void UW_MainMenuOption::UpdateCurrentResolutionInfo()
 
 	FIntPoint currentRes = UserSettings->GetScreenResolution();
 	CB_Resolution->SetSelectedOption(FString::FromInt(currentRes.X) + "x" + FString::FromInt(currentRes.Y));
-	
+
 
 	switch (UserSettings->GetFullscreenMode())
 	{
@@ -175,7 +175,7 @@ void UW_MainMenuOption::UpdateCurrentResolutionInfo()
 
 void UW_MainMenuOption::UpdateResolutionScaleQuality()
 {
-	float currentNormalizedValue, currentValue,minScaleValue,maxScaleValue;
+	float currentNormalizedValue, currentValue, minScaleValue, maxScaleValue;
 	UserSettings->GetResolutionScaleInformationEx(currentNormalizedValue, currentValue, minScaleValue, maxScaleValue);
 	S_ResolutionScale->SetValue(currentNormalizedValue);
 }
@@ -225,7 +225,9 @@ void UW_MainMenuOption::UpdateSensetivity()
 	UBaseSaveGame* SaveClass = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(this))->GetLoadFromOptionsSlot();
 	if (SaveClass != nullptr)
 	{
-		Sensetivity = FMath::Clamp(SaveClass->Sensetive, FVector2D(1.0,1.0), FVector2D(S_SensetiveX->GetMaxValue(), S_SensetiveY->GetMaxValue()));
+		float minSensetivity = 1.0f;
+		Sensetivity.X = FMath::Clamp(SaveClass->Sensetive.X, minSensetivity, S_SensetiveX->GetMaxValue());
+		Sensetivity.Y = FMath::Clamp(SaveClass->Sensetive.Y, minSensetivity, S_SensetiveY->GetMaxValue());
 	}
 	S_SensetiveX->SetValue(Sensetivity.X);
 	S_SensetiveY->SetValue(Sensetivity.Y);
@@ -242,18 +244,45 @@ void UW_MainMenuOption::UpdateNickname()
 }
 
 FText UW_MainMenuOption::OnBindPercentResolutionScale()
-{	
-	return FText::FromString(UKismetTextLibrary::Conv_TextToString(UKismetTextLibrary::Conv_FloatToText(S_ResolutionScale->GetValue() * 100.f, ERoundingMode::HalfToEven, false, true, 1, 324, 1, 1)) + "%");
+{
+	FNumberFormattingOptions NumberFormatOptions;
+	NumberFormatOptions.AlwaysSign = true;
+	NumberFormatOptions.UseGrouping = true;
+	NumberFormatOptions.RoundingMode = ERoundingMode::HalfToEven;
+	NumberFormatOptions.MinimumIntegralDigits = 1;
+	NumberFormatOptions.MaximumIntegralDigits = 324;
+	NumberFormatOptions.MinimumFractionalDigits = 1;
+	NumberFormatOptions.MaximumFractionalDigits = 1;
+
+	return FText::FromString(FText::AsNumber(S_ResolutionScale->GetValue() * 100.0f, &NumberFormatOptions).ToString() + "%");
 }
 
 FText UW_MainMenuOption::OnBindPercentSensetivityX()
 {
-	return FText::FromString(UKismetTextLibrary::Conv_TextToString(UKismetTextLibrary::Conv_FloatToText(Sensetivity.X, ERoundingMode::HalfToEven, false, true, 1, 324, 1, 1)) + "%");
+	FNumberFormattingOptions NumberFormatOptions;
+	NumberFormatOptions.AlwaysSign = true;
+	NumberFormatOptions.UseGrouping = true;
+	NumberFormatOptions.RoundingMode = ERoundingMode::HalfToEven;
+	NumberFormatOptions.MinimumIntegralDigits = 1;
+	NumberFormatOptions.MaximumIntegralDigits = 324;
+	NumberFormatOptions.MinimumFractionalDigits = 1;
+	NumberFormatOptions.MaximumFractionalDigits = 1;
+
+	return FText::FromString(FText::AsNumber(Sensetivity.X, &NumberFormatOptions).ToString() + "%");
 }
 
 FText UW_MainMenuOption::OnBindPercentSensetivityY()
 {
-	return FText::FromString(UKismetTextLibrary::Conv_TextToString(UKismetTextLibrary::Conv_FloatToText(Sensetivity.Y, ERoundingMode::HalfToEven, false, true, 1, 324, 1, 1)) + "%");
+	FNumberFormattingOptions NumberFormatOptions;
+	NumberFormatOptions.AlwaysSign = true;
+	NumberFormatOptions.UseGrouping = true;
+	NumberFormatOptions.RoundingMode = ERoundingMode::HalfToEven;
+	NumberFormatOptions.MinimumIntegralDigits = 1;
+	NumberFormatOptions.MaximumIntegralDigits = 324;
+	NumberFormatOptions.MinimumFractionalDigits = 1;
+	NumberFormatOptions.MaximumFractionalDigits = 1;
+
+	return FText::FromString(FText::AsNumber(Sensetivity.Y, &NumberFormatOptions).ToString() + "%");
 }
 
 void UW_MainMenuOption::OnClickWindowedButton()
@@ -285,8 +314,7 @@ void UW_MainMenuOption::OnClickAutoButton()
 
 void UW_MainMenuOption::OnClickApplyButton()
 {
-	
-	UBaseSaveGame* SaveObject = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(this))->GetSaveObject();
+	UBaseSaveGame* SaveObject = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(this))->CreateSaveObject();
 	UBaseSaveGame* SaveSlot = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(this))->GetLoadFromOptionsSlot();
 	if (SaveObject != nullptr)
 	{
@@ -298,7 +326,7 @@ void UW_MainMenuOption::OnClickApplyButton()
 		else
 		{
 			SaveToObjectSensetivity(SaveObject, FVector2D(0), Sensetivity);
-			SaveToObjectNickname(SaveObject, FText::FromString(""), Nickname);			
+			SaveToObjectNickname(SaveObject, FText::FromString(""), Nickname);
 		}
 		Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(this))->SaveObjectToSlot(SaveObject);
 	}
@@ -391,9 +419,9 @@ void UW_MainMenuOption::OnSelectSwitchLanguage(FString SelectedItem, ESelectInfo
 {
 	if (ESelectInfo::Type::OnMouseClick == SelectionType)
 	{
-		
+
 		int i = 0;
-		for (auto & el : UKismetInternationalizationLibrary::GetLocalizedCultures())
+		for (auto& el : UKismetInternationalizationLibrary::GetLocalizedCultures())
 		{
 			if (i == CB_SwitchLanguage->FindOptionIndex(SelectedItem))
 			{
@@ -427,6 +455,15 @@ void UW_MainMenuOption::OnSensetivityYChanges(float Value)
 
 void UW_MainMenuOption::OnCommitedText(const FText& Text, ETextCommit::Type CommitMethod)
 {
+	const FString& StrInput = Text.ToString();
+	for (FName& ExceptCharacter : ExceptCharacterOfName)
+	{
+		if (StrInput.Contains(ExceptCharacter.ToString()))
+		{
+			ET_Nickname->SetText(Nickname);
+			return;
+		}
+	}
 	Nickname = Text;
 }
 

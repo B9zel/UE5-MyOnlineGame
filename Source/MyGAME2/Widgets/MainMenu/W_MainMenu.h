@@ -26,7 +26,7 @@ public:
 	class UW_MainMenuOption* W_Options;
 	UPROPERTY(meta = (BindWidget))
 	class UW_FindSessions* W_FindSession;
-	
+
 	/*UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
 	class UVerticalBox* VB_SwitchListSessions;*/
 

@@ -41,13 +41,13 @@ void UW_ResultsEndRound::InitializeTextResult()
 
 	if (GetOwningPlayer()->PlayerState == L_playerStat)
 	{
-		T_Winner->SetText(FText::FromString(FString("Victory with " + FString::FromInt(Cast<APlayerStatistic>(L_playerStat)->Kills) + " kills")));
+		T_Winner->SetText(DefeatText);
 		FLinearColor color = FLinearColor(0.f, 0.f, 1.f, 1.f); //Blue color
 		T_Winner->SetColorAndOpacity(FSlateColor(color));
 	}
 	else
 	{
-		T_Winner->SetText(FText::FromString("Defeat"));
+		T_Winner->SetText(DefeatText);
 		FLinearColor color = FLinearColor(1.f, 0.f, 0.f, 1.f); // Red color
 		T_Winner->SetColorAndOpacity(FSlateColor(color));
 	}

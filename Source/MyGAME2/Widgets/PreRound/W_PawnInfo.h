@@ -7,24 +7,52 @@
 #include "Blueprint/UserWidget.h"
 #include "W_PawnInfo.generated.h"
 
-/**
- * 
- */
+
+
+class UTextBlock;
+class UBaseTankConfigDataAsset;
+
+
 UCLASS()
 class MYGAME2_API UW_PawnInfo : public UUserWidget
 {
 	GENERATED_BODY()
 	
 public:
-	//UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
-	//class UWidgetSwitcher* WS_Info;
 	
 	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
-	class UTextBlock* InfoForPawn;
+	UTextBlock* TB_NamePawn;
+
+	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
+	UTextBlock* TB_Speed;
+
+	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
+	UTextBlock* TB_RotationSpeed;
+
+	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
+	UTextBlock* TB_TowerRotationSpeed;
 	
+	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
+	UTextBlock* TB_Damage;
+
+	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
+	UTextBlock* TB_HP;
+
+	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
+	UTextBlock* TB_TimeReload;
+
+	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
+	UTextBlock* TB_SkillDescription;
+
+	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
+	UTextBlock* TB_SkillTimeReload;
+
+	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
+	UTextBlock* TB_SkillTimeUse;
+
 	
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	TMap<TEnumAsByte<E_AllPawns>, FText> PawnsInfo;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+	TMap<TEnumAsByte<E_AllPawns>, UBaseTankConfigDataAsset*> PawnsInfo;
 	
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 	 FText TextHeavyTank = NSLOCTEXT("PreRound","K_HeavyTank", "Heavy tank");
@@ -69,29 +97,10 @@ public:
 	 FText TextSeconds = NSLOCTEXT("PreRound", "K_Seconds", " seconds"); 
 
 public:
-	UFUNCTION(BlueprintCallable)
-	void SetSwitchInfo(E_AllPawns E_pawm);
 
+	void SelectTankConfig(const E_AllPawns& TypeTank);
 
 protected:
 
-	virtual void NativeConstruct() override;
-	virtual bool Initialize() override;
-	UFUNCTION()
-	FText GetLightTankInfo();
-	UFUNCTION()
-	FText GetMediumTankInfo();
-	UFUNCTION()
-	FText GetStealthTankInfo();
-	UFUNCTION()
-	FText GetHeavyTankInfo();
-
-	UFUNCTION()
-	FText GetRULightTankInfo();
-	UFUNCTION()
-	FText GetRUMediumTankInfo();
-	UFUNCTION()
-	FText GetRUStealthTankInfo();
-	UFUNCTION()
-	FText GetRUHeavyTankInfo();
+	void UpdateTextProperties(const UBaseTankConfigDataAsset* Config);
 };

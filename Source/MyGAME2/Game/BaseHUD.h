@@ -7,6 +7,10 @@
 
 
 
+
+class ABaseGameState;
+
+
 UCLASS()
 class MYGAME2_API ABaseHUD : public AHUD
 {
@@ -119,6 +123,8 @@ private:
 	class UW_TakeDamage* m_TakeDamageWidget;
 	
 	bool isActivatePauseMenu;
+	ABaseGameState* pGameState;
+
 private:
 
 	class UW_ChatInterface* CreateChat();

@@ -9,6 +9,8 @@
 
 
 
+class FOnlineSessionSearchResult;
+
 UCLASS()
 class MYGAME2_API UW_SlotSession : public UUserWidget
 {
@@ -24,14 +26,24 @@ protected:
 	class UTextBlock* TB_players;
 	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
 	class UTextBlock* TB_Ping;
+
+	UPROPERTY(EditAnywhere)
+	FKey MouseButton;
 	
+private:
+
+	FOnlineSessionSearchResult* SessionInfo;
+
+public:
+
+	void SetSessionSearchInfo(FOnlineSessionSearchResult* SessionSearchInfo);
+
 protected:
 
 	virtual void NativeConstruct() override;
 
-	virtual FReply NativeOnMouseButtonDoubleClick(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent);
-public:
+private:
 
-	//UPROPERTY(EditAnywhere)
-		class FOnlineSessionSearchResult* SessionInfo;
+	UFUNCTION()
+	void OnPressesSession();
 };

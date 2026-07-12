@@ -3,11 +3,24 @@
 #pragma once
 
 #include "CoreMinimal.h"
-//#include "Game_Instance.h"
-#include "Interfaces/OnlineSessionInterface.h"
+#include <OnlineSessionSettings.h>
+#include <Interfaces/OnlineSessionInterface.h>
+
 #include <Engine/GameInstance.h>
 #include "BaseGameInstance.generated.h"
 
+
+
+class IOnlineSubsystem;
+class FOnlineSessionSearchResult;
+namespace EOnJoinSessionCompleteResult
+{
+	enum Type;
+}
+
+
+DECLARE_MULTICAST_DELEGATE_OneParam(FOneParamDelegate, TArray<FOnlineSessionSearchResult>&);
+DECLARE_MULTICAST_DELEGATE(FWithoutParamDelegate);
 
 
 UCLASS()
@@ -15,31 +28,70 @@ class MYGAME2_API UBaseGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
 
-protected:
+public:
+
 	UBaseGameInstance();
 
-	virtual void Init() override;
 public:
 
 	virtual void joinSession(FOnlineSessionSearchResult& Session, APlayerController* controller);
 	void joinSession(FString IP, APlayerController* controller);
-	virtual TArray<FOnlineSessionSearchResult> findSession(APlayerController* controller,bool LAN);
+	void findSession(APlayerController* controller, bool LAN);
 
+	UFUNCTION(BlueprintCallable)
 	class UBaseSaveGame* GetLoadFromOptionsSlot(int UserIndex = 0);
-	class UBaseSaveGame* GetSaveObject() const;
+	UFUNCTION(BlueprintCallable)
+	class UBaseSaveGame* CreateSaveObject();
+
 	FString GetNameSlotOptions() const;
+	UFUNCTION(BlueprintCallable)
 	void SaveObjectToSlot(UBaseSaveGame* object, int UserIndex = 0);
+	UFUNCTION(BlueprintPure)
+	bool IsCreateSaveSlot() const;
 
 protected:
-	IOnlineSessionPtr SessionInterface;
+
+	virtual void Init() override;
+	void CreateSession();
+
+private:
+
+	UFUNCTION()
+	void OnFindSessionComplete(bool IsWasFound);
+	UFUNCTION()
+	void OnCancelFindSession(bool IsCancel);
+	UFUNCTION()
+	void OnCreateSession(FName sessionName, bool IsCreate);
+	//UFUNCTION()
+	void OnJoinSession(const FName Name, EOnJoinSessionCompleteResult::Type ResultJoin);
+
+public:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TEnumAsByte<enum E_PlayerSpace> PlayerSpace;
+
+	FOneParamDelegate FindSessionCompleteDelegate;
+	FWithoutParamDelegate CancelFindSessionCompleteDelegate;
+
+protected:
+
 	TSharedPtr<FOnlineSessionSearch> SessionSearch;
 
 	class UBaseSaveGame* SaveObject;
 	FString SaveSlotOptions;
-public:
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TEnumAsByte<enum E_PlayerSpace> PlayerSpace;
-	
 
+private:
+
+	IOnlineSubsystem* SubSystem;
+	IOnlineSessionPtr SessionInterface;
+
+	FOnFindSessionsCompleteDelegate DelegateFindSesssionComplete;
+	FOnCancelFindSessionsCompleteDelegate DelegateCancelSessionComplete;
+	FOnCreateSessionCompleteDelegate DelegateCreateSessionComplete;
+	FOnJoinSessionCompleteDelegate DelegateJoinSessionComplete;
+
+	APlayerController* JoinController;
+	FOnlineSessionSearchResult* JoinSession;
+
+	FName SessionName;
 };

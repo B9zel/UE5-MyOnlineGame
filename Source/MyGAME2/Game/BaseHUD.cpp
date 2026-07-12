@@ -41,7 +41,7 @@ void ABaseHUD::BeginPlay()
 
 	CreateChat();
 	
-	ABaseGameState* pGameState = Cast<ABaseGameState>(UGameplayStatics::GetGameState(this));
+	pGameState = Cast<ABaseGameState>(UGameplayStatics::GetGameState(this));
 	if (pGameState != nullptr)
 	{
 		pGameState->RoundStarted.AddDynamic(this, &ABaseHUD::OnRoundStarted);
@@ -68,16 +68,18 @@ void ABaseHUD::ToggleHUD(bool isShow)
 {
 	if (isShow)
 	{
-		if (Cast<ABaseGameState>(UGameplayStatics::GetGameState(this))->RoundInProgress == E_GameState::Game)
+		if (pGameState->RoundInProgress == E_GameState::Game)
 		{
-			if (Cast<APlayerStatistic>(GetOwningPlayerController()->GetPlayerState<APlayerStatistic>())->isAlive )
+			if (GetOwningPlayerController()->GetPlayerState<APlayerStatistic>()->isAlive )
 			{
 				if (m_HUDWidget == nullptr)
 				{
 					m_HUDWidget = CreateWidget<UGame_Interface>(GetOwningPlayerController(), HUDWidgetClass);
 				}
 				if (!m_HUDWidget->IsInViewport())
+				{
 					m_HUDWidget->AddToViewport();
+				}
 			}
 		}
 	}
@@ -92,16 +94,18 @@ void ABaseHUD::ToggleHUD(bool isShow)
 
 void ABaseHUD::ToggleTab(bool isShow)
 {
-	if (isShow)//&& !isActivatePauseMenu
+	if (isShow)
 	{
-		if (Cast<ABaseGameState>(UGameplayStatics::GetGameState(this))->RoundInProgress == E_GameState::Game)
+		if (pGameState->RoundInProgress == E_GameState::Game)
 		{
 			if (m_TabWidget == nullptr)
 			{
 				m_TabWidget = CreateWidget<UStatisticsMenu>(GetOwningPlayerController(), TabWidgetClass);
 			}
 			if (!m_TabWidget->IsInViewport())
+			{
 				m_TabWidget->AddToViewport();
+			}
 		}
 	}
 	else
@@ -118,7 +122,7 @@ UW_Spectator* ABaseHUD::ToggleSpectatorHUD(bool isShow)
 {
 	if (isShow)
 	{
-		if (Cast<ABaseGameState>(UGameplayStatics::GetGameState(this))->RoundInProgress == E_GameState::Game)
+		if (pGameState->RoundInProgress == E_GameState::Game)
 		{
 			if (m_SpectatorWidget == nullptr)
 			{
@@ -221,7 +225,7 @@ UW_SuperPower* ABaseHUD::ToggleSuperPower(bool isShow, bool isRemove)
 {
 	if (isShow)
 	{
-		if (Cast<ABaseGameState>(UGameplayStatics::GetGameState(this))->RoundInProgress == E_GameState::Game)
+		if (pGameState->RoundInProgress == E_GameState::Game)
 		{
 			if (m_superskillWidget == nullptr)
 			{
@@ -253,7 +257,7 @@ void ABaseHUD::CreateAimWidget()
 	if (m_aimWidget == nullptr)
 	{
 		m_aimWidget = CreateWidget<UW_Aim>(GetOwningPlayerController(), AimWidgetClass);
-		m_aimWidget->AddToViewport(-2);
+		m_aimWidget->AddToViewport(-1);
 	}
 }
 
@@ -271,7 +275,9 @@ void ABaseHUD::ToggleAim(bool isShow)
 	if (isShow)
 	{
 		if (m_aimWidget != nullptr)
+		{
 			m_aimWidget->SetVisibility(ESlateVisibility::Visible);
+		}
 	}
 	else if (m_aimWidget != nullptr)
 	{
@@ -405,7 +411,6 @@ void ABaseHUD::OnRoundEnded()
 	ToggleWaitingMenu(false);
 	ToggleSpectatorHUD(false);
 	ToggleEndRound(true);
-	
 }
 
 const UGame_Interface* ABaseHUD::GetHUDWidget() const
@@ -455,7 +460,6 @@ void ABaseHUD::SetWidgetSuperPower(class UW_SuperPower* Widget)
 
 UW_ChatInterface* ABaseHUD::CreateChat()
 {
-	//SubclassOf<UW_Chat> Chat = Cast<UW_Chat>(ChatWidgetClass.Get())->StaticClass();
 	m_ChatWidget = CreateWidget<UW_ChatInterface>(GetOwningPlayerController(), ChatWidgetClass);
 	m_ChatWidget->AddToViewport(-1);
 

@@ -6,7 +6,7 @@
 #include "Stealth_Tank.generated.h"
 
 
-
+class UInvisibleTankConfigDataAsset;
 
 UCLASS()
 class MYGAME2_API AStealth_Tank : public ABaseTank
@@ -14,16 +14,11 @@ class MYGAME2_API AStealth_Tank : public ABaseTank
 	GENERATED_BODY()
 
 public:
-	//Methods
+	
 	AStealth_Tank();
 
-	virtual void BeginPlay() override;
 
-	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent);
-	UFUNCTION()
-	virtual void Take_Damage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
-
-	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+public:
 
 	UFUNCTION(Client, Unreliable)
 	void EnableSuperPower_OnClient();
@@ -38,19 +33,31 @@ public:
 
 	inline void EnableUse_SuperPower();
 
+
 	void StartReload_SuperPower_OnServer();
+
+protected:
+
+	virtual void BeginPlay() override;
+
+	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent);
+	UFUNCTION()
+	virtual void Take_Damage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
+
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	virtual void InitializeProperties() override;
+
 public:
+
 	//Properties
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		UMaterialInterface* Material_Base;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		UMaterialInterface* Material_BaseTower;
+	UPROPERTY(EditAnywhere)
+	UInvisibleTankConfigDataAsset* TankConfig;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		UMaterialInterface* Material_InvisibleBase;
+	UMaterialInterface* Material_Base;
+	UMaterialInterface* Material_BaseTower;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		UMaterialInterface* Material_InvisibleTower;
+	UMaterialInterface* Material_InvisibleBase;
+	UMaterialInterface* Material_InvisibleTower;
 
 	
 private:

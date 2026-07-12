@@ -10,25 +10,22 @@
 
 UVoteComponent::UVoteComponent()
 {
-	PrimaryComponentTick.bCanEverTick = false;
+	PrimaryComponentTick.bCanEverTick = true;
 	PrimaryComponentTick.TickInterval = 1.0f;
 	
-
 	MaxVoteMap = 0;
 }
 
 
-// Called when the game starts
 void UVoteComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	
 	SetIsReplicated(true);
-	RegisterComponent();
+	SetComponentTickEnabled(false);
 }
 
 
-// Called every frame
 void UVoteComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
@@ -56,7 +53,6 @@ void UVoteComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLi
 void UVoteComponent::StartVote()
 {
 	SetComponentTickEnabled(true);
-	PrimaryComponentTick.bCanEverTick = true;
 	
 	ChooseMatVote();
 	voteInProgress = true;
@@ -66,7 +62,6 @@ void UVoteComponent::StartVote()
 void UVoteComponent::StopVote()
 {
 	SetComponentTickEnabled(false);
-	PrimaryComponentTick.bCanEverTick = false;
 	voteInProgress = false;
 	VoteEnded.Broadcast(FName(GetMaxVoteMap()));
 }
@@ -101,7 +96,6 @@ void UVoteComponent::ChooseMatVote()
 			arrRowName.RemoveAt(RandomIndex);
 		}
 	}
-
 }
 
 int UVoteComponent::GetSelectedMapVote()
@@ -129,13 +123,13 @@ int UVoteComponent::GetSelectedMapVote()
 void UVoteComponent::SetVote(APlayerState* player, int MapIndex)
 {
 	AGameStateBase* GameState = GetOwner<AGameStateBase>();
+	if (ArrPlayersVotes.Num() != GameState->PlayerArray.Num())
+	{
+		ArrPlayersVotes.Init(-1, GameState->PlayerArray.Num());
+	}
 	if (ArrPlayersVotes.IsValidIndex(GameState->PlayerArray.Find(player)))
 	{
 		ArrPlayersVotes[GameState->PlayerArray.Find(player)] = MapIndex;
-	}
-	else
-	{
-		ArrPlayersVotes.Insert(MapIndex, GameState->PlayerArray.Find(player));
 	}
 
 	MaxVoteMap = GetSelectedMapVote();

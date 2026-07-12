@@ -7,6 +7,10 @@
 
 
 
+
+class UDoubleDamageTankConfigDataAsset;
+
+
 UCLASS()
 class MYGAME2_API AHeavyTank : public ABaseTank
 {
@@ -20,7 +24,7 @@ protected:
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	//virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	virtual void InitializeProperties() override;
 	
 	UFUNCTION()
 	void EnableSuperPower_OnClient();
@@ -32,7 +36,7 @@ protected:
 	void DisableSuperPower_OnServer();
 
 	UFUNCTION(Server, Unreliable)
-		void Shoot_Server();
+		void Shoot_Server(float YawRotateTower);
 	UFUNCTION(Client, Unreliable)
 	void ToggleActivateSuperSkillWidget(bool isActivate);
 	UFUNCTION(Client, Unreliable)
@@ -40,11 +44,16 @@ protected:
 
 	 void DisableReloadSuperPower();
 public:
+
 	 float GetSuperDamage();
+
+protected:
+
+	UPROPERTY(EditAnywhere)
+	UDoubleDamageTankConfigDataAsset* TankConfig;
+
 private:
 
-	float SuperDamage;
-
 	float StandartDamage;
-
+	float SuperDamage;
 };

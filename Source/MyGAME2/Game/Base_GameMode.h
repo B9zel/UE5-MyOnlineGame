@@ -6,6 +6,8 @@
 #include "GameFramework/GameModeBase.h"
 #include "Base_GameMode.generated.h"
 
+
+
 //UDELIGATE();
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTestDelegate);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDispatchOneParam,ABaseTank*, Pawn);
@@ -14,7 +16,7 @@ UCLASS()
 class MYGAME2_API ABase_GameMode : public AGameModeBase
 {
 	GENERATED_BODY()
-//	GENERATED_UCLASS_BODY()
+
 public:
 
 	ABase_GameMode();
@@ -69,4 +71,6 @@ public:
 		void RechedTimeLimit();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable,BlueprintPure)
 	bool ShouldDamagePlayer(APlayerController* Player, APlayerController* InstigatorPLayer);
+
+	void TravelLevel(const FString& NameURL);
 };

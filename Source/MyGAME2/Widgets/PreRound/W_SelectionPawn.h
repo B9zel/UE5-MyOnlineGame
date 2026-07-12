@@ -7,9 +7,11 @@
 #include "Blueprint/UserWidget.h"
 #include "W_SelectionPawn.generated.h"
 
-/**
- * 
- */
+
+
+class APawnController;
+
+
 UCLASS()
 class MYGAME2_API UW_SelectionPawn : public UUserWidget
 {
@@ -32,6 +34,5 @@ protected:
 	virtual void NativeConstruct() override;
 	UFUNCTION()
 	virtual void OnSelectedPawn(E_AllPawns pawn);
-
 	
 };

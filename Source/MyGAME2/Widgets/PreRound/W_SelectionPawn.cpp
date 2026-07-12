@@ -4,6 +4,7 @@
 #include "W_SelectionPawn.h"
 #include "W_PreSelectPawn.h"
 #include "W_PawnInfo.h"
+#include "../../PawnController.h"
 #include <Components/Button.h>
 
 
@@ -12,16 +13,19 @@ void UW_SelectionPawn::NativeConstruct()
 {
 	Super::NativeConstruct();
 
+
 	W_HeavyTank->D_Select.AddDynamic(this, &UW_SelectionPawn::OnSelectedPawn);
 	W_LightTank->D_Select.AddDynamic(this, &UW_SelectionPawn::OnSelectedPawn);
 	W_MediumTank->D_Select.AddDynamic(this, &UW_SelectionPawn::OnSelectedPawn);
 	W_StelsTank->D_Select.AddDynamic(this, &UW_SelectionPawn::OnSelectedPawn);
 
+
+	OnSelectedPawn(E_AllPawns::HeavyTank);
 }
 
 void UW_SelectionPawn::OnSelectedPawn(E_AllPawns pawn)
 {
-	W_Info->SetSwitchInfo(pawn);
+	W_Info->SelectTankConfig(pawn);
 	switch (pawn)
 	{
 	case LightTank:

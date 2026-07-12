@@ -15,55 +15,55 @@ class MYGAME2_API UW_MainMenuOption : public UUserWidget
 	GENERATED_BODY()
 protected:
 	UPROPERTY(meta = (BindWidget))
-		class UButton* B_Windowed;
+	class UButton* B_Windowed;
 	UPROPERTY(meta = (BindWidget))
-		class UButton* B_BorderlessWindow;
+	class UButton* B_BorderlessWindow;
 	UPROPERTY(meta = (BindWidget))
-		class UButton* B_FullScreen;
+	class UButton* B_FullScreen;
 	UPROPERTY(meta = (BindWidget))
-		class UButton* B_Auto;
+	class UButton* B_Auto;
 	UPROPERTY(meta = (BindWidget))
-		class UButton* B_Apply;
+	class UButton* B_Apply;
 	UPROPERTY(meta = (BindWidget))
-		class UButton* B_Reset;
+	class UButton* B_Reset;
 
 	UPROPERTY(meta = (BindWidget))
-		class UComboBoxString* CB_Resolution;
+	class UComboBoxString* CB_Resolution;
 	UPROPERTY(meta = (BindWidget))
-		class UComboBoxString* CB_Shadow;
+	class UComboBoxString* CB_Shadow;
 	UPROPERTY(meta = (BindWidget))
-		class UComboBoxString* CB_VisualEffect;
+	class UComboBoxString* CB_VisualEffect;
 	UPROPERTY(meta = (BindWidget))
-		class UComboBoxString* CB_ViewDistance;
+	class UComboBoxString* CB_ViewDistance;
 	UPROPERTY(meta = (BindWidget))
-		class UComboBoxString* CB_Texture;
+	class UComboBoxString* CB_Texture;
 	UPROPERTY(meta = (BindWidget))
-		class UComboBoxString* CB_Shading;
+	class UComboBoxString* CB_Shading;
 	UPROPERTY(meta = (BindWidget))
-		class UComboBoxString* CB_Reflection;
+	class UComboBoxString* CB_Reflection;
 	UPROPERTY(meta = (BindWidget))
-		class UComboBoxString* CB_AntiAliasing;
+	class UComboBoxString* CB_AntiAliasing;
 	UPROPERTY(meta = (BindWidget))
-		class UComboBoxString* CB_PostProcessing;
+	class UComboBoxString* CB_PostProcessing;
 	UPROPERTY(meta = (BindWidget))
-		class UComboBoxString* CB_SwitchLanguage;
+	class UComboBoxString* CB_SwitchLanguage;
 
 	UPROPERTY(meta = (BindWidget))
-		class USlider* S_ResolutionScale;
+	class USlider* S_ResolutionScale;
 	UPROPERTY(meta = (BindWidget))
-		class USlider* S_SensetiveX;
+	class USlider* S_SensetiveX;
 	UPROPERTY(meta = (BindWidget))
-		class USlider* S_SensetiveY;
+	class USlider* S_SensetiveY;
 	UPROPERTY(meta = (BindWidget))
-		class UTextBlock* T_PercentResolutionScale;
+	class UTextBlock* T_PercentResolutionScale;
 	UPROPERTY(meta = (BindWidget))
-		class UTextBlock* T_PercentSensetivityX;
+	class UTextBlock* T_PercentSensetivityX;
 	UPROPERTY(meta = (BindWidget))
-		class UTextBlock* T_PercentSensetivityY;
+	class UTextBlock* T_PercentSensetivityY;
 	UPROPERTY(meta = (BindWidget))
 	class UEditableTextBox* ET_Nickname;
 public:
-	UPROPERTY(meta = (BindWidget),BlueprintReadWrite)
+	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
 	class UW_BindKeyOptions* W_KeyOptions;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
@@ -81,7 +81,7 @@ protected:
 
 	virtual bool Initialize() override;
 
-	
+
 
 	void UpdateInfo();
 
@@ -102,55 +102,55 @@ protected:
 	UFUNCTION()
 	FText OnBindPercentResolutionScale();
 	UFUNCTION()
-		FText OnBindPercentSensetivityX();
+	FText OnBindPercentSensetivityX();
 	UFUNCTION()
-		FText OnBindPercentSensetivityY();
+	FText OnBindPercentSensetivityY();
 
 	UFUNCTION()
-		virtual void OnClickWindowedButton();
+	virtual void OnClickWindowedButton();
 	UFUNCTION()
-		virtual void OnClickBorderlessWindowButton();
+	virtual void OnClickBorderlessWindowButton();
 	UFUNCTION()
-		virtual void OnClickFullScreenButton();
+	virtual void OnClickFullScreenButton();
 	UFUNCTION()
-		virtual void OnClickAutoButton();
+	virtual void OnClickAutoButton();
 	UFUNCTION()
-		virtual void OnClickApplyButton();
+	virtual void OnClickApplyButton();
 	UFUNCTION()
-		virtual void OnResetChanges();
-	
+	virtual void OnResetChanges();
+
 
 	UFUNCTION()
 	virtual void OnSelectResolution(FString SelectedItem, ESelectInfo::Type SelectionType);
 	UFUNCTION()
 	virtual void OnSelectAntiAliasing(FString SelectedItem, ESelectInfo::Type SelectionType);
 	UFUNCTION()
-		virtual void OnSelectViewDistance(FString SelectedItem, ESelectInfo::Type SelectionType);
+	virtual void OnSelectViewDistance(FString SelectedItem, ESelectInfo::Type SelectionType);
 	UFUNCTION()
-		virtual void OnSelectVisualEffect(FString SelectedItem, ESelectInfo::Type SelectionType);
+	virtual void OnSelectVisualEffect(FString SelectedItem, ESelectInfo::Type SelectionType);
 	UFUNCTION()
-		virtual void OnSelectShadow(FString SelectedItem, ESelectInfo::Type SelectionType);
+	virtual void OnSelectShadow(FString SelectedItem, ESelectInfo::Type SelectionType);
 	UFUNCTION()
-		virtual void OnSelectTexture(FString SelectedItem, ESelectInfo::Type SelectionType);
+	virtual void OnSelectTexture(FString SelectedItem, ESelectInfo::Type SelectionType);
 	UFUNCTION()
-		virtual void OnSelectShading(FString SelectedItem, ESelectInfo::Type SelectionType);
+	virtual void OnSelectShading(FString SelectedItem, ESelectInfo::Type SelectionType);
 	UFUNCTION()
-		virtual void OnSelectReflection(FString SelectedItem, ESelectInfo::Type SelectionType);
+	virtual void OnSelectReflection(FString SelectedItem, ESelectInfo::Type SelectionType);
 	UFUNCTION()
-		virtual void OnSelectPostProcessing(FString SelectedItem, ESelectInfo::Type SelectionType);
+	virtual void OnSelectPostProcessing(FString SelectedItem, ESelectInfo::Type SelectionType);
 	UFUNCTION()
-		virtual void OnSelectSwitchLanguage(FString SelectedItem, ESelectInfo::Type SelectionType);
+	virtual void OnSelectSwitchLanguage(FString SelectedItem, ESelectInfo::Type SelectionType);
 
 	UFUNCTION()
-		virtual void OnChangeValue(float Value);
+	virtual void OnChangeValue(float Value);
 	UFUNCTION()
-		virtual void OnSensetivityXChanges(float Value);
+	virtual void OnSensetivityXChanges(float Value);
 	UFUNCTION()
-		virtual void OnSensetivityYChanges(float Value);
+	virtual void OnSensetivityYChanges(float Value);
 	UFUNCTION()
 	virtual void OnCommitedText(const FText& Text, ETextCommit::Type CommitMethod);
 
-	void SaveToObjectSensetivity(class UBaseSaveGame* const SaveObject, const FVector2D SavedSensetivityInSlot,const FVector2D Sens);
+	void SaveToObjectSensetivity(class UBaseSaveGame* const SaveObject, const FVector2D SavedSensetivityInSlot, const FVector2D Sens);
 	void SaveToObjectNickname(class UBaseSaveGame* const SaveObject, const FText SavedNickInSlot, const FText Nickname);
 
 private:
@@ -160,4 +160,6 @@ private:
 	FVector2D Sensetivity;
 
 	FText Nickname;
+	UPROPERTY(EditAnywhere)
+	TArray<FName> ExceptCharacterOfName;
 };

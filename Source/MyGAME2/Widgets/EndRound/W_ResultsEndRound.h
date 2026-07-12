@@ -19,6 +19,12 @@ protected:
 	class UBorder* B_ResultsRound;
 	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
 	class UTextBlock* T_Winner;
+
+	UPROPERTY(EditAnywhere)
+	FText VictoryText;
+
+	UPROPERTY(EditAnywhere)
+	FText DefeatText;
 	
 public:
 	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)

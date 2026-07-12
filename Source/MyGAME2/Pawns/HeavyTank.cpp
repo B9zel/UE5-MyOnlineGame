@@ -1,11 +1,16 @@
 
 #include "HeavyTank.h"
+#include "../Data/DataAssets/DoubleDamageTankConfigdataAsset.h"
+
+#include "../Game/BaseHUD.h"
+
+#include "../HealthStat.h"
 #include <GameFramework/SpringArmComponent.h>
 #include <Kismet/GameplayStatics.h>
 #include <MyGAME2/bullet.h>
-#include "../Game/BaseHUD.h"
 #include <MyGAME2/BaseTank.h>
-//#include <Kismet/KismetSystemLibrary.h>
+
+
 
 AHeavyTank::AHeavyTank()
 {
@@ -14,8 +19,6 @@ AHeavyTank::AHeavyTank()
 
 	spring_arm->bUsePawnControlRotation = true;
 	spring_arm->bInheritRoll = false;
-
-	this->Max_HP = 300;
 
 	Speed = 100.0f;
 	
@@ -39,7 +42,6 @@ AHeavyTank::AHeavyTank()
 	StandartDamage = 20.0f;
 	Damage = StandartDamage;
 
-	SuperDamage = 50.0f;
 
 	isReload = false;
 
@@ -54,8 +56,6 @@ void AHeavyTank::BeginPlay()
 	{
 		SetReplicates(true);
 		SetReplicateMovement(true);
-
-		
 	}
 }
 
@@ -64,19 +64,19 @@ void AHeavyTank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	PlayerInputComponent->BindAxis("ForwardMove", this, &AHeavyTank::CallForwardMove);
-	PlayerInputComponent->BindAxis("TurnMove", this, &AHeavyTank::CallRightMove);
+	PlayerInputComponent->BindAxis("ForwardMove", this, &AHeavyTank::ForwardInputMove);
+	PlayerInputComponent->BindAxis("TurnMove", this, &AHeavyTank::RotateInputMove);
 
 	PlayerInputComponent->BindAction("Aim", IE_Pressed, this, &AHeavyTank::EnableAim);
 	PlayerInputComponent->BindAction("Aim", IE_Released, this, &AHeavyTank::DisableAim);
 
-	PlayerInputComponent->BindAction("Shoot", IE_Pressed, this, &AHeavyTank::Shoot_Server);
+	PlayerInputComponent->BindAction("Shoot", IE_Pressed, this, &AHeavyTank::Shoot);
 	PlayerInputComponent->BindAction("SuperPower", IE_Pressed, this, &AHeavyTank::EnableSuperPower_OnClient);
 }
 
-void AHeavyTank::Shoot_Server_Implementation()
+void AHeavyTank::Shoot_Server_Implementation(float YawRotateTower)
 {
-	ABaseTank::Shoot_OnServer();
+	ABaseTank::Shoot_OnServer(YawRotateTower);
 
 	if (isSuper_Power)
 	{
@@ -153,4 +153,23 @@ void AHeavyTank::DisableReloadSuperPower()
 float AHeavyTank::GetSuperDamage()
 {
 	return SuperDamage;
+}
+
+void AHeavyTank::InitializeProperties()
+{
+	if (TankConfig)
+	{
+		Towerrotation_speed		= TankConfig->TowerRotationSpeed;
+		TimeReload_SuperPower	= TankConfig->SkillTimeReload;
+		TimeDestroy				= TankConfig->TimeDestroyAfterDeath;
+		TimeUse_SuperPower		= TankConfig->SkillTimeUse;
+		Rotation_speed			= TankConfig->RotationSpeed;
+		TimeReload				= TankConfig->TimeReload;
+		HP_Component->Max_HP	= TankConfig->HealthPoints;
+		Damage					= TankConfig->Damage;
+		Speed					= TankConfig->Speed;
+
+		StandartDamage			= TankConfig->Damage;
+		SuperDamage				= TankConfig->SuperDamage;
+	}
 }

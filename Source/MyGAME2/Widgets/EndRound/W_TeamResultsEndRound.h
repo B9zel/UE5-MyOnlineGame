@@ -16,4 +16,5 @@ class MYGAME2_API UW_TeamResultsEndRound : public UW_ResultsEndRound
 protected:
 
 	virtual void InitializeTextResult() override;
+
 };

@@ -2,6 +2,10 @@
 #include "Light_Tank.h"
 #include <GameFramework/SpringArmComponent.h>
 #include "../Game/BaseHUD.h"
+#include "../Data/DataAssets/LightTankConfigdataAsset.h"
+
+#include "../HealthStat.h"
+
 
 
 ALight_Tank::ALight_Tank()
@@ -40,7 +44,6 @@ ALight_Tank::ALight_Tank()
 
 	Super_TowerRotation_Speed = 15.0f;
 
-	Max_HP = 200.0f;
 }
 
 void ALight_Tank::BeginPlay()
@@ -59,24 +62,40 @@ void ALight_Tank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	PlayerInputComponent->BindAxis("ForwardMove", this, &ALight_Tank::CallForwardMove);
-	PlayerInputComponent->BindAxis("TurnMove", this, &ALight_Tank::CallRightMove);
+	PlayerInputComponent->BindAxis("ForwardMove", this, &ALight_Tank::ForwardInputMove);
+	PlayerInputComponent->BindAxis("TurnMove", this, &ALight_Tank::RotateInputMove);
 
 	PlayerInputComponent->BindAction("Aim", IE_Pressed, this, &ALight_Tank::EnableAim);
 	PlayerInputComponent->BindAction("Aim", IE_Released, this, &ALight_Tank::DisableAim);
 
-	PlayerInputComponent->BindAction("Shoot", IE_Pressed, this, &ALight_Tank::Shoot_OnServer);
+	PlayerInputComponent->BindAction("Shoot", IE_Pressed, this, &ALight_Tank::Shoot);
 	PlayerInputComponent->BindAction("SuperPower", IE_Pressed, this, &ALight_Tank::EnableSuperPower_OnServer);
 }
 
+void ALight_Tank::InitializeProperties()
+{
+	if (TankConfig)
+	{
+		Towerrotation_speed			= TankConfig->TowerRotationSpeed;
+		TimeReload_SuperPower		= TankConfig->SkillTimeReload;
+		TimeDestroy					= TankConfig->TimeDestroyAfterDeath;
+		TimeUse_SuperPower			= TankConfig->SkillTimeUse;
+		Rotation_speed				= TankConfig->RotationSpeed;
+		TimeReload					= TankConfig->TimeReload;
+		HP_Component->Max_HP		= TankConfig->HealthPoints;
+		Damage						= TankConfig->Damage;
+		Speed						= TankConfig->Speed;
 
-
+		Super_rotationSpeed			= TankConfig->SkillRotationSpeed;
+		Super_TowerRotation_Speed	= TankConfig->SkillTowerRotationSpeed;
+		Super_speed					= TankConfig->SkillSpeed;
+	}
+}
 
 void ALight_Tank::EnableSuperPower_OnClient_Implementation()
 {
 	GetController<APlayerController>()->GetHUD<ABaseHUD>()->ActivateSuperSkillWidget(TimeUse_SuperPower);
 }
-
 
 void ALight_Tank::EnableSuperPower_OnServer_Implementation()
 {
@@ -84,9 +103,13 @@ void ALight_Tank::EnableSuperPower_OnServer_Implementation()
 	{
 		isSuper_Power = true;
 
-		Speed += Super_speed;
-		Rotation_speed += Super_rotationSpeed;
-		Towerrotation_speed += Super_TowerRotation_Speed;
+		DefaultSpeed = Speed;
+		DefaultRotationSpeed = Rotation_speed;
+		DefaultTowerRotationSpeed = Towerrotation_speed;
+
+		Speed = Super_speed;
+		Rotation_speed = Super_rotationSpeed;
+		Towerrotation_speed = Super_TowerRotation_Speed;
 
 		EnableSuperPower_OnClient();
 		FTimerHandle Timer;
@@ -94,12 +117,11 @@ void ALight_Tank::EnableSuperPower_OnServer_Implementation()
 	}
 }
 
-
 void ALight_Tank::DisableSuperPower_OnServer()
 {
-	Speed -= Super_speed;
-	Rotation_speed -= Super_rotationSpeed;
-	Towerrotation_speed -= Super_TowerRotation_Speed;
+	Speed = DefaultSpeed;
+	Rotation_speed = DefaultRotationSpeed;
+	Towerrotation_speed = DefaultTowerRotationSpeed;
 
 	DisableSuperPower_OnClient();
 	FTimerHandle Timer;

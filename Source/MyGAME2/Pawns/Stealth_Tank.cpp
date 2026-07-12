@@ -4,6 +4,9 @@
 #include <MyGAME2/HealthStat.h>
 #include <Net/UnrealNetwork.h>
 #include "../Game/BaseHUD.h"
+#include "../Data/DataAssets/InvisibleTankConfigdataAsset.h"
+#include "../HealthStat.h"
+
 
 
 AStealth_Tank::AStealth_Tank()
@@ -15,8 +18,6 @@ AStealth_Tank::AStealth_Tank()
 
 	spring_arm->bUsePawnControlRotation = true;
 	spring_arm->bInheritRoll = false;
-
-	Max_HP = 100.0f;
 
 	Speed = 250.0f;
 
@@ -51,7 +52,6 @@ void AStealth_Tank::BeginPlay()
 	{
 		SetReplicates(true);
 		SetReplicateMovement(true);
-
 	}
 }
 
@@ -59,13 +59,13 @@ void AStealth_Tank::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	PlayerInputComponent->BindAxis("ForwardMove", this, &AStealth_Tank::CallForwardMove);
-	PlayerInputComponent->BindAxis("TurnMove", this, &AStealth_Tank::CallRightMove);
+	PlayerInputComponent->BindAxis("ForwardMove", this, &AStealth_Tank::ForwardInputMove);
+	PlayerInputComponent->BindAxis("TurnMove", this, &AStealth_Tank::RotateInputMove);
 
 	PlayerInputComponent->BindAction("Aim", IE_Pressed, this, &AStealth_Tank::EnableAim);
 	PlayerInputComponent->BindAction("Aim", IE_Released, this, &AStealth_Tank::DisableAim);
 
-	PlayerInputComponent->BindAction("Shoot", IE_Pressed, this, &AStealth_Tank::Shoot_OnServer);
+	PlayerInputComponent->BindAction("Shoot", IE_Pressed, this, &AStealth_Tank::Shoot);
 	PlayerInputComponent->BindAction("SuperPower", IE_Pressed, this, &AStealth_Tank::EnableSuperPower_OnClient);
 }
 
@@ -177,3 +177,23 @@ inline void AStealth_Tank::EnableUse_SuperPower()
 }
 
 
+void AStealth_Tank::InitializeProperties()
+{
+	if (TankConfig)
+	{
+		Towerrotation_speed		= TankConfig->TowerRotationSpeed;
+		TimeReload_SuperPower	= TankConfig->SkillTimeReload;
+		TimeDestroy				= TankConfig->TimeDestroyAfterDeath;
+		TimeUse_SuperPower		= TankConfig->SkillTimeUse;
+		Rotation_speed			= TankConfig->RotationSpeed;
+		TimeReload				= TankConfig->TimeReload;
+		HP_Component->Max_HP	= TankConfig->HealthPoints;
+		Damage					= TankConfig->Damage;
+		Speed					= TankConfig->Speed;
+
+		Material_InvisibleBase	= TankConfig->Material_InvisibleBase;
+		Material_InvisibleTower = TankConfig->Material_InvisibleTower;
+	}
+	Material_Base = Mesh->GetMaterial(0);
+	Material_BaseTower = Mesh->GetMaterial(0);
+}

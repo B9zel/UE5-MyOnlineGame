@@ -4,6 +4,10 @@
 #include <Engine/EngineTypes.h>
 #include <Engine/CollisionProfile.h>
 #include "../Game/BaseHUD.h"
+#include "../Data/DataAssets/GhostTankConfigdataAsset.h"
+#include "../HealthStat.h"
+
+
 
 
 AMedium_Tank::AMedium_Tank()
@@ -14,10 +18,6 @@ AMedium_Tank::AMedium_Tank()
 
 	spring_arm->bUsePawnControlRotation = true;
 	spring_arm->bInheritRoll = false;
-
-	BeginCollsision = Towermesh->GetCollisionEnabled();
-	BaseMaterial = Mesh->GetMaterial(0);
-	TowerMaterial = Towermesh->GetMaterial(0);
 
 	Speed = 200.0f;
 
@@ -41,7 +41,6 @@ AMedium_Tank::AMedium_Tank()
 
 	isSuper_Power = false;
 
-	Max_HP = 120.0f;
 }
 
 void AMedium_Tank::BeginPlay()
@@ -52,21 +51,27 @@ void AMedium_Tank::BeginPlay()
 	{
 		SetReplicates(true);
 		SetReplicateMovement(true);
-
 	}
+	else
+	{
+		BeginCollision = Towermesh->GetCollisionEnabled();
+		BaseMaterial = Mesh->GetMaterial(0);
+		TowerMaterial = Towermesh->GetMaterial(0);
+	}
+
 }
 
 void AMedium_Tank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	PlayerInputComponent->BindAxis("ForwardMove", this, &AMedium_Tank::CallForwardMove);
-	PlayerInputComponent->BindAxis("TurnMove", this, &AMedium_Tank::CallRightMove);
+	PlayerInputComponent->BindAxis("ForwardMove", this, &AMedium_Tank::ForwardInputMove);
+	PlayerInputComponent->BindAxis("TurnMove", this, &AMedium_Tank::RotateInputMove);
 
 	PlayerInputComponent->BindAction("Aim", IE_Pressed, this, &AMedium_Tank::EnableAim);
 	PlayerInputComponent->BindAction("Aim", IE_Released, this, &AMedium_Tank::DisableAim);
 
-	PlayerInputComponent->BindAction("Shoot", IE_Pressed, this, &AMedium_Tank::Shoot_OnServer);
+	PlayerInputComponent->BindAction("Shoot", IE_Pressed, this, &AMedium_Tank::Shoot);
 	PlayerInputComponent->BindAction("SuperPower", IE_Pressed, this, &AMedium_Tank::Enable_SuperPower_OnServer);
 }
 
@@ -128,4 +133,24 @@ void AMedium_Tank::DisableSuperPower_OnClient_Implementation()
 void AMedium_Tank::Disable_isSuperPower()
 {
 	isSuper_Power = false;
+}
+
+void AMedium_Tank::InitializeProperties()
+{
+	if (TankConfig)
+	{
+		Towerrotation_speed			= TankConfig->TowerRotationSpeed;
+		TimeReload_SuperPower		= TankConfig->SkillTimeReload;
+		TimeDestroy					= TankConfig->TimeDestroyAfterDeath;
+		TimeUse_SuperPower			= TankConfig->SkillTimeUse;
+		Rotation_speed				= TankConfig->RotationSpeed;
+		TimeReload					= TankConfig->TimeReload;
+		HP_Component->Max_HP = TankConfig->HealthPoints;
+		Damage						= TankConfig->Damage;
+		Speed						= TankConfig->Speed;
+
+		BaseMaterial_NotCollision	= TankConfig->BaseMaterial_NotCollision;
+		TowerMaterial_NotCollision	= TankConfig->TowerMaterial_NotCollision;
+		Collision = TankConfig->Collision;
+	}
 }

@@ -10,244 +10,40 @@
 #include "../../Pawns/Light_Tank.h"
 #include "../../Pawns/Medium_Tank.h"
 #include "../../Pawns/Stealth_Tank.h"
+#include "../../Data/DataAssets/BaseTankConfigDataAsset.h"
 
 
 
 
-void UW_PawnInfo::SetSwitchInfo(E_AllPawns E_pawm)
+
+void UW_PawnInfo::SelectTankConfig(const E_AllPawns& TypeTank)
 {
-	switch (E_pawm)
+	if (PawnsInfo.Contains(TypeTank))
 	{
-	case LightTank:
-		InfoForPawn->SetText(*PawnsInfo.Find(E_AllPawns::LightTank));
-		//WS_Info->SetActiveWidgetIndex(E_AllPawns::LightTank);
-		break;
-	case MediumTank:
-		InfoForPawn->SetText(*PawnsInfo.Find(E_AllPawns::MediumTank));
-		//WS_Info->SetActiveWidgetIndex(E_AllPawns::LightTank);
-		break;
-	case HeavyTank:
-		InfoForPawn->SetText(*PawnsInfo.Find(E_AllPawns::HeavyTank));
-		//WS_Info->SetActiveWidgetIndex(E_AllPawns::LightTank);
-		break;
-	case StelsTank:
-		InfoForPawn->SetText(*PawnsInfo.Find(E_AllPawns::StelsTank));
-		//WS_Info->SetActiveWidgetIndex(E_AllPawns::LightTank);
-		break;
-	case TotalPawns:
-		break;
-	default:
-		break;
+		UpdateTextProperties(*PawnsInfo.Find(TypeTank));
 	}
 }
 
-void UW_PawnInfo::NativeConstruct()
+void UW_PawnInfo::UpdateTextProperties(const UBaseTankConfigDataAsset* Config)
 {
-	Super::NativeConstruct();
+	if (!Config) return;
 
-	
-	
-	PawnsInfo.Add(E_AllPawns::LightTank, GetLightTankInfo());
-	PawnsInfo.Add(E_AllPawns::HeavyTank, GetHeavyTankInfo());
-	PawnsInfo.Add(E_AllPawns::MediumTank, GetMediumTankInfo());
-	PawnsInfo.Add(E_AllPawns::StelsTank, GetStealthTankInfo());
-	
-}
+	FNumberFormattingOptions NumberOptions;
+	NumberOptions.AlwaysSign = false;
+	NumberOptions.UseGrouping = true;
+	NumberOptions.MinimumIntegralDigits = 1;
+	NumberOptions.MaximumIntegralDigits = 324;
+	NumberOptions.MinimumFractionalDigits = 0;
+	NumberOptions.MaximumFractionalDigits = 2;
 
-bool UW_PawnInfo::Initialize()
-{
-	Super::Initialize();
-
-	
-	//FText lightTank = *PawnsInfo.Find(E_AllPawns::LightTank);
-	//FText TestHUDDisplay = NSLOCTEXT("Namespace", "key", TEXT("%s", PawnsInfo.FindRef(E_AllPawns::LightTank)),);
-	return true;
-}
-
-FText UW_PawnInfo::GetLightTankInfo()
-{
-	FString Info;
-	ALight_Tank* pawn = GetWorld()->SpawnActor<ALight_Tank>(ALight_Tank::StaticClass(), FVector(0, 0, -500),FRotator(0,0,0));
-
-	if (pawn != nullptr)
-	{
-		
-		Info = "\t\t\t" + UKismetTextLibrary::Conv_TextToString(TextLightTank) +
-			"\n" + UKismetTextLibrary::Conv_TextToString(TextSpeedTank) + FString::FromInt(pawn->GetSpeed()) +
-			"\n" + UKismetTextLibrary::Conv_TextToString(TextRotationSpeedTank) + FString::FromInt(pawn->GetRotationSpeed()) +
-			"\n" + UKismetTextLibrary::Conv_TextToString(TextTowerRotationSpeedTank) + FString::FromInt(pawn->GetTowerRotationSpeed()) +
-			"\n" + UKismetTextLibrary::Conv_TextToString(TextDamageTank) + FString::FromInt(pawn->GetDamage()) +
-			"\n" + UKismetTextLibrary::Conv_TextToString(TextHPTank) + FString::FromInt(pawn->GetHP()) +
-			"\n" + UKismetTextLibrary::Conv_TextToString(TextTimeReloadTank) + FString::FromInt(pawn->GetTimeReload()) + UKismetTextLibrary::Conv_TextToString(TextSeconds) +
-			"\n\n" + UKismetTextLibrary::Conv_TextToString(TextSkillLightTank) +
-			"\n" + UKismetTextLibrary::Conv_TextToString(TextSkillTimeReloadTank) + FString::FromInt(pawn->GetTimeReloadSuperPower()) + UKismetTextLibrary::Conv_TextToString(TextSeconds) +
-			"\n" + UKismetTextLibrary::Conv_TextToString(TextSkillTimeUseTank) + FString::FromInt(pawn->GetTimeUseSuperPower()) + UKismetTextLibrary::Conv_TextToString(TextSeconds);
-	
-		pawn->Destroy();
-	}
-	
-	return FText::FromString(Info);
-}
-
-FText UW_PawnInfo::GetMediumTankInfo()
-{
-	FString Info;
-	AMedium_Tank* pawn = GetWorld()->SpawnActor<AMedium_Tank>(AMedium_Tank::StaticClass(), FVector(0, 0, -500), FRotator(0, 0, 0));
-
-	if (pawn != nullptr)
-	{
-		Info = "\t\t\t" + UKismetTextLibrary::Conv_TextToString(TextMediumTank) +
-			"\n" + UKismetTextLibrary::Conv_TextToString(TextSpeedTank) + FString::FromInt(pawn->GetSpeed()) +
-			"\n" + UKismetTextLibrary::Conv_TextToString(TextRotationSpeedTank) + FString::FromInt(pawn->GetRotationSpeed()) +
-			"\n" + UKismetTextLibrary::Conv_TextToString(TextTowerRotationSpeedTank) + FString::FromInt(pawn->GetTowerRotationSpeed()) +
-			"\n" + UKismetTextLibrary::Conv_TextToString(TextDamageTank) + FString::FromInt(pawn->GetDamage()) +
-			"\n" + UKismetTextLibrary::Conv_TextToString(TextHPTank) + FString::FromInt(pawn->GetHP()) +
-			"\n" + UKismetTextLibrary::Conv_TextToString(TextTimeReloadTank) + FString::FromInt(pawn->GetTimeReload()) + UKismetTextLibrary::Conv_TextToString(TextSeconds) +
-			"\n\n" + UKismetTextLibrary::Conv_TextToString(TextSkillMediumTank) +
-			"\n" + UKismetTextLibrary::Conv_TextToString(TextSkillTimeReloadTank) + FString::FromInt(pawn->GetTimeReloadSuperPower()) + UKismetTextLibrary::Conv_TextToString(TextSeconds) +
-			"\n" + UKismetTextLibrary::Conv_TextToString(TextSkillTimeUseTank) + FString::FromInt(pawn->GetTimeUseSuperPower()) + UKismetTextLibrary::Conv_TextToString(TextSeconds);
-
-		pawn->Destroy();
-	}
-	return FText::FromString(Info);
-}
-
-FText UW_PawnInfo::GetStealthTankInfo()
-{
-	FString Info;
-	AStealth_Tank* pawn = GetWorld()->SpawnActor<AStealth_Tank>(AStealth_Tank::StaticClass(), FVector(0, 0, -500), FRotator(0, 0, 0));
-
-	if (pawn != nullptr)
-	{
-		Info = "\t\t\t" + UKismetTextLibrary::Conv_TextToString(TextStealthTank) +
-			"\n" + UKismetTextLibrary::Conv_TextToString(TextSpeedTank) + FString::FromInt(pawn->GetSpeed()) +
-			"\n" + UKismetTextLibrary::Conv_TextToString(TextRotationSpeedTank) + FString::FromInt(pawn->GetRotationSpeed()) +
-			"\n" + UKismetTextLibrary::Conv_TextToString(TextTowerRotationSpeedTank) + FString::FromInt(pawn->GetTowerRotationSpeed()) +
-			"\n" + UKismetTextLibrary::Conv_TextToString(TextDamageTank) + FString::FromInt(pawn->GetDamage()) +
-			"\n" + UKismetTextLibrary::Conv_TextToString(TextHPTank) + FString::FromInt(pawn->GetHP()) +
-			"\n" + UKismetTextLibrary::Conv_TextToString(TextTimeReloadTank) + FString::FromInt(pawn->GetTimeReload()) + UKismetTextLibrary::Conv_TextToString(TextSeconds) +
-			"\n\n" + UKismetTextLibrary::Conv_TextToString(TextSkillStealthTank) +
-			"\n" + UKismetTextLibrary::Conv_TextToString(TextSkillTimeReloadTank) + FString::FromInt(pawn->GetTimeReloadSuperPower()) + UKismetTextLibrary::Conv_TextToString(TextSeconds) +
-			"\n" + UKismetTextLibrary::Conv_TextToString(TextSkillTimeUseTank) + FString::FromInt(pawn->GetTimeUseSuperPower()) + UKismetTextLibrary::Conv_TextToString(TextSeconds);
-
-		pawn->Destroy();
-	}
-	return FText::FromString(Info);
-}
-
-FText UW_PawnInfo::GetHeavyTankInfo()
-{
-	FString Info;
-	AHeavyTank* pawn = GetWorld()->SpawnActor<AHeavyTank>(AHeavyTank::StaticClass(), FVector(0, 0, -500), FRotator(0, 0, 0));
-
-	if (pawn != nullptr)
-	{
-		Info = "\t\t\t" + UKismetTextLibrary::Conv_TextToString(TextHeavyTank) +
-			"\n" + UKismetTextLibrary::Conv_TextToString(TextSpeedTank) + FString::FromInt(pawn->GetSpeed()) +
-			"\n" + UKismetTextLibrary::Conv_TextToString(TextRotationSpeedTank) + FString::FromInt(pawn->GetRotationSpeed()) +
-			"\n" + UKismetTextLibrary::Conv_TextToString(TextTowerRotationSpeedTank) + FString::FromInt(pawn->GetTowerRotationSpeed()) +
-			"\n" + UKismetTextLibrary::Conv_TextToString(TextDamageTank) + FString::FromInt(pawn->GetDamage()) +
-			"\n" + UKismetTextLibrary::Conv_TextToString(TextHPTank) + FString::FromInt(pawn->GetHP()) +
-			"\n" + UKismetTextLibrary::Conv_TextToString(TextTimeReloadTank) + FString::FromInt(pawn->GetTimeReload()) + UKismetTextLibrary::Conv_TextToString(TextSeconds) +
-			"\n\n" + UKismetTextLibrary::Conv_TextToString(TextSkillHeavyTank) +
-			"\n" + UKismetTextLibrary::Conv_TextToString(TextSkillTimeReloadTank) + FString::FromInt(pawn->GetTimeReloadSuperPower()) + UKismetTextLibrary::Conv_TextToString(TextSeconds) +
-			"\n" + UKismetTextLibrary::Conv_TextToString(TextSkillTimeUseTank) + FString::FromInt(pawn->GetTimeUseSuperPower()) + UKismetTextLibrary::Conv_TextToString(TextSeconds);		pawn->Destroy();
-	}
-	return FText::FromString(Info);
-}
-
-FText UW_PawnInfo::GetRULightTankInfo()
-{
-	FString Info;
-	ALight_Tank* pawn = GetWorld()->SpawnActor<ALight_Tank>(ALight_Tank::StaticClass(), FVector(0, 0, -500), FRotator(0, 0, 0));
-
-	if (pawn != nullptr)
-	{
-		/*Info = ("\t\t\tЛегкий танк") +  
-			FString(("\nСкорость: " + FString::FromInt(pawn->GetSpeed()))) +
-			FString(("\nСкорость поворота: " + FString::FromInt(pawn->GetRotationSpeed()))) +
-			FString(("\nСкорость поворота башни: " + FString::FromInt(pawn->GetTowerRotationSpeed()))) +
-			FString(("\nУрон: " + FString::FromInt(pawn->GetDamage()))) +
-			FString(("Здоровья(HP): " + FString::FromInt(pawn->GetHP())) +
-			FString(("Время перезарядки: " + FString::FromInt(pawn->GetTimeReload()) + " секунд")) +
-			FString(("Способность: Ускорение")) +
-			FString(("\nВремя перезарядки способности: " + FString::FromInt(pawn->GetTimeReloadSuperPower()) + " секунд")) +
-			FString(("Время использования способности: " + FString::FromInt(pawn->GetTimeUseSuperPower()) + " секунд")));
-	*/
-		pawn->Destroy();
-	}
-	
-	return FText::FromString(Info);
-}
-
-FText UW_PawnInfo::GetRUMediumTankInfo()
-{
-	FString Info;
-	AMedium_Tank* pawn = GetWorld()->SpawnActor<AMedium_Tank>(AMedium_Tank::StaticClass(), FVector(0, 0, -500), FRotator(0, 0, 0));
-
-	if (pawn != nullptr)
-	{
-		/*Info = "\t\t\tСредний танк"
-			"\nСкорость: " + FString::FromInt(pawn->GetSpeed()) +
-			"\nСкорость поворота: " + FString::FromInt(pawn->GetRotationSpeed()) +
-			"\nСкорость поворота башни: " + FString::FromInt(pawn->GetTowerRotationSpeed()) +
-			"\nУрон: " + FString::FromInt(pawn->GetDamage()) +
-			"\nЗдоровья(HP): " + FString::FromInt(pawn->GetHP()) +" \n"
-			"Время перезарядки: " + FString::FromInt(pawn->GetTimeReload()) + " секунд\n\n" +
-			FString("Способность: Иммунитет к атакам") + 
-			"\nВремя перезарядки способности: " + FString::FromInt(pawn->GetTimeReloadSuperPower()) + " секунд"+  
-			+ "Время использования способности: " + FString::FromInt(pawn->GetTimeUseSuperPower()) + " секунд";*/
-
-		pawn->Destroy();
-	}
-	
-	return FText::FromString(Info);
-}
-
-FText UW_PawnInfo::GetRUStealthTankInfo()
-{
-	FString Info;
-	AStealth_Tank* pawn = GetWorld()->SpawnActor<AStealth_Tank>(AStealth_Tank::StaticClass(), FVector(0, 0, -500), FRotator(0, 0, 0));
-
-	if (pawn != nullptr)
-	{
-		/*Info = "\t\t\tСтелс танк"
-			"\nСкорость: " + FString::FromInt(pawn->GetSpeed()) +
-			"\nСкорость поворота: " + FString::FromInt(pawn->GetRotationSpeed()) +
-			"\nСкорость поворота башни: " + FString::FromInt(pawn->GetTowerRotationSpeed()) +
-			"\nУрон: " + FString::FromInt(pawn->GetDamage()) +
-			"\nЗдоровья(HP): " + FString::FromInt(pawn->GetHP()) +
-			"\nВремя перезарядки: " + FString::FromInt(pawn->GetTimeReload()) + " секунд" +
-			"\n\nСпособность: Невидимость" +
-			"\nВремя перезарядки способности: " + FString::FromInt(pawn->GetTimeReloadSuperPower()) + " секунд" +
-			"\nВремя использования способности: " + FString::FromInt(pawn->GetTimeUseSuperPower()) + " секунд";*/
-
-		pawn->Destroy();
-	}
-
-	return FText::FromString(Info);
-}
-
-FText UW_PawnInfo::GetRUHeavyTankInfo()
-{
-	FString Info;
-	AHeavyTank* pawn = GetWorld()->SpawnActor<AHeavyTank>(AHeavyTank::StaticClass(), FVector(0, 0, -500), FRotator(0, 0, 0));
-
-	if (pawn != nullptr)
-	{
-	/*	Info = "\t\t\tТяжелый танк"
-			"\nСкорость: " + FString::FromInt(pawn->GetSpeed()) +
-			"\nСкорость поворота: " + FString::FromInt(pawn->GetRotationSpeed()) +
-			"\nСкорость поворота башни: " + FString::FromInt(pawn->GetTowerRotationSpeed()) +
-			"\nУрон: " + FString::FromInt(pawn->GetDamage()) +
-			"\nЗдоровья(HP): " + FString::FromInt(pawn->GetHP()) +
-			"\nВремя перезарядки: " + FString::FromInt(pawn->GetTimeReload()) + " секунд" +
-			"\n\nСпособность: Невидимость" +
-			"\nВремя перезарядки способности: " + FString::FromInt(pawn->GetTimeReloadSuperPower()) + " секунд" +
-			"\nВремя использования способности: " + FString::FromInt(pawn->GetTimeUseSuperPower()) + " секунд";*/
-
-		pawn->Destroy();
-	}
-
-	return FText::FromString(Info);
+	TB_NamePawn->SetText(Config->Name);
+	TB_Speed->SetText(FText::AsNumber(Config->Speed, &NumberOptions));
+	TB_RotationSpeed->SetText(FText::AsNumber(Config->RotationSpeed, &NumberOptions));
+	TB_TowerRotationSpeed->SetText(FText::AsNumber(Config->TowerRotationSpeed, &NumberOptions));
+	TB_Damage->SetText(FText::AsNumber(Config->Damage, &NumberOptions));
+	TB_HP->SetText(FText::AsNumber(Config->HealthPoints, &NumberOptions));
+	TB_TimeReload->SetText(FText::AsNumber(Config->TimeReload, &NumberOptions));
+	TB_SkillDescription->SetText(Config->SkillDescription);
+	TB_SkillTimeReload->SetText(FText::AsNumber(Config->SkillTimeReload, &NumberOptions));
+	TB_SkillTimeUse->SetText(FText::AsNumber(Config->SkillTimeUse, &NumberOptions));
 }

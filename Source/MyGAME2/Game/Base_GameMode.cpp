@@ -63,7 +63,10 @@ void ABase_GameMode::StartRound_Implementation()
 	for (auto& el : Game_State->PlayerArray)
 	{
 		Controller = Cast<APawnController>(el.Get()->GetOwner());
-		IsValid(Spawn_Player(Controller, Controller->Spawn_Pawn)) ? DSpawnTank.Broadcast() : nullptr;
+		if (IsValid(Spawn_Player(Controller, Controller->Spawn_Pawn)))
+		{
+			DSpawnTank.Broadcast();
+		}
 	}
 	RoundStart.Broadcast();
 }
@@ -101,6 +104,13 @@ void ABase_GameMode::RechedTimeLimit()
 	{
 		StopRound();
 	}
+}
+
+void ABase_GameMode::TravelLevel(const FString& NameURL)
+{
+	if (NameURL.IsEmpty()) return;
+
+	GetWorld()->ServerTravel(NameURL);
 }
 
 bool ABase_GameMode::ShouldDamagePlayer_Implementation(APlayerController* Player, APlayerController* InstigatorPLayer)

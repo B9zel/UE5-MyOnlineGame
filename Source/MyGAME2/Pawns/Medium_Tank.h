@@ -7,6 +7,9 @@
 #include "Medium_Tank.generated.h"
 
 
+
+class UGhostTankConfigDataAsset;
+
 UCLASS()
 class MYGAME2_API AMedium_Tank : public ABaseTank
 {
@@ -16,9 +19,7 @@ public:
 
 	AMedium_Tank();
 
-	virtual void BeginPlay() override;
-
-	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
+public:
 
 	UFUNCTION(Server, Unreliable)
 	void Enable_SuperPower_OnServer();
@@ -35,19 +36,27 @@ public:
 		void DisableSuperPower_OnClient();
 
 	void Disable_isSuperPower();
-private:
 
-	ECollisionEnabled::Type BeginCollsision;
+protected:
 
-	UMaterialInterface* BaseMaterial;
+	virtual void BeginPlay() override;
 
-	UMaterialInterface* TowerMaterial;
+	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
+	virtual void InitializeProperties() override;
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+
+	UPROPERTY(EditAnywhere)
+	UGhostTankConfigDataAsset* TankConfig;
+
+private:
+
+	ECollisionEnabled::Type BeginCollision;
+
+	UMaterialInterface* BaseMaterial;
+	UMaterialInterface* TowerMaterial;
+
 	UMaterialInterface* BaseMaterial_NotCollision;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UMaterialInterface* TowerMaterial_NotCollision;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TEnumAsByte<ECollisionChannel> Collision;
 };	
