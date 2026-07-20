@@ -81,13 +81,13 @@ void UW_MainMenuOption::NativeConstruct()
 	T_PercentSensetivityY->SynchronizeProperties();
 
 
-	int i = 0;
-	for (auto& el : UKismetInternationalizationLibrary::GetLocalizedCultures())
+	const TArray<FString> arrLanguages = UKismetInternationalizationLibrary::GetLocalizedCultures();
+	for (int32 i = 0; i < arrLanguages.Num(); ++i)
 	{
-		if (el == UKismetInternationalizationLibrary::GetCurrentLanguage())
+		if (arrLanguages[i] == UKismetInternationalizationLibrary::GetCurrentLanguage())
+		{
 			CB_SwitchLanguage->SetSelectedIndex(i);
-
-		++i;
+		}
 	}
 
 

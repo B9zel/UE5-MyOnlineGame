@@ -3,9 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include <E_PlayerSpace.generated.h>
 
 UENUM(BlueprintType)
-enum E_PlayerSpace
+enum class E_PlayerSpace : uint8
 {
 	inMainSpace,
 	inGame

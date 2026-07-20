@@ -6,6 +6,9 @@
 #include "GameFramework/GameStateBase.h"
 #include "BaseGameState.generated.h"
 
+enum class E_InputMode : uint8;
+enum class E_GameState : uint8;
+
 //UDELEGATE(BlueprintAuthorityOnly)
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDelegate);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDelegateOneParam,ABaseTank*,Pawn);
@@ -38,7 +41,8 @@ public:
 		FDelegate DSpawnTank;
 
 	UPROPERTY(ReplicatedUsing = OnRep_RoundInProgress,BlueprintReadWrite)
-		TEnumAsByte<enum E_GameState> RoundInProgress;
+		E_GameState RoundInProgress;
+
 	UPROPERTY(EditAnywhere)
 		uint16 playerInSession;
 	

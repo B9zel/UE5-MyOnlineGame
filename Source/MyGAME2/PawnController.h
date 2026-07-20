@@ -6,7 +6,7 @@
 #include "PawnController.generated.h"
 
 
-
+enum class E_InputMode : uint8;
 
 UCLASS()
 class MYGAME2_API APawnController : public APlayerController
@@ -92,6 +92,6 @@ public:
 	TSubclassOf<class APawn> Spawn_Pawn;
 
 	FTimerHandle RespawnTime;
-	static enum E_InputMode inputMode;
+	static E_InputMode inputMode;
 };
 

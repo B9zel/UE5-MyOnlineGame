@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 
 UENUM(BlueprintType)
-enum E_InputMode
+enum class E_InputMode : uint8
 {
 	GAME_MODE,
 	UI_MODE,

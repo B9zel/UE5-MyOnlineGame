@@ -25,13 +25,13 @@ ATeamGameState::ATeamGameState()
 
 int ATeamGameState::GetPoints(E_Team Team)
 {
-	return PointsArray[Team];
+	return PointsArray[static_cast<uint8>(Team)];
 }
 
 void ATeamGameState::ChangetTeamPoints(E_Team Team, int Value)
 {
 	TeamPoints.Add(Team, *TeamPoints.Find(Team) + Value);
-	PointsArray[Team] = *TeamPoints.Find(Team);
+	PointsArray[static_cast<uint8>(Team)] = *TeamPoints.Find(Team);
 }
 
 void ATeamGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const

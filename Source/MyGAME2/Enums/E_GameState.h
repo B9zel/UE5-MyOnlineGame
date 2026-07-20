@@ -9,7 +9,7 @@
 
 
 UENUM(BlueprintType)
-enum E_GameState
+enum class E_GameState : uint8
 {
 	PreStart,
 	Game,

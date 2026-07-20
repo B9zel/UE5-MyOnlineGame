@@ -6,7 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "W_Tab_TeamPoints.generated.h"
 
-
+enum class E_Team : uint8;
 
 
 UCLASS()
@@ -24,7 +24,8 @@ public:
 	UPROPERTY(Editanywhere, BlueprintReadWrite)
 	bool isOwnTeam;
 
-	enum E_Team Team;
+	E_Team Team;
+
 protected:
 
 	virtual void NativeConstruct() override;

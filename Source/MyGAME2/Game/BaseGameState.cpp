@@ -50,13 +50,13 @@ void ABaseGameState::Tick(float DeltaTime)
 	{
 		switch (RoundInProgress)
 		{
-		case PreStart:
+		case E_GameState::PreStart:
 			TickPreRoundTime();
 			break;
-		case Game:
+		case E_GameState::Game:
 			TickRoundTime();
 			break;
-		case EndGame:
+		case E_GameState::EndGame:
 			break;
 		default:
 			break;

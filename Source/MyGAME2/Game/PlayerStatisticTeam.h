@@ -6,17 +6,18 @@
 #include <MyGAME2/Game/PlayerStatistic.h>
 #include "PlayerStatisticTeam.generated.h"
 
-/**
- * 
- */
+
+enum class E_Team : uint8;
+
 UCLASS()
 class MYGAME2_API APlayerStatisticTeam : public APlayerStatistic
 {
 	GENERATED_BODY()
-public:
-	UPROPERTY(Replicated,BlueprintReadWrite)
-	TEnumAsByte<enum E_Team> Team;
 
+public:
+
+	UPROPERTY(Replicated,BlueprintReadWrite)
+	E_Team Team;
 
 protected:
 
@@ -31,7 +32,7 @@ protected:
 	E_Team GetRandomTeam();
 public:
 	UFUNCTION(BlueprintCallable)
-	E_Team GetBalansedSelectTeam(TEnumAsByte<enum E_Team> SetTeam);
+	E_Team GetBalansedSelectTeam(E_Team SetTeam);
 
 	
 };

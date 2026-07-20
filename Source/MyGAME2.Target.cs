@@ -8,7 +8,9 @@ public class MyGAME2Target : TargetRules
 	public MyGAME2Target( TargetInfo Target) : base(Target)
 	{
 		Type = TargetType.Game;
-		DefaultBuildSettings = BuildSettingsVersion.V2;
+		DefaultBuildSettings = BuildSettingsVersion.Latest;
+		CppStandard = CppStandardVersion.Cpp20;
+		//IncludeOrderVersion = EngineIncludeOrderVersion.Latest;
 		ExtraModuleNames.AddRange( new string[] { "MyGAME2" } );
 	}
 }

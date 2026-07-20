@@ -6,6 +6,7 @@
 #include <MyGAME2/Game/BaseGameState.h>
 #include "TeamGameState.generated.h"
 
+enum class E_Team : uint8;
 
 
 UCLASS()
@@ -16,7 +17,7 @@ class MYGAME2_API ATeamGameState : public ABaseGameState
 public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	TMap<TEnumAsByte<enum E_Team>, int> TeamPoints;
+	TMap<E_Team, int> TeamPoints;
 	UPROPERTY(Replicated, BlueprintReadWrite, EditAnywhere)
 	TArray<int> PointsArray;
 

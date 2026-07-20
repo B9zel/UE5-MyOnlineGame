@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "MyGAME2/Enums/E_PlayerSpace.h"
 #include <OnlineSessionSettings.h>
 #include <Interfaces/OnlineSessionInterface.h>
 
@@ -13,6 +14,8 @@
 
 class IOnlineSubsystem;
 class FOnlineSessionSearchResult;
+enum class E_PlayerSpace : uint8;
+
 namespace EOnJoinSessionCompleteResult
 {
 	enum Type;
@@ -68,7 +71,7 @@ private:
 public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TEnumAsByte<enum E_PlayerSpace> PlayerSpace;
+	E_PlayerSpace PlayerSpace;
 
 	FOneParamDelegate FindSessionCompleteDelegate;
 	FWithoutParamDelegate CancelFindSessionCompleteDelegate;

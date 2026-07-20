@@ -6,8 +6,8 @@
 #include <Kismet/GameplayStatics.h>
 #include <Engine/LocalPlayer.h>
 #include <GameFramework/PlayerController.h>
+#include "Online/OnlineSessionNames.h"
 
-#include "../Enums/E_PlayerSpace.h"
 #include "Save/BaseSaveGame.h"
 
 
@@ -127,11 +127,11 @@ void UBaseGameInstance::findSession(APlayerController* controller, bool LAN)
 	UE_LOG(GameInstance, Display, TEXT("init search LAN: %d"), LAN);
 	SessionSearch->bIsLanQuery = LAN;
 	SessionSearch->MaxSearchResults = 10;
-	SessionSearch->QuerySettings.Set(SEARCH_PRESENCE, true, EOnlineComparisonOp::Equals);
+	SessionSearch->QuerySettings.Set(SEARCH_LOBBIES, true, EOnlineComparisonOp::Equals);
 
 	ULocalPlayer* localPlayer = controller->GetLocalPlayer();
 	auto& id = (*localPlayer->GetPreferredUniqueNetId());
-	UE_LOG(GameInstance, Display, TEXT("GetPreferredUniqueNetId: %d"), *id.ToString());
+	UE_LOG(GameInstance, Display, TEXT("GetPreferredUniqueNetId: %s"), *id.ToString());
 
 	SessionInterface->FindSessions(*localPlayer->GetPreferredUniqueNetId(), SessionSearch.ToSharedRef());
 }

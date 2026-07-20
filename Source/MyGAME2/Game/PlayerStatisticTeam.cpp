@@ -9,7 +9,6 @@
 #include <Algo/Count.h>
 #include <Net/UnrealNetwork.h>
 #include <MyGAME2/Game/TeamGameState.h>
-#include <MyGAME2/Enums/E_Team.h>
 #include "../BaseTank.h"
 #include <GameFramework/Controller.h>
 
@@ -31,7 +30,7 @@ void APlayerStatisticTeam::BeginPlay()
 
 E_Team APlayerStatisticTeam::GetRandomTeam()
 {
-	switch (UKismetMathLibrary::RandomInteger(E_Team::TotalTeam))
+	switch (UKismetMathLibrary::RandomInteger(static_cast<uint8>(E_Team::TotalTeam)))
 	{
 	case 0:
 		return E_Team::Team_A;
@@ -42,7 +41,7 @@ E_Team APlayerStatisticTeam::GetRandomTeam()
 	}
 }
 
-E_Team APlayerStatisticTeam::GetBalansedSelectTeam(TEnumAsByte<enum E_Team> team)
+E_Team APlayerStatisticTeam::GetBalansedSelectTeam(E_Team team)
 {
 	ATeamGameState* Game_State = Cast<ATeamGameState>(UGameplayStatics::GetGameState(this));
 	if (Game_State != nullptr)

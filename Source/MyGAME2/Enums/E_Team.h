@@ -7,7 +7,7 @@
 
 
 UENUM(BlueprintType)
-enum E_Team
+enum class E_Team : uint8
 {
 	Team_A,
 	Team_B,
