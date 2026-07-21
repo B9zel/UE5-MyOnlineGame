@@ -6,8 +6,8 @@ in-game chat, statistics, and map voting. Client-server architecture with
 Dedicated Server support.
 
 <p align="center">
-  <img src="Misc/GameplayTankArena_1.gif" alt="Tank arena gameplay — deathmatch" width="49%">
-  <img src="Misc/GameplayTankArena_2.gif" alt="Tank arena gameplay — team match" width="49%">
+   <img src="Misc/GameplayTankArena_1.gif" alt="Tank arena gameplay — deathmatch" width="48%">
+   <img src="Misc/GameplayTankArena_2.gif" alt="Tank arena gameplay — team match" width="48%">
 </p>
 
 
